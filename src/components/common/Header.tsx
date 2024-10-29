@@ -26,7 +26,7 @@ const Header = ({}: HeaderProps): ReactNode => {
       <Link href={ROUTES.RULES.url} className={linkStyle}>
         이용 수칙
       </Link>
-      <p className='ml-auto flex items-center justify-center gap-2 rounded-lg border border-solid border-[#808080] bg-[#F0F0F0] px-3 py-1 text-[#808080]'>
+      <p className='ml-auto flex items-center justify-center gap-2 rounded-xl border border-solid border-[#808080] bg-[#F0F0F0] px-3 py-1 text-[#808080]'>
         <LucideIcon name='Clock' />
         스터디룸 예약내역
       </p>
