@@ -2,10 +2,9 @@ import './globals.css'
 
 import type { Metadata } from 'next'
 
-import Header from '@/components/common/Header'
-import { cn } from '@/lib/utils/cn'
-
 import { pretendard } from '../../public/fonts/fonts'
+import Header from '../components/common/Header'
+import { cn } from '../lib/utils/cn'
 
 export const metadata: Metadata = {
   title: 'Create Next App',

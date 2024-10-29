@@ -1,9 +1,10 @@
 import Link from 'next/link'
 import React, { ReactNode } from 'react'
 
-import { ROUTES } from '@/lib/constants/route'
+import { ROUTES } from '@/src/lib/constants/route'
 
 import Logo from './Logo'
+import LucideIcon from './LucideIcon'
 
 interface HeaderProps {}
 
@@ -25,7 +26,10 @@ const Header = ({}: HeaderProps): ReactNode => {
       <Link href={ROUTES.RULES.url} className={linkStyle}>
         이용 수칙
       </Link>
-      <p className='ml-auto rounded-lg border border-solid border-[#808080] bg-[#F0F0F0] px-3 py-1'>스터디룸 예약내역</p>
+      <p className='ml-auto flex items-center justify-center gap-2 rounded-lg border border-solid border-[#808080] bg-[#F0F0F0] px-3 py-1 text-[#808080]'>
+        <LucideIcon name='Clock' />
+        스터디룸 예약내역
+      </p>
     </div>
   )
 }
