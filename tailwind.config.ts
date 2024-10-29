@@ -2,11 +2,7 @@ import type { Config } from 'tailwindcss'
 
 const config: Config = {
   darkMode: ['class'],
-  content: [
-    './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
-    './src/components/**/*.{js,ts,jsx,tsx,mdx}',
-    './src/app/**/*.{js,ts,jsx,tsx,mdx}',
-  ],
+  content: ['./src/pages/**/*.{js,ts,jsx,tsx,mdx}', './src/components/**/*.{js,ts,jsx,tsx,mdx}', './src/app/**/*.{js,ts,jsx,tsx,mdx}'],
   theme: {
     extend: {
       colors: {
@@ -50,6 +46,13 @@ const config: Config = {
           '4': 'hsl(var(--chart-4))',
           '5': 'hsl(var(--chart-5))',
         },
+        // 서비스 색
+        swBlack: '#000000',
+        swWhite: '#FFFFFF',
+        swLightGray: '#F7F7F7',
+        swLightGreen: '#CEF65F',
+        swDarkGreen: '#278F02',
+        swGreen: '#00DE4D',
       },
       fontFamily: {
         pretendard: ['var(--font-pretendard)'],
