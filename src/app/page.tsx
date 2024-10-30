@@ -11,36 +11,41 @@ import { cn } from '../lib/utils/cn'
 
 const Main = () => {
   return (
-    <div className='relative flex min-h-screen w-screen flex-col items-center justify-center bg-gray-50'>
-      <section className='flex h-1/3 items-center justify-center'>
-        <Asterisk className='mr-32 w-28 self-start bg-[#DDFEC0]' />
-        <Logo text='So' textSize='text-9xl' className='relative -right-6' />
-        <Eyes />
-        <Logo text='KK' textSize='text-9xl' className='relative -left-6'>
-          <p className='absolute -right-36 -top-6 w-max text-base font-medium text-swBlack'>AI로 관리하는 스마트한 라운지 생활</p>
-        </Logo>
-        <Asterisk className='ml-32 w-28 self-end bg-swWhite' />
+    <div className='relative flex w-screen flex-grow flex-col items-center justify-center gap-4'>
+      <p className='mt-14 w-fit text-2xl font-bold text-swBlack sm:text-3xl lg:hidden'>지능형 소프트웨어학과 라운지</p>
+      <p className='mb-14 w-fit text-2xl font-bold text-swBlack sm:text-3xl lg:hidden'>AI 좌석 배정 시스템</p>
+      <section className='relative flex h-1/3 w-[90%] max-w-[1600px] items-center justify-between'>
+        <Asterisk className='w-20 self-start bg-[#DDFEC0] sm:w-24 lg:w-28' />
+        <div className='flex h-full w-auto items-center justify-center'>
+          <Logo text='So' className='relative -right-6 hidden text-xl lg:block lg:text-9xl' />
+          <Eyes className='h-40 w-32 lg:h-80 lg:w-56' />
+          <Logo text='KK' className='relative -left-6 hidden text-xl lg:block lg:text-9xl'>
+            <p className='absolute -right-36 -top-6 w-max text-base font-medium text-swBlack'>AI로 관리하는 스마트한 라운지 생활</p>
+          </Logo>
+        </div>
+        <Asterisk className='w-20 self-end bg-swWhite sm:w-24 lg:w-28' />
       </section>
 
-      <div className='relative -top-12 z-30 flex w-[90%] max-w-[1600px] items-center justify-center gap-10'>
-        <Card
-          title='스터디룸 예약'
-          subtitle='스터디룸 예약하기'
-          href={ROUTES.ROOM.url}
-          className='aspect-card w-1/3 bg-swLightGreen hover:bg-swLightGreenHover'
-        />
+      {/* 모바일과 웹에서 다른 레이아웃을 위해 각 카드에 grid 설정 */}
+      <div className='relative -top-9 z-30 grid w-[90%] max-w-[1600px] grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3'>
         <Card
           title='좌석 배정'
           subtitle='라운지 좌석 배정하기'
           href={ROUTES.SEAT.url}
           qr={true}
-          className='aspect-card w-1/3 bg-swGreen hover:bg-swGreenHover'
+          className='h-52 w-full bg-swGreen hover:bg-swGreenHover sm:col-span-2 lg:order-2 lg:col-span-1 lg:aspect-card lg:h-auto'
+        />
+        <Card
+          title='스터디룸 예약'
+          subtitle='스터디룸 예약하기'
+          href={ROUTES.ROOM.url}
+          className='h-52 w-full bg-swLightGreen hover:bg-swLightGreenHover lg:order-1 lg:aspect-card lg:h-auto'
         />
         <Card
           title='이용 수칙'
           subtitle='이용 수칙 확인하기'
           href={ROUTES.RULES.url}
-          className='aspect-card w-1/3 bg-swGray hover:bg-swGrayHover'
+          className='h-52 w-full bg-swGray hover:bg-swGrayHover lg:aspect-card lg:h-auto'
         />
       </div>
     </div>
