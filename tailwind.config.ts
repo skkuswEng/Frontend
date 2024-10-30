@@ -50,10 +50,17 @@ const config = {
         swBlack: '#000000',
         swWhite: '#FFFFFF',
         swGray: '#D9D9D9',
+        swGrayHover: '#E9E8E8',
+
         swLightGray: '#F7F7F7',
+
         swLightGreen: '#CEF65F',
+        swLightGreenHover: '#D5FF62',
+
         swDarkGreen: '#278F02',
+
         swGreen: '#00DE4D',
+        swGreenHover: '#00EF53',
       },
       fontFamily: {
         pretendard: ['var(--font-pretendard)'],
