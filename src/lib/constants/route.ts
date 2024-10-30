@@ -14,8 +14,8 @@ export interface Route {
  * 새로운 Route 생성시 추가
  */
 export const ROUTES = {
-  HOME: {
-    name: '홈',
+  MAIN: {
+    name: '메인',
     url: '/',
   },
   AUTH: {},

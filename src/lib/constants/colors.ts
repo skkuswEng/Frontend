@@ -4,6 +4,7 @@ import config from '@/tailwind.config'
 export const colorSet = {
   swBlack: config.theme.extend.colors.swBlack,
   swWhite: config.theme.extend.colors.swWhite,
+  swGray: config.theme.extend.colors.swGray,
   swLightGray: config.theme.extend.colors.swLightGray,
   swLightGreen: config.theme.extend.colors.swLightGreen,
   swDarkGreen: config.theme.extend.colors.swDarkGreen,

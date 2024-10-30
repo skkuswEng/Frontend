@@ -13,8 +13,8 @@ const Header = ({}: HeaderProps): ReactNode => {
   const linkStyle = 'flex w-[10%] items-center justify-center text-base font-semibold'
   return (
     <div className='absolute top-8 z-10 flex h-11 w-[90%] max-w-[1600px] items-center justify-start gap-14 rounded-full bg-swWhite px-12 py-7'>
-      <Link href={ROUTES.HOME.url}>
-        <Logo />
+      <Link href={ROUTES.MAIN.url}>
+        <Logo text='SoKK' />
       </Link>
       <p className='text-base font-semibold'>지능형 소프트웨어학과 라운지 AI 좌석 배정 시스템</p>
       <Link href={ROUTES.SEAT.url} className={linkStyle}>

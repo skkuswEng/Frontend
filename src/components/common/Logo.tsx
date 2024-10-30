@@ -1,10 +1,12 @@
 import React, { ReactNode } from 'react'
 
-import { cn } from '@/lib/utils/cn'
+import { cn } from '@/src/lib/utils/cn'
 
 import { sen } from '../../../public/fonts/fonts'
 
 interface LogoProps {
+  text: string
+  className?: string
   textSize?:
     | 'text-xs'
     | 'text-sm'
@@ -19,10 +21,16 @@ interface LogoProps {
     | 'text-7xl'
     | 'text-8xl'
     | 'text-9xl'
+  children?: ReactNode
 }
 
-const Logo = ({ textSize = 'text-4xl' }: LogoProps): ReactNode => {
-  return <div className={cn('font-sen font-extrabold', sen.className, textSize)}>SoKK</div>
+const Logo = ({ text, className, textSize = 'text-4xl', children }: LogoProps): ReactNode => {
+  return (
+    <div className={cn('font-sen font-extrabold', sen.className, textSize, className)}>
+      {text}
+      {children}
+    </div>
+  )
 }
 
 export default Logo
