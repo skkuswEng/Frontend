@@ -65,6 +65,9 @@ const config = {
         sm: 'calc(var(--radius) - 4px)',
         ellipse: '50%',
       },
+      aspectRatio: {
+        card: '3 / 2',
+      },
     },
   },
   plugins: [require('tailwindcss-animate')],

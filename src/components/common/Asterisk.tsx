@@ -10,7 +10,7 @@ interface AsteriskProps {
 
 const Asterisk = ({ className }: AsteriskProps): ReactNode => {
   return (
-    <div className={cn('flex aspect-square w-20 items-center justify-center rounded-full', className)}>
+    <div className={cn('flex aspect-square items-center justify-center rounded-full', className)}>
       <LucideIcon name='Asterisk' size={40} strokeWidth={4} />
     </div>
   )

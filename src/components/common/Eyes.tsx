@@ -23,8 +23,8 @@ interface EyeProps {
 
 const Eye = ({ className }: EyeProps) => {
   return (
-    <div className={cn('relative flex h-56 w-40 items-center justify-center rounded-ellipse border-4 border-black bg-white', className)}>
-      <div className='absolute bottom-16 right-5 h-12 w-12 rounded-full bg-black' />
+    <div className={cn('relative flex h-80 w-56 items-center justify-center rounded-ellipse border-4 border-black bg-white', className)}>
+      <div className='absolute bottom-16 right-7 aspect-square w-20 rounded-full bg-black' />
     </div>
   )
 }
