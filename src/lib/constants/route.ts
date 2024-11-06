@@ -18,7 +18,16 @@ export const ROUTES = {
     name: '메인',
     url: '/',
   },
-  AUTH: {},
+  AUTH: {
+    LOGIN: {
+      name: '로그인',
+      url: '/auth/login',
+    },
+    REGISTER: {
+      name: '로그인',
+      url: '/auth/register',
+    },
+  },
   SEAT: {
     name: '좌석 배정',
     url: '/seat/reserve',

@@ -9,7 +9,7 @@ import LucideIcon from '../components/common/LucideIcon'
 import { ROUTES, RouteType } from '../lib/constants/route'
 import { cn } from '../lib/utils/cn'
 
-const Main = () => {
+const MainPage = () => {
   return (
     <div className='relative flex w-screen flex-grow flex-col items-center justify-center gap-4'>
       <p className='mt-14 w-fit text-2xl font-bold text-swBlack sm:text-3xl lg:hidden'>지능형 소프트웨어학과 라운지</p>
@@ -26,33 +26,33 @@ const Main = () => {
         <Asterisk className='w-20 self-end bg-swWhite sm:w-24 lg:w-28' />
       </section>
 
-      {/* 모바일과 웹에서 다른 레이아웃을 위해 각 카드에 grid 설정 */}
+      {/* TODO: 로그인 상태 확인 후 href 조정 */}
       <div className='relative -top-9 z-30 grid w-[90%] max-w-[1600px] grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3'>
         <Card
           title='좌석 배정'
           subtitle='라운지 좌석 배정하기'
           href={ROUTES.SEAT.url}
           qr={true}
-          className='h-52 w-full bg-swGreen hover:bg-swGreenHover sm:col-span-2 lg:order-2 lg:col-span-1 lg:aspect-card lg:h-auto'
+          className='hover:bg-swHoverGreen h-52 w-full bg-swGreen sm:col-span-2 lg:order-2 lg:col-span-1 lg:aspect-card lg:h-auto'
         />
         <Card
           title='스터디룸 예약'
           subtitle='스터디룸 예약하기'
           href={ROUTES.ROOM.url}
-          className='h-52 w-full bg-swLightGreen hover:bg-swLightGreenHover lg:order-1 lg:aspect-card lg:h-auto'
+          className='hover:bg-swHoverGreenLight h-52 w-full bg-swGreenLight lg:order-1 lg:aspect-card lg:h-auto'
         />
         <Card
           title='이용 수칙'
           subtitle='이용 수칙 확인하기'
           href={ROUTES.RULES.url}
-          className='h-52 w-full bg-swGray hover:bg-swGrayHover lg:aspect-card lg:h-auto'
+          className='hover:bg-swHoverGray h-52 w-full bg-swGray lg:aspect-card lg:h-auto'
         />
       </div>
     </div>
   )
 }
 
-export default Main
+export default MainPage
 
 interface CardProps {
   title: string

@@ -47,20 +47,33 @@ const config = {
           '5': 'hsl(var(--chart-5))',
         },
         // 서비스 색
-        swBlack: '#000000',
-        swWhite: '#FFFFFF',
-        swGray: '#D9D9D9',
-        swGrayHover: '#E9E8E8',
+        swGrayLight: '#F7F7F7',
+        swGray: '#D1CBCB',
+        swGrayDark: '#B6B6B6',
 
-        swLightGray: '#F7F7F7',
-
-        swLightGreen: '#CEF65F',
-        swLightGreenHover: '#D5FF62',
-
-        swDarkGreen: '#278F02',
-
+        swGreenLight: '#CEF65F',
         swGreen: '#00DE4D',
-        swGreenHover: '#00EF53',
+
+        swGreenDark: '#278F02',
+
+        swRed: '#F45858',
+        swBrownLight: '#FCECB8',
+
+        swWhite: '#FFFFFF',
+        swBlack: '#000000',
+        swBackDrop: '#00000066',
+
+        // Hover 색
+        swHoverGray: '#E9E8E8',
+
+        swHoverGreenLight: '#D5FF62',
+        swHoverGreen: '#00EF53',
+
+        swHoverRed: '#FF8080',
+        // Disable 색
+        swDisabledGreen: '#00DE4D66',
+        swDisabledGreenLight: '#CEF65F66',
+        swDisabledRed: '#F4585866',
       },
       fontFamily: {
         pretendard: ['var(--font-pretendard)'],
@@ -74,6 +87,9 @@ const config = {
       },
       aspectRatio: {
         card: '3 / 2',
+      },
+      boxShadow: {
+        'sw-shadow': '0px 1px 0px 0px rgba(0, 0, 0,1)',
       },
     },
   },
