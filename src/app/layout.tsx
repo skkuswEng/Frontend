@@ -3,6 +3,7 @@ import './globals.css'
 import type { Metadata } from 'next'
 
 import { pretendard } from '../../public/fonts/fonts'
+import Footer from '../components/common/Footer'
 import Header from '../components/common/Header'
 import { cn } from '../lib/utils/cn'
 
@@ -20,6 +21,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
       <body className={cn(pretendard.className)}>
         <Header />
         {children}
+        <Footer />
       </body>
     </html>
   )
