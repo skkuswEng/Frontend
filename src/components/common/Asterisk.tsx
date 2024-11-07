@@ -2,7 +2,7 @@ import React, { ReactNode } from 'react'
 
 import { cn } from '@/src/lib/utils/cn'
 
-import LucideIcon from './LucideIcon'
+import LucideIcon from '../provider/LucideIcon'
 
 interface AsteriskProps {
   className?: string
