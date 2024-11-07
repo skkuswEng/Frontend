@@ -1,6 +1,7 @@
+'use client'
 // pages/index.js
 import Image from 'next/image'
-import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import React from 'react'
 
 import SKKUCharacterImg from '../../public/images/skku_character.png'
@@ -38,8 +39,9 @@ const MainPage = () => {
         <Card
           title='좌석 배정'
           subtitle='라운지 좌석 배정하기'
-          href={ROUTES.SEAT.url}
+          href={ROUTES.SEAT.PLAIN.url}
           qr={true}
+          qrHref={ROUTES.SEAT.QR.url}
           className='h-60 w-full bg-swGreen hover:bg-swHoverGreen sm:col-span-2 lg:order-2 lg:col-span-1 lg:aspect-card lg:h-auto'
         />
         <Card
@@ -65,20 +67,34 @@ interface CardProps {
   title: string
   subtitle: string
   href: RouteType
+  qrHref?: RouteType // QR 버튼 전용 링크를 추가
   qr?: boolean
   className?: string
 }
-const Card = ({ title, subtitle, href, qr, className }: CardProps) => {
+
+const Card = ({ title, subtitle, href, qrHref, qr, className }: CardProps) => {
+  const router = useRouter()
+
+  // 메인 링크로 이동하는 함수
+  const handleCardClick = () => {
+    router.push(href)
+  }
+
+  // QR 버튼 전용 링크로 이동하는 함수
+  const handleQRClick = (e: React.MouseEvent) => {
+    e.stopPropagation() // 이벤트 전파 방지 (부모로 전파되지 않도록)
+    if (qrHref) {
+      router.push(qrHref)
+    }
+  }
+
   return (
-    <Link
-      href={href}
+    <div
+      onClick={handleCardClick}
       className={cn(
-        'group relative flex cursor-pointer flex-col items-start gap-2 rounded-xl border-2 border-solid border-swBlack p-7 shadow-lg',
+        'group relative flex cursor-pointer flex-col items-start gap-2 rounded-xl border-2 border-solid border-swBlack p-7 shadow-lg shadow-sw-shadow',
         className,
       )}
-      style={{
-        boxShadow: '0 4px 10px rgba(0, 0, 0, 0.3)', // 커스텀 그림자
-      }}
     >
       <h1 className='text-3xl font-bold'>{title}</h1>
       <p className='text-base text-gray-600'>{subtitle}</p>
@@ -86,11 +102,14 @@ const Card = ({ title, subtitle, href, qr, className }: CardProps) => {
         <LucideIcon name='ArrowUpRight' size={26} />
       </div>
       {qr && (
-        <div className='absolute bottom-5 right-5 flex items-center justify-center gap-2 rounded-full bg-swBlack px-5 py-3 font-bold text-swWhite hover:border hover:border-solid hover:border-swBlack hover:bg-swWhite hover:text-swBlack'>
+        <button
+          onClick={handleQRClick} // QR 버튼 클릭 시 전용 링크로 이동
+          className='absolute bottom-5 right-5 flex items-center justify-center gap-2 rounded-full bg-swBlack px-5 py-3 font-bold text-swWhite hover:border hover:border-solid hover:border-swBlack hover:bg-swWhite hover:text-swBlack'
+        >
           <LucideIcon name='ScanLine' strokeWidth={4} />
           QR
-        </div>
+        </button>
       )}
-    </Link>
+    </div>
   )
 }
