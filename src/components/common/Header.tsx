@@ -1,6 +1,6 @@
 'use client'
 import Link from 'next/link'
-import React, { ReactNode, useEffect } from 'react'
+import React, { ReactNode } from 'react'
 
 import { ROUTES } from '@/src/lib/constants/route'
 import ToggleWrapper, { useDropdown } from '@/src/lib/hooks/useToggle'
@@ -62,12 +62,9 @@ const MobileHeader = ({ className }: { className: string }) => {
     toggleDropdown,
   } = useDropdown()
 
-  useEffect(() => {
-    console.log(isOpenMenu)
-  }, [isOpenMenu])
   return (
     <>
-      <div className={cn('relative z-10 flex h-24 w-screen items-center justify-between bg-swWhite px-8 py-7', className)}>
+      <div className={cn('fixed z-50 flex h-24 w-screen items-center justify-between bg-swWhite px-8 py-7', className)}>
         <Link href={ROUTES.MAIN.url}>
           <Logo text='SoKK' className='text-4xl' />
         </Link>

@@ -42,7 +42,7 @@ const LoginPage = ({}: LoginPageProps): ReactNode => {
   const loginHandler = () => {}
 
   return (
-    <div className='relative grid w-[90%] max-w-[1800px] flex-grow grid-cols-1 place-items-center lg:grid-cols-2'>
+    <div className='relative mt-24 grid w-[90%] max-w-[1800px] flex-grow grid-cols-1 place-items-center py-6 lg:mt-0 lg:grid-cols-2'>
       {/* Logo */}
       <div className='relative flex w-[90%] flex-col items-start justify-center gap-4 lg:w-full lg:items-center'>
         <Asterisk className='hidden w-20 self-end bg-[#DDFEC0] sm:w-24 lg:flex lg:w-28' />
