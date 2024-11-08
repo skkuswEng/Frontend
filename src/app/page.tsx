@@ -16,7 +16,7 @@ const MainPage = () => {
   return (
     <div className='relative flex w-screen flex-grow flex-col items-center justify-center gap-4'>
       <Logo text='SoKK' className='py-4 text-7xl lg:hidden' />
-      <p className='w-fit text-center text-2xl font-bold text-swBlack sm:text-3xl lg:hidden'>
+      <p className='w-fit text-center text-2xl font-bold text-swBlack sm:text-3xl lg:hidden '>
         소프트웨어 라운지
         <br />
         AI 통합 관리 시스템

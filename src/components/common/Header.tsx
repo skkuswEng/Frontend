@@ -47,10 +47,10 @@ const DesktopHeader = ({ className }: { className: string }) => {
           이용 수칙
         </Link>
       </div>
-      <p className='flex cursor-pointer items-center justify-center gap-8 px-3 py-1 text-xl font-bold'>
+      <div className='flex cursor-pointer items-center justify-center gap-8 px-3 py-1 text-xl font-bold'>
         <LucideIcon name='Bell' size={30} />
         <Link href={ROUTES.AUTH.LOGIN.url}>로그인</Link>
-      </p>
+      </div>
     </div>
   )
 }

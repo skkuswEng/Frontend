@@ -57,6 +57,7 @@ const config = {
         swGreenDark: '#278F02',
 
         swRed: '#F45858',
+        swBlue: '#0277FF',
         swBrownLight: '#FCECB8',
 
         swWhite: '#FFFFFF',
@@ -64,11 +65,9 @@ const config = {
         swBackDrop: '#00000066',
 
         // Hover 색
-        swHoverGray: '#E9E8E8',
-
         swHoverGreenLight: '#D5FF62',
         swHoverGreen: '#00EF53',
-
+        swHoverGray: '#E9E8E8',
         swHoverRed: '#FF8080',
         // Disable 색
         swDisabledGreen: '#00DE4D66',
