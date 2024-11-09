@@ -2,11 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
+html,
 body {
   min-height: 100dvh;
   overflow-x: hidden;
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
   align-items: center;
 
   position: relative;
@@ -88,13 +90,13 @@ body {
 /* 스크롤바 트랙 꾸미기 */
 ::-webkit-scrollbar-track {
   background: #ebebeb;
-  border-radius: 5px;
+  border-radius: 10px;
 }
 
 /* 스크롤바 손잡이 꾸미기 */
 ::-webkit-scrollbar-thumb {
   background: #00000080;
-  border-radius: 5px;
+  border-radius: 10px;
 }
 
 /* 스크롤바 손잡이 호버 시 색 */

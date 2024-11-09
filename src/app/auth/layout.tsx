@@ -5,7 +5,7 @@ interface LoginLayoutProps {
 }
 
 const LoginLayout = ({ children }: LoginLayoutProps): ReactNode => {
-  return <div>{children}</div>
+  return <>{children}</>
 }
 
 export default LoginLayout

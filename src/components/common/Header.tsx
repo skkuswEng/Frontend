@@ -1,6 +1,6 @@
 'use client'
 import Link from 'next/link'
-import React, { ReactNode, useEffect } from 'react'
+import React, { ReactNode } from 'react'
 
 import { ROUTES } from '@/src/lib/constants/route'
 import ToggleWrapper, { useDropdown } from '@/src/lib/hooks/useToggle'
@@ -27,10 +27,7 @@ const DesktopHeader = ({ className }: { className: string }) => {
   const linkStyle = 'flex items-center justify-center text-xl font-bold hover:border-b hover:border-black hover:border-solid'
   return (
     <div
-      className={cn(
-        'relative z-10 mt-8 flex h-20 w-[90%] max-w-[1800px] items-center justify-between gap-14 rounded-full bg-swWhite px-12 py-7',
-        className,
-      )}
+      className={cn('relative z-10 mt-8 flex h-20 w-[90%] max-w-[1800px] items-center justify-between gap-14 rounded-full bg-swWhite px-12 py-7', className)}
     >
       <Link href={ROUTES.MAIN.url}>
         <Logo text='SoKK' className='text-4xl' />
@@ -47,10 +44,10 @@ const DesktopHeader = ({ className }: { className: string }) => {
           이용 수칙
         </Link>
       </div>
-      <p className='flex cursor-pointer items-center justify-center gap-8 px-3 py-1 text-xl font-bold'>
+      <div className='flex cursor-pointer items-center justify-center gap-8 px-3 py-1 text-xl font-bold'>
         <LucideIcon name='Bell' size={30} />
         <Link href={ROUTES.AUTH.LOGIN.url}>로그인</Link>
-      </p>
+      </div>
     </div>
   )
 }
@@ -62,12 +59,9 @@ const MobileHeader = ({ className }: { className: string }) => {
     toggleDropdown,
   } = useDropdown()
 
-  useEffect(() => {
-    console.log(isOpenMenu)
-  }, [isOpenMenu])
   return (
     <>
-      <div className={cn('relative z-10 flex h-24 w-screen items-center justify-between bg-swWhite px-8 py-7', className)}>
+      <div className={cn('fixed z-50 flex h-24 w-screen items-center justify-between bg-swWhite px-8 py-7', className)}>
         <Link href={ROUTES.MAIN.url}>
           <Logo text='SoKK' className='text-4xl' />
         </Link>
