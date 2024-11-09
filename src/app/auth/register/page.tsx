@@ -4,6 +4,8 @@ import React, { ReactNode, useEffect, useState } from 'react'
 
 import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
 import Asterisk from '@/src/components/common/Asterisk'
 import { TextDivider } from '@/src/components/common/Dividers'
 import Logo from '@/src/components/common/Logo'
@@ -31,9 +33,6 @@ const RegisterPage = ({}: RegisterPageProps): ReactNode => {
       contents = <RegisterCheck />
       break
   }
-
-  // TODO: 로그인 기능 넣기
-  const loginHandler = () => {}
 
   return (
     <div className='relative mt-24 grid w-[90%] max-w-[1800px] flex-grow grid-cols-1 place-items-center py-6 lg:mt-0 lg:grid-cols-2'>
@@ -131,45 +130,98 @@ const ServicePolicyCheck = ({ stepHandler }: ServicePolicyCheckProps): ReactNode
 
 interface RegisterCheckProps {}
 const RegisterCheck = ({}: RegisterCheckProps): ReactNode => {
+  const router = useRouter()
+
+  // Constants
+  const INIT_INFO = { name: null, studentId: null, password: null, email: null }
+
+  // States
+  const [userInfo, setUserInfo] = useState<{ [key: string]: string | null }>(INIT_INFO)
+  const [isDone, setIsDone] = useState<boolean>(false)
+
+  // Functions
+  const inputChangeHandler = (event: React.ChangeEvent<HTMLInputElement>, id: keyof typeof INIT_INFO): void => {
+    const val = event.target.value
+
+    setUserInfo(prev => ({
+      ...prev,
+      [id]: val,
+    }))
+  }
+
+  useEffect(() => {
+    if (!Object.values(userInfo).includes(null)) {
+      setIsDone(true)
+    } else if (isDone) {
+      setIsDone(false)
+    }
+  }, [userInfo])
+
+  // TODO: 로그인 기능 넣기
+  const loginHandler = () => {}
+
   return (
     <>
-      {/* <div className='flex w-full flex-col items-start justify-start gap-2'>
-        <Label htmlFor='StudentId' className='font-bold text-swBlack'>
+      <div className='flex w-full flex-col items-start justify-start gap-2'>
+        <Label htmlFor='name' className='font-bold text-swBlack'>
+          이름(실명)
+        </Label>
+        <Input
+          type='text'
+          id='name'
+          placeholder='이름을 입력해주세요'
+          onChange={e => inputChangeHandler(e, 'name')}
+          className='h-12 w-full rounded-md border border-solid border-swBlack'
+        />
+      </div>
+      <div className='flex w-full flex-col items-start justify-start gap-2'>
+        <Label htmlFor='studentId' className='font-bold text-swBlack'>
           아이디(학번)
         </Label>
         <Input
           type='text'
-          id='StudentId'
+          id='studentId'
           placeholder='학번을 입력해주세요'
           onChange={e => inputChangeHandler(e, 'studentId')}
           className='h-12 w-full rounded-md border border-solid border-swBlack'
         />
       </div>
+
+      <p className='text-sBlack mt-4 w-full text-center text-sm'>
+        안전한 비밀번호를 위해
+        <br />
+        비밀번호는 영문자, 숫자, 특수문자를 포함해야 합니다
+      </p>
+
       <div className='flex w-full flex-col items-start justify-start gap-2'>
-        <Label htmlFor='StudentId' className='font-bold text-swBlack'>
+        <Label htmlFor='password' className='font-bold text-swBlack'>
           비밀번호
         </Label>
-        <div className='relative h-12 w-full rounded-md border border-solid border-swBlack'>
-          <Input
-            type={!showPassword ? 'password' : 'text'}
-            id='StudentId'
-            placeholder='비밀번호를 입력해주세요'
-            onChange={e => inputChangeHandler(e, 'password')}
-            className='h-full w-full border-none'
-          />
-          <LucideIcon name={!showPassword ? 'EyeOff' : 'Eye'} onClick={toggleShowPassword} className='absolute right-4 top-0 h-full opacity-40' size={24} />
-        </div>
+        <Input
+          type='text'
+          id='password'
+          placeholder='비밀번호를 입력해주세요'
+          onChange={e => inputChangeHandler(e, 'password')}
+          className='h-12 w-full rounded-md border border-solid border-swBlack'
+        />
       </div>
-      <Button variant='swBlack' className='mb-4 mt-10 w-full' onClick={loginHandler}>
-        로그인
-      </Button>
 
-      <Divider />
-      <p className='mt-4 cursor-pointer text-swGrayDark hover:text-swBlack'>계정이 없으신가요?</p>
+      <div className='flex w-full flex-col items-start justify-start gap-2'>
+        <Label htmlFor='email' className='font-bold text-swBlack'>
+          이메일 (학교 이메일)
+        </Label>
+        <Input
+          type='text'
+          id='email'
+          placeholder='이메일을 입력해주세요'
+          onChange={e => inputChangeHandler(e, 'email')}
+          className='h-12 w-full rounded-md border border-solid border-swBlack'
+        />
+      </div>
 
-      <Button variant='swLightGreen' className='w-full' onClick={() => router.push(ROUTES.AUTH.REGISTER.url)}>
+      <Button onClick={loginHandler} variant={isDone ? 'swBlack' : 'swBlackDisabled'} disabled={!isDone} className='w-full'>
         회원가입
-      </Button> */}
+      </Button>
     </>
   )
 }
