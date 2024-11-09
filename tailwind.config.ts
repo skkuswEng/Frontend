@@ -65,7 +65,7 @@ const config = {
         swBackDrop: '#00000066',
 
         // Hover 색
-        swHoverGreenLight: '#D5FF62',
+        swHoverGreenLight: '#E9FFAD ',
         swHoverGreen: '#00EF53',
         swHoverGray: '#E9E8E8',
         swHoverRed: '#FF8080',

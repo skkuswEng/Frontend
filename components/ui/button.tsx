@@ -19,9 +19,14 @@ const buttonVariants = cva(
         swWhite: 'bg-swWhite text-black shadow-sw-shadow hover:bg-swBlack hover:text-swWhite hover:shadow-none',
         swBlack: 'border border-solid border-swBlack bg-swBlack text-swWhite hover:text-swBlack hover:bg-swWhite disabled:bg-swGrayDark',
         swGreen: 'bg-swGreen text-black border border-solid border-swBlue hover:bg-swHoverGreen disabled:bg-swDisabledGreen',
-        swLightGreen:
-          'bg-swGreenLight text-black border border-solid border-swBlack hover:bg-swHoverGreen disabled:bg-swDisabledGreenLight',
+        swLightGreen: 'bg-swGreenLight text-black border border-solid border-swBlack hover:bg-swHoverGreenLight disabled:bg-swDisabledGreenLight',
         swRed: 'bg-swRed text-black border border-solid border-black hover:bg-swHoverRed disabled:bg-swDisabledRed',
+
+        // Disabled Buttons
+        swBlackDisabled: 'border border-solid border-swBlack bg-swGrayDark text-swWhite',
+        swGreenDisabled: 'bg-swDisabledGreen text-black border border-solid border-swBlue',
+        swLightGreenDisabled: 'bg-swDisabledGreenLight text-black border border-solid border-swBlack',
+        swRedDisabled: 'bg-swDisabledRed text-black border border-solid border-black',
       },
 
       size: {
@@ -43,12 +48,10 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
   disabled?: boolean
 }
 
-const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant, size, asChild = false, disabled = false, ...props }, ref) => {
-    const Comp = asChild ? Slot : 'button'
-    return <Comp className={cn(buttonVariants({ variant, size, className }))} ref={ref} disabled={disabled} {...props} />
-  },
-)
+const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(({ className, variant, size, asChild = false, disabled = false, ...props }, ref) => {
+  const Comp = asChild ? Slot : 'button'
+  return <Comp className={cn(buttonVariants({ variant, size, className }))} ref={ref} disabled={disabled} {...props} />
+})
 Button.displayName = 'Button'
 
 export { Button, buttonVariants }

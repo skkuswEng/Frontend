@@ -27,10 +27,7 @@ const DesktopHeader = ({ className }: { className: string }) => {
   const linkStyle = 'flex items-center justify-center text-xl font-bold hover:border-b hover:border-black hover:border-solid'
   return (
     <div
-      className={cn(
-        'relative z-10 mt-8 flex h-20 w-[90%] max-w-[1800px] items-center justify-between gap-14 rounded-full bg-swWhite px-12 py-7',
-        className,
-      )}
+      className={cn('relative z-10 mt-8 flex h-20 w-[90%] max-w-[1800px] items-center justify-between gap-14 rounded-full bg-swWhite px-12 py-7', className)}
     >
       <Link href={ROUTES.MAIN.url}>
         <Logo text='SoKK' className='text-4xl' />

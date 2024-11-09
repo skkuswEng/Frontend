@@ -82,12 +82,7 @@ const LoginPage = ({}: LoginPageProps): ReactNode => {
               onChange={e => inputChangeHandler(e, 'password')}
               className='h-full w-full border-none'
             />
-            <LucideIcon
-              name={!showPassword ? 'EyeOff' : 'Eye'}
-              onClick={toggleShowPassword}
-              className='absolute right-4 top-0 h-full opacity-40'
-              size={24}
-            />
+            <LucideIcon name={!showPassword ? 'EyeOff' : 'Eye'} onClick={toggleShowPassword} className='absolute right-4 top-0 h-full opacity-40' size={24} />
           </div>
         </div>
         <Button variant='swBlack' className='mb-4 mt-10 w-full' onClick={loginHandler}>
