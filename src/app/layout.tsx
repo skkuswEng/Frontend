@@ -13,6 +13,7 @@ export const metadata: Metadata = {
   icons: {
     icon: '../app/favicon.ico',
   },
+  manifest: '/manifest.json',
 }
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {

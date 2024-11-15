@@ -49,7 +49,7 @@ const RegisterPage = ({}: RegisterPageProps): ReactNode => {
       </div>
 
       {/* 회원가입폼 */}
-      <div className='relative flex h-full w-[70%] flex-col items-start justify-center gap-5'>
+      <div className='relative flex h-full w-[90%] flex-col items-start justify-center gap-5'>
         <TextDivider text='회원가입' />
         {contents}
       </div>
@@ -190,7 +190,7 @@ const RegisterCheck = ({}: RegisterCheckProps): ReactNode => {
       <p className='text-sBlack mt-4 w-full text-center text-sm'>
         안전한 비밀번호를 위해
         <br />
-        비밀번호는 영문자, 숫자, 특수문자를 포함해야 합니다
+        영문자, 숫자, 특수문자를 포함해야 합니다
       </p>
 
       <div className='flex w-full flex-col items-start justify-start gap-2'>
@@ -220,7 +220,7 @@ const RegisterCheck = ({}: RegisterCheckProps): ReactNode => {
       </div>
 
       <Button onClick={loginHandler} variant={isDone ? 'swBlack' : 'swBlackDisabled'} disabled={!isDone} className='w-full'>
-        회원가입
+        가입하기
       </Button>
     </>
   )
