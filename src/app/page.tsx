@@ -47,7 +47,7 @@ const MainPage = () => {
         <Card
           title='스터디룸 예약'
           subtitle='스터디룸 예약하기'
-          href={ROUTES.ROOM.url}
+          href={`${ROUTES.ROOM.url}/step=1`}
           className='h-60 w-full bg-swGreenLight hover:bg-swHoverGreenLight lg:order-1 lg:aspect-card lg:h-auto'
         />
         <Card
@@ -66,7 +66,7 @@ export default MainPage
 interface CardProps {
   title: string
   subtitle: string
-  href: RouteType
+  href: RouteType | string
   qrHref?: RouteType // QR 버튼 전용 링크를 추가
   qr?: boolean
   className?: string

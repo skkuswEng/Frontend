@@ -37,7 +37,7 @@ const DesktopHeader = ({ className }: { className: string }) => {
         <Link href={ROUTES.SEAT.PLAIN.url} className={linkStyle}>
           좌석 배정
         </Link>
-        <Link href={ROUTES.ROOM.url} className={linkStyle}>
+        <Link href={`${ROUTES.ROOM.url}/step=1`} className={linkStyle}>
           스터디룸 예약
         </Link>
         <Link href={ROUTES.RULES.url} className={linkStyle}>
