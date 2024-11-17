@@ -57,9 +57,6 @@ const StudyRoomReservePage = ({}: StudyRoomReservePageProps): ReactNode => {
   // })
 
   useEffect(() => {
-    console.log('room_number: ', room_number)
-    console.log('date: ', date)
-
     if (room_number && date) {
       setIsDone(true)
     } else if (isDone) {
@@ -73,12 +70,15 @@ const StudyRoomReservePage = ({}: StudyRoomReservePageProps): ReactNode => {
   }
 
   return (
-    <div className='relative mt-24 grid w-[90%] max-w-[1800px] flex-grow grid-cols-1 place-items-center gap-8 py-6 lg:mt-0 lg:grid-cols-2'>
-      <div className='flex h-full w-4/5 flex-col items-start justify-start gap-3'>
+    <div className='relative mt-24 grid w-[90%] max-w-[1800px] flex-grow grid-cols-1 place-items-center gap-8 py-6 md:grid-cols-2 lg:mt-0'>
+      <div className='flex h-full w-full flex-col items-start justify-start gap-3'>
         <p className='text-2xl font-bold'>1. 이용공간</p>
-        <SelectRoomDropdown className='ml-4 h-16 w-64 bg-swWhite px-3 py-1' />
-        <div className='flex aspect-card w-full items-center justify-center rounded-md bg-swGray text-2xl font-bold'>스터디룸 사진</div>
+        <div className='flex h-fit w-full flex-col items-start justify-start gap-2'>
+          <SelectRoomDropdown className='h-16 w-64 bg-swWhite px-3 py-1' />
+          <div className='flex aspect-card w-full items-center justify-center rounded-md bg-swGray text-2xl font-bold'>스터디룸 사진</div>
+        </div>
       </div>
+      <Divider className='my-6 md:hidden' />
 
       <div className='flex h-full w-full flex-col items-start justify-start gap-3'>
         <p className='text-2xl font-bold'>2. 예약정보</p>
@@ -86,8 +86,8 @@ const StudyRoomReservePage = ({}: StudyRoomReservePageProps): ReactNode => {
           <p className='text-lg font-bold'>날짜 선택</p>
           <CalenderDropdown className='flex h-16 w-64 items-center justify-start gap-4' />
         </div>
-        <Divider className='my-6' />
-        <div className='relative flex w-full flex-col gap-3 px-4 text-lg font-medium'>
+        <Divider className='my-6 hidden md:block' />
+        <div className='relative flex w-full max-w-xl flex-col gap-3 px-4 text-lg font-medium'>
           <p className='text-lg font-bold'>시간 선택</p>
 
           <div className='flex items-center justify-start gap-4'>
@@ -101,16 +101,16 @@ const StudyRoomReservePage = ({}: StudyRoomReservePageProps): ReactNode => {
             </div>
           </div>
 
-          <div className='grid w-4/5 grid-cols-7 items-start justify-start gap-x-2 gap-y-2'>
+          <div className='grid w-full grid-cols-4 items-start justify-start gap-x-2 gap-y-2 sm:grid-cols-5 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-7'>
             {timeSelections.map(timeSelection => (
-              <TimeSelector key={timeSelection} time={timeSelection} className='w-full px-3 py-2' />
+              <TimeSelector key={timeSelection} time={timeSelection} className='w-full px-3 py-2 text-sm' />
             ))}
           </div>
-        </div>
 
-        <Button variant={isDone ? 'swBlack' : 'swBlackDisabled'} className='mt-5 w-4/5' disabled={!isDone} onClick={stepHandler}>
-          다음단계
-        </Button>
+          <Button variant={isDone ? 'swBlack' : 'swBlackDisabled'} className='mt-5 w-full' disabled={!isDone} onClick={stepHandler}>
+            다음
+          </Button>
+        </div>
       </div>
     </div>
   )
