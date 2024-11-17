@@ -37,15 +37,25 @@ export const ROUTES = {
       name: '좌석 배정',
       url: '/seat/qr',
     },
+    HISTORY: {
+      name: '좌석 베정 내역',
+      url: '/seat/history',
+    },
   },
   ROOM: {
-    STEP1: {
-      name: '스터디룸 예약',
-      url: '/room/reserve/step1',
+    RESERVE: {
+      STEP1: {
+        name: '스터디룸 예약',
+        url: '/room/reserve/step1',
+      },
+      STEP2: {
+        name: '스터디룸 예약',
+        url: '/room/reserve/step2',
+      },
     },
-    STEP2: {
-      name: '스터디룸 예약',
-      url: '/room/reserve/step2',
+    HISTORY: {
+      name: '스터디룸 예약내역',
+      url: '/room/history',
     },
   },
   RULES: {

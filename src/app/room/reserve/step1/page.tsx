@@ -66,7 +66,7 @@ const StudyRoomReservePage = ({}: StudyRoomReservePageProps): ReactNode => {
 
   // Functions
   const stepHandler = () => {
-    router.push(ROUTES.ROOM.STEP2.url)
+    router.push(ROUTES.ROOM.RESERVE.STEP2.url)
   }
 
   return (
