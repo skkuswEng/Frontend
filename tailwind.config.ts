@@ -5,6 +5,13 @@ const config = {
   content: ['./src/pages/**/*.{js,ts,jsx,tsx,mdx}', './src/components/**/*.{js,ts,jsx,tsx,mdx}', './src/app/**/*.{js,ts,jsx,tsx,mdx}'],
   theme: {
     extend: {
+      writingMode: {
+        vertical: 'vertical-rl', // 세로쓰기
+        horizontal: 'horizontal-tb', // 가로쓰기 (기본값)
+      },
+      textOrientation: {
+        upright: 'upright', // 한글이 세로로 정렬되도록 설정
+      },
       colors: {
         background: 'hsl(var(--background))',
         foreground: 'hsl(var(--foreground))',
@@ -47,7 +54,7 @@ const config = {
           '5': 'hsl(var(--chart-5))',
         },
         // 서비스 색
-        swGrayLight: '#F7F7F7',
+        swGrayLight: '#EFEFEF',
         swGray: '#D1CBCB',
         swGrayDark: '#B6B6B6',
 
@@ -92,7 +99,22 @@ const config = {
       },
     },
   },
-  plugins: [require('tailwindcss-animate')],
+  plugins: [
+    require('tailwindcss-animate'),
+    function ({ addUtilities }: { addUtilities: any }) {
+      addUtilities({
+        '.writing-mode-vertical': {
+          'writing-mode': 'vertical-rl',
+        },
+        '.writing-mode-horizontal': {
+          'writing-mode': 'horizontal-tb',
+        },
+        '.text-orientation-upright': {
+          'text-orientation': 'upright',
+        },
+      })
+    },
+  ],
 } satisfies Config
 
 export default config

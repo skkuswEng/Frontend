@@ -39,8 +39,14 @@ export const ROUTES = {
     },
   },
   ROOM: {
-    name: '스터디룸 예약',
-    url: '/room/reserve',
+    STEP1: {
+      name: '스터디룸 예약',
+      url: '/room/reserve/step1',
+    },
+    STEP2: {
+      name: '스터디룸 예약',
+      url: '/room/reserve/step2',
+    },
   },
   RULES: {
     name: '이용수칙',

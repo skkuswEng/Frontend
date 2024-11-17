@@ -16,6 +16,10 @@ export const TextDivider = ({ text }: TextDividerProps): ReactNode => {
   )
 }
 
-export const Divider = (): ReactNode => {
-  return <div className={cn('w-full border-t border-solid bg-swGrayDark')} />
+interface DividerProps {
+  className?: string
+}
+
+export const Divider = ({ className }: DividerProps): ReactNode => {
+  return <div className={cn('w-full border-t border-solid bg-swGrayDark', className)} />
 }

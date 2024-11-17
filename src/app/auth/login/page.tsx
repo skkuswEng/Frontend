@@ -2,13 +2,13 @@
 import { useRouter } from 'next/navigation'
 import React, { ReactNode, useState } from 'react'
 
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
 import Asterisk from '@/src/components/common/Asterisk'
 import { Divider, TextDivider } from '@/src/components/common/Dividers'
 import Logo from '@/src/components/common/Logo'
 import LucideIcon from '@/src/components/provider/LucideIcon'
+import { Button } from '@/src/components/ui/button'
+import { Input } from '@/src/components/ui/input'
+import { Label } from '@/src/components/ui/label'
 import { ROUTES } from '@/src/lib/constants/route'
 
 interface LoginPageProps {}

@@ -2,14 +2,14 @@
 import { useRouter } from 'next/navigation'
 import React, { ReactNode, useEffect, useState } from 'react'
 
-import { Button } from '@/components/ui/button'
-import { Checkbox } from '@/components/ui/checkbox'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
 import Asterisk from '@/src/components/common/Asterisk'
 import { TextDivider } from '@/src/components/common/Dividers'
 import Logo from '@/src/components/common/Logo'
 import LucideIcon from '@/src/components/provider/LucideIcon'
+import { Button } from '@/src/components/ui/button'
+import { Checkbox } from '@/src/components/ui/checkbox'
+import { Input } from '@/src/components/ui/input'
+import { Label } from '@/src/components/ui/label'
 
 interface RegisterPageProps {}
 

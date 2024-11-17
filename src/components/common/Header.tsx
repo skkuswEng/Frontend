@@ -37,7 +37,7 @@ const DesktopHeader = ({ className }: { className: string }) => {
         <Link href={ROUTES.SEAT.PLAIN.url} className={linkStyle}>
           좌석 배정
         </Link>
-        <Link href={`${ROUTES.ROOM.url}/step=1`} className={linkStyle}>
+        <Link href={ROUTES.ROOM.STEP1.url} className={linkStyle}>
           스터디룸 예약
         </Link>
         <Link href={ROUTES.RULES.url} className={linkStyle}>
@@ -87,14 +87,14 @@ const MobileHeader = ({ className }: { className: string }) => {
             <LucideIcon name='ScanLine' size={24} />
             QR 좌석 배정
           </Link>
-          <Link href={ROUTES.ROOM.url}>스터디룸 예약</Link>
+          <Link href={ROUTES.ROOM.STEP1.url}>스터디룸 예약</Link>
           <Link href={ROUTES.RULES.url}>이용 수칙</Link>
         </div>
 
         <div className='flex w-4/5 flex-col items-center justify-start gap-6 border-b border-solid border-swGray py-8 text-lg font-semibold text-swGrayDark'>
           {/* TODO: 아래 3가지 Route 추가하기*/}
           <Link href={ROUTES.SEAT.PLAIN.url}>앱 다운로드</Link>
-          <Link href={ROUTES.ROOM.url}>개인정보 처리방침</Link>
+          <Link href={ROUTES.ROOM.STEP1.url}>개인정보 처리방침</Link>
           <Link href={ROUTES.RULES.url}>문의하기</Link>
         </div>
       </ToggleWrapper>
