@@ -5,6 +5,7 @@ import React, { ReactNode } from 'react'
 import { ROUTES } from '@/src/lib/constants/route'
 import ToggleWrapper, { useDropdown } from '@/src/lib/hooks/useToggle'
 import { cn } from '@/src/lib/utils/cn'
+import { InstallLink } from '@/src/lib/utils/install-prompt'
 
 import LucideIcon from '../provider/LucideIcon'
 import Backdrop from './Backdrop'
@@ -61,7 +62,7 @@ const MobileHeader = ({ className }: { className: string }) => {
 
   return (
     <>
-      <div className={cn('fixed z-50 flex h-24 w-screen items-center justify-between bg-swWhite px-8 py-7', className)}>
+      <div className={cn('fixed z-30 flex h-24 w-screen items-center justify-between bg-swWhite px-8 py-7', className)}>
         <Link href={ROUTES.MAIN.url}>
           <Logo text='SoKK' className='text-4xl' />
         </Link>
@@ -105,16 +106,14 @@ const MobileHeader = ({ className }: { className: string }) => {
 
         <div className='flex w-4/5 flex-col items-center justify-start gap-6 border-b border-solid border-swGray py-8 text-lg font-semibold text-swGrayDark'>
           {/* TODO: 아래 3가지 Route 추가하기*/}
-          <Link href={ROUTES.RULES.url} onClick={toggleDropdown}>
+          <Link href={ROUTES.RULES.url} onClick={toggleDropdown} className='w-full text-center'>
             이용 수칙
           </Link>
-          <Link href={ROUTES.SEAT.PLAIN.url} onClick={toggleDropdown}>
-            앱 다운로드
-          </Link>
-          <Link href={ROUTES.ROOM.RESERVE.STEP1.url} onClick={toggleDropdown}>
+          <InstallLink className='w-full text-center'>앱 다운로드</InstallLink>
+          <Link href={ROUTES.ROOM.RESERVE.STEP1.url} onClick={toggleDropdown} className='w-full text-center'>
             개인정보 처리방침
           </Link>
-          <Link href={ROUTES.RULES.url} onClick={toggleDropdown}>
+          <Link href={ROUTES.RULES.url} onClick={toggleDropdown} className='w-full text-center'>
             문의하기
           </Link>
         </div>

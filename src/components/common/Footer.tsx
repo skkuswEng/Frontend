@@ -1,6 +1,8 @@
 import Image from 'next/image'
 import React, { ReactNode } from 'react'
 
+import { InstallLink } from '@/src/lib/utils/install-prompt'
+
 import LogoImg from '../../../public/images/skku_logo.png'
 import TextLogoImg from '../../../public/images/skku_textlogo.png'
 
@@ -8,7 +10,7 @@ interface FooterProps {}
 
 const Footer = ({}: FooterProps): ReactNode => {
   return (
-    <div className='relative flex w-screen flex-col items-start justify-start bg-swWhite px-8 py-2 lg:px-20'>
+    <div className='relative flex w-screen flex-col items-start justify-start bg-swWhite px-8 py-4 lg:px-20'>
       <div className='flex w-full items-center justify-center lg:justify-start'>
         <Image alt='성균관대 로고' src={LogoImg} width={65} height={65} className='w-12' />
         <Image alt='성균관대 글귀' src={TextLogoImg} width={177} height={65} className='' />
@@ -22,7 +24,7 @@ const Footer = ({}: FooterProps): ReactNode => {
         </p>
       </div>
       <div className='mt-4 flex w-full items-center justify-center gap-6 lg:justify-start'>
-        <span className='cursor-pointer font-semibold'>앱 다운로드</span>
+        <InstallLink className='cursor-pointer font-semibold'>앱 다운로드</InstallLink>
         <span className='cursor-pointer font-semibold'>개인정보 처리방침</span>
         <span className='cursor-pointer font-semibold'>문의하기</span>
         {/* 

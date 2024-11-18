@@ -1,7 +1,7 @@
 self.addEventListener('install', event => {
   event.waitUntil(
     caches.open('static-cache-v1').then(cache => {
-      return cache.addAll(['/', '/_next/static/css/styles.chunk.css', '/icon-192x192.png', '/icon-512x512.png'])
+      return cache.addAll(['/', '/_next/static/css/styles.chunk.css', '/icons/icon512_maskable.png', '/icons/icon512_rounded.png'])
     }),
   )
 })
