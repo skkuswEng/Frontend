@@ -82,25 +82,41 @@ const MobileHeader = ({ className }: { className: string }) => {
         </div>
 
         <div className='flex w-4/5 flex-col items-center justify-start gap-6 border-b border-solid border-swGray py-8 text-lg font-semibold'>
-          <Link href={ROUTES.SEAT.PLAIN.url}>좌석 배정</Link>
-          <Link href={ROUTES.SEAT.QR.url} className='flex items-center justify-center gap-2'>
+          <Link href={ROUTES.SEAT.PLAIN.url} onClick={toggleDropdown}>
+            좌석 배정
+          </Link>
+          <Link href={ROUTES.SEAT.QR.url} className='flex items-center justify-center gap-2' onClick={toggleDropdown}>
             <LucideIcon name='ScanLine' size={24} />
             QR 좌석 배정
           </Link>
-          <Link href={ROUTES.SEAT.HISTORY.url}>좌석 배정 내역</Link>
+          <Link href={ROUTES.SEAT.HISTORY.url} onClick={toggleDropdown}>
+            좌석 배정 내역
+          </Link>
         </div>
 
         <div className='flex w-4/5 flex-col items-center justify-start gap-6 border-b border-solid border-swGray py-8 text-lg font-semibold'>
-          <Link href={ROUTES.ROOM.RESERVE.STEP1.url}>스터디룸 예약</Link>
-          <Link href={ROUTES.ROOM.HISTORY.url}>스터디룸 예약 내역</Link>
+          <Link href={ROUTES.ROOM.RESERVE.STEP1.url} onClick={toggleDropdown}>
+            스터디룸 예약
+          </Link>
+          <Link href={ROUTES.ROOM.HISTORY.url} onClick={toggleDropdown}>
+            스터디룸 예약 내역
+          </Link>
         </div>
 
         <div className='flex w-4/5 flex-col items-center justify-start gap-6 border-b border-solid border-swGray py-8 text-lg font-semibold text-swGrayDark'>
           {/* TODO: 아래 3가지 Route 추가하기*/}
-          <Link href={ROUTES.RULES.url}>이용 수칙</Link>
-          <Link href={ROUTES.SEAT.PLAIN.url}>앱 다운로드</Link>
-          <Link href={ROUTES.ROOM.RESERVE.STEP1.url}>개인정보 처리방침</Link>
-          <Link href={ROUTES.RULES.url}>문의하기</Link>
+          <Link href={ROUTES.RULES.url} onClick={toggleDropdown}>
+            이용 수칙
+          </Link>
+          <Link href={ROUTES.SEAT.PLAIN.url} onClick={toggleDropdown}>
+            앱 다운로드
+          </Link>
+          <Link href={ROUTES.ROOM.RESERVE.STEP1.url} onClick={toggleDropdown}>
+            개인정보 처리방침
+          </Link>
+          <Link href={ROUTES.RULES.url} onClick={toggleDropdown}>
+            문의하기
+          </Link>
         </div>
       </ToggleWrapper>
     </>
