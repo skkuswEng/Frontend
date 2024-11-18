@@ -10,10 +10,10 @@ const Footer = ({}: FooterProps): ReactNode => {
   return (
     <div className='relative flex w-screen flex-col items-start justify-start bg-swWhite px-8 py-2 lg:px-20'>
       <div className='flex w-full items-center justify-center lg:justify-start'>
-        <Image alt='성균관대 로고' src={LogoImg} width={65} height={65} />
-        <Image alt='성균관대 글귀' src={TextLogoImg} width={177} height={65} />
+        <Image alt='성균관대 로고' src={LogoImg} width={65} height={65} className='w-12' />
+        <Image alt='성균관대 글귀' src={TextLogoImg} width={177} height={65} className='' />
       </div>
-      <div className='relative flex w-full flex-col items-start justify-start'>
+      <div className='relative flex w-full flex-col items-start justify-start text-sm'>
         <p className='w-full text-pretty text-center text-swGrayDark lg:text-left'>
           (16419) 경기도 수원시 장안구 서부로 2066 자연과학캠퍼스 산학협력센터 4층 85445호
         </p>

@@ -47,7 +47,7 @@ const MainPage = () => {
         <Card
           title='스터디룸 예약'
           subtitle='스터디룸 예약하기'
-          href={`${ROUTES.ROOM.url}/step=1`}
+          href={`${ROUTES.ROOM.RESERVE.STEP1.url}/step=1`}
           className='h-60 w-full bg-swGreenLight hover:bg-swHoverGreenLight lg:order-1 lg:aspect-card lg:h-auto'
         />
         <Card
