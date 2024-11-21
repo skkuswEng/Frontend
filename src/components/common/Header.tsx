@@ -38,7 +38,7 @@ const DesktopHeader = ({ className }: { className: string }) => {
         <Link href={ROUTES.ROOM.RESERVE.STEP1.url} className={linkStyle}>
           스터디룸 예약
         </Link>
-        <Link href={ROUTES.SEAT.PLAIN.url} className={linkStyle}>
+        <Link href={ROUTES.SEAT.RESERVE.url} className={linkStyle}>
           좌석 배정
         </Link>
         <Link href={ROUTES.RULES.url} className={linkStyle}>
@@ -83,15 +83,12 @@ const MobileHeader = ({ className }: { className: string }) => {
         </div>
 
         <div className='flex w-4/5 flex-col items-center justify-start gap-6 border-b border-solid border-swGray py-8 text-lg font-semibold'>
-          <Link href={ROUTES.SEAT.PLAIN.url} onClick={toggleDropdown}>
+          <Link href={ROUTES.SEAT.RESERVE.url} onClick={toggleDropdown}>
             좌석 배정
           </Link>
           <Link href={ROUTES.SEAT.QR.url} className='flex items-center justify-center gap-2' onClick={toggleDropdown}>
             <LucideIcon name='ScanLine' size={24} />
             QR 좌석 배정
-          </Link>
-          <Link href={ROUTES.SEAT.HISTORY.url} onClick={toggleDropdown}>
-            좌석 배정 내역
           </Link>
         </div>
 

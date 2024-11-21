@@ -14,7 +14,7 @@ export const variant = {
   // Custom Buttons
   swWhite: 'bg-swWhite text-black shadow-sw-shadow hover:bg-swBlack hover:text-swWhite hover:shadow-none',
   swBlack: 'border border-solid border-swBlack bg-swBlack text-swWhite hover:text-swBlack hover:bg-swWhite disabled:bg-swGrayDark',
-  swGreen: 'bg-swGreen text-black border border-solid border-swBlue hover:bg-swHoverGreen disabled:bg-swDisabledGreen',
+  swGreen: 'bg-swGreen text-black border border-solid border-swBlack hover:bg-swHoverGreen disabled:bg-swDisabledGreen',
   swLightGreen: 'bg-swGreenLight text-black border border-solid border-swBlack hover:bg-swHoverGreenLight disabled:bg-swDisabledGreenLight',
   swRed: 'bg-swRed text-black border border-solid border-black hover:bg-swHoverRed disabled:bg-swDisabledRed',
 

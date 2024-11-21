@@ -29,17 +29,13 @@ export const ROUTES = {
     },
   },
   SEAT: {
-    PLAIN: {
+    RESERVE: {
       name: '좌석 배정',
       url: '/seat/reserve',
     },
     QR: {
       name: '좌석 배정',
       url: '/seat/qr',
-    },
-    HISTORY: {
-      name: '좌석 베정 내역',
-      url: '/seat/history',
     },
   },
   ROOM: {
