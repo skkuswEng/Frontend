@@ -2,7 +2,7 @@ import { useState } from 'react'
 
 import { ConfirmModal, InfoModal, ModalData } from '@/src/components/common/Modals'
 
-import { ClientModalData } from '../constants/errors'
+import { ClientModalData } from '../constants/modal_data'
 
 const useModal = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false)

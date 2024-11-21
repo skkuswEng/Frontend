@@ -9,7 +9,9 @@ import Asterisk from '../components/common/Asterisk'
 import Eyes from '../components/common/Eyes'
 import Logo from '../components/common/Logo'
 import LucideIcon from '../components/provider/LucideIcon'
+import { ClientModalData } from '../lib/constants/modal_data'
 import { ROUTES, RouteType } from '../lib/constants/route'
+import useModal from '../lib/hooks/useModal'
 import { cn } from '../lib/utils/cn'
 
 const MainPage = () => {
@@ -41,7 +43,7 @@ const MainPage = () => {
           subtitle='라운지 좌석 배정하기'
           href={ROUTES.SEAT.RESERVE.url}
           qr={true}
-          qrHref={ROUTES.SEAT.QR.url}
+          qrHref={ROUTES.SEAT.QR.STEP1.url}
           className='h-60 w-full bg-swGreen hover:bg-swHoverGreen sm:col-span-2 lg:order-2 lg:col-span-1 lg:aspect-card lg:h-auto'
         />
         <Card
@@ -74,15 +76,21 @@ interface CardProps {
 
 const Card = ({ title, subtitle, href, qrHref, qr, className }: CardProps) => {
   const router = useRouter()
+  const { isOpen, modalData, Modal, openModal } = useModal()
 
   // 메인 링크로 이동하는 함수
-  const handleCardClick = () => {
-    router.push(href)
+  const handleCardClick = (e: React.MouseEvent) => {
+    if (e.currentTarget === e.target) router.push(href)
   }
 
   // QR 버튼 전용 링크로 이동하는 함수
   const handleQRClick = (e: React.MouseEvent) => {
-    e.stopPropagation() // 이벤트 전파 방지 (부모로 전파되지 않도록)
+    // e.stopPropagation() // 이벤트 전파 방지 (부모로 전파되지 않도록)
+    // let route = true
+    if (window.innerWidth >= 1024) {
+      openModal(ClientModalData.SEAT.QR)
+      return
+    }
     if (qrHref) {
       router.push(qrHref)
     }
@@ -92,7 +100,7 @@ const Card = ({ title, subtitle, href, qrHref, qr, className }: CardProps) => {
     <div
       onClick={handleCardClick}
       className={cn(
-        'group relative flex cursor-pointer flex-col items-start gap-2 rounded-xl border-2 border-solid border-swBlack p-7 shadow-lg shadow-sw-shadow',
+        'group relative flex cursor-pointer flex-col items-start gap-2 rounded-xl border-2 border-solid border-swBlack p-7 shadow-sw-shadow',
         className,
       )}
     >
@@ -110,6 +118,7 @@ const Card = ({ title, subtitle, href, qrHref, qr, className }: CardProps) => {
           QR
         </button>
       )}
+      <Modal onConfirm={() => {}} />
     </div>
   )
 }

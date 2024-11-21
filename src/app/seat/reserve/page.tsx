@@ -1,9 +1,11 @@
 'use client'
+import { useRouter } from 'next/navigation'
 import React, { ReactNode, useState } from 'react'
 
 import LucideIcon from '@/src/components/provider/LucideIcon'
 import { Button } from '@/src/components/ui/button'
-import { ClientModalData } from '@/src/lib/constants/errors'
+import { ClientModalData } from '@/src/lib/constants/modal_data'
+import { ROUTES } from '@/src/lib/constants/route'
 import useModal from '@/src/lib/hooks/useModal'
 interface SeatStatusAreaProps {
   onSeatClick: (seat_number: number) => void
@@ -13,7 +15,7 @@ export const SeatStatusArea = ({ onSeatClick }: SeatStatusAreaProps): ReactNode 
   const WINDOW_SEAT_GROUP = Array.from({ length: 6 }, (_, idx) => idx + 1)
   const DEST_SEAT_GROUP = Array.from({ length: 12 }, (_, idx) => idx + 7)
   return (
-    <div className='relative flex w-full flex-grow flex-col items-center justify-between bg-swWhite'>
+    <div className='relative flex aspect-square w-full flex-grow flex-col items-center justify-between bg-swWhite md:aspect-auto'>
       <div className='mx-4 my-6 grid h-[11%] w-fit grid-cols-6 grid-rows-1 gap-2 self-start md:mx-8 md:h-[15%] md:gap-4'>
         {WINDOW_SEAT_GROUP.map(seat => (
           <p
@@ -52,6 +54,7 @@ const SEAT_WARNINGS = [
 ]
 const INFORMAL_USER_WARNING = '좌석 배정 이후, AI에 의해 긴 시간 부재로 인해 자동반납될 경우, SoKK 규정에 의해 좌석이 정리될 수 있습니다.'
 const ReservePage = ({}: ReservePageProps): ReactNode => {
+  const router = useRouter()
   const { isOpen, modalData, Modal, openModal } = useModal()
   // Hooks
   const [selectedSeat, setSelectedSeat] = useState<number>(-1)
@@ -59,10 +62,16 @@ const ReservePage = ({}: ReservePageProps): ReactNode => {
   // Functions
   const seatSelectHandler = (seat_number: number) => {
     setSelectedSeat(seat_number)
-    openModal(ClientModalData.SEAT.RESERVATION(seat_number))
+    openModal(ClientModalData.SEAT.RESERVATION.RESERVE(seat_number))
   }
-  const QRReserveHandler = () => {}
 
+  const routeHandler = () => {
+    if (window.innerWidth >= 1024) {
+      openModal(ClientModalData.SEAT.QR)
+      return
+    }
+    router.push(ROUTES.SEAT.QR.url)
+  }
   // TODO:예약하기 API
   const reserveHandler = () => {}
   return (
@@ -105,7 +114,7 @@ const ReservePage = ({}: ReservePageProps): ReactNode => {
           <p className='text-pretty text-sm font-medium xl:text-sm'>{INFORMAL_USER_WARNING}</p>
         </div>
 
-        <Button variant='swGreen' className='mt-5 flex w-full items-center justify-center gap-2' onClick={QRReserveHandler}>
+        <Button variant='swGreen' className='mt-5 flex w-full items-center justify-center gap-2' onClick={routeHandler}>
           <LucideIcon name='ScanLine' strokeWidth={2} />
           <span>QR코드 배정하기</span>
         </Button>

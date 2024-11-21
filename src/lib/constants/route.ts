@@ -34,8 +34,14 @@ export const ROUTES = {
       url: '/seat/reserve',
     },
     QR: {
-      name: '좌석 배정',
-      url: '/seat/qr',
+      STEP1: {
+        name: '좌석 배정',
+        url: '/seat/qr/step1',
+      },
+      STEP2: {
+        name: '좌석 배정',
+        url: '/seat/qr/step2',
+      },
     },
   },
   ROOM: {
