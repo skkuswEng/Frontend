@@ -10,6 +10,8 @@ import { Button } from '@/src/components/ui/button'
 import { Input } from '@/src/components/ui/input'
 import { Label } from '@/src/components/ui/label'
 import { ROUTES } from '@/src/lib/constants/route'
+import { LoginType } from '@/src/lib/HTTP/api/auth/api'
+import { useMutationStore } from '@/src/lib/HTTP/api/tanstack-query'
 
 interface LoginPageProps {}
 
@@ -38,8 +40,21 @@ const LoginPage = ({}: LoginPageProps): ReactNode => {
     setShowPassword(prev => !prev)
   }
 
+  // Mutations
+  const { mutate: LoginMutate, isPending } = useMutationStore<LoginType>(['login'])
+
   // TODO: 로그인 기능 넣기
-  const loginHandler = () => {}
+  const loginHandler = () => {
+    if (studentId && password)
+      LoginMutate(
+        { student_id: studentId, password: password },
+        {
+          onSuccess(data, variables, context) {
+            console.log(data)
+          },
+        },
+      )
+  }
 
   return (
     <div className='relative mt-24 grid w-[90%] max-w-[1800px] flex-grow grid-cols-1 place-items-center py-6 lg:mt-0 lg:grid-cols-2'>

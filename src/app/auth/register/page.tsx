@@ -10,6 +10,8 @@ import { Button } from '@/src/components/ui/button'
 import { Checkbox } from '@/src/components/ui/checkbox'
 import { Input } from '@/src/components/ui/input'
 import { Label } from '@/src/components/ui/label'
+import { UnregisterType } from '@/src/lib/HTTP/api/auth/api'
+import { useMutationStore } from '@/src/lib/HTTP/api/tanstack-query'
 
 interface RegisterPageProps {}
 
@@ -157,8 +159,43 @@ const RegisterCheck = ({}: RegisterCheckProps): ReactNode => {
     }
   }, [userInfo])
 
-  // TODO: 로그인 기능 넣기
-  const loginHandler = () => {}
+  // Mutations
+  // const { mutate: RegisterMutate, isPending } = useMutationStore<RegisterType>(['register'])
+
+  // const registerHandler = () => {
+  //   console.log('executed')
+
+  //   RegisterMutate(
+  //     {
+  //       student_id: '2019311945',
+  //       password: 'swe1234!',
+  //       student_name: '김지호',
+  //       email: 'swe@naver.com',
+  //     },
+  //     {
+  //       onSuccess: () => {
+  //         console.log('Success!')
+  //       },
+  //     },
+  //   )
+  // }
+  const { mutate: UnregisterMutate, isPending } = useMutationStore<UnregisterType>(['unregister'])
+
+  const registerHandler = () => {
+    console.log('executed')
+
+    UnregisterMutate(
+      {
+        student_id: '2019311945',
+        password: 'swe1234!',
+      },
+      {
+        onSuccess(data, variables, context) {
+          console.log(data)
+        },
+      },
+    )
+  }
 
   return (
     <>
@@ -219,7 +256,7 @@ const RegisterCheck = ({}: RegisterCheckProps): ReactNode => {
         />
       </div>
 
-      <Button onClick={loginHandler} variant={isDone ? 'swBlack' : 'swBlackDisabled'} disabled={!isDone} className='w-full'>
+      <Button onClick={registerHandler} variant={isDone ? 'swBlack' : 'swBlackDisabled'} disabled={!isDone} className='w-full'>
         가입하기
       </Button>
     </>
