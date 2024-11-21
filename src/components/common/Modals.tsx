@@ -35,7 +35,7 @@ export const InfoModal = ({ isOpen, data, onClose, onConfirm }: InfoModalProps) 
     <AlertDialog open={isOpen}>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle className={cn(isError && 'text-tbRed')}>{title}</AlertDialogTitle>
+          <AlertDialogTitle className={cn(isError && 'text-swRed')}>{title}</AlertDialogTitle>
           <AlertDialogDescription>{description}</AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
@@ -68,7 +68,7 @@ export const ConfirmModal = ({ isOpen, data, onClose, onConfirm }: ConfirmModalP
     <AlertDialog open={isOpen}>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle className={cn(isError && 'text-tbRed')}>{title}</AlertDialogTitle>
+          <AlertDialogTitle className={cn(isError && 'text-swRed')}>{title}</AlertDialogTitle>
           <AlertDialogDescription>{description}</AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter className='relative flex w-full items-center justify-between gap-4'>

@@ -12,7 +12,7 @@ export const variant = {
   ghost: 'hover:bg-accent hover:text-accent-foreground',
   link: 'text-primary underline-offset-4 hover:underline',
   // Custom Buttons
-  swWhite: 'bg-swWhite text-black shadow-sw-shadow hover:bg-swBlack hover:text-swWhite hover:shadow-none',
+  swWhite: 'bg-swWhite text-black border border-black border-solid hover:bg-swGrayLight hover:shadow-none',
   swBlack: 'border border-solid border-swBlack bg-swBlack text-swWhite hover:text-swBlack hover:bg-swWhite disabled:bg-swGrayDark',
   swGreen: 'bg-swGreen text-black border border-solid border-swBlack hover:bg-swHoverGreen disabled:bg-swDisabledGreen',
   swLightGreen: 'bg-swGreenLight text-black border border-solid border-swBlack hover:bg-swHoverGreenLight disabled:bg-swDisabledGreenLight',

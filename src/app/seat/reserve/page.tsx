@@ -1,11 +1,15 @@
 'use client'
-import React, { ReactNode } from 'react'
+import React, { ReactNode, useState } from 'react'
 
 import LucideIcon from '@/src/components/provider/LucideIcon'
 import { Button } from '@/src/components/ui/button'
-interface SeatStatusAreaProps {}
+import { ClientModalData } from '@/src/lib/constants/errors'
+import useModal from '@/src/lib/hooks/useModal'
+interface SeatStatusAreaProps {
+  onSeatClick: (seat_number: number) => void
+}
 
-export const SeatStatusArea = ({}: SeatStatusAreaProps): ReactNode => {
+export const SeatStatusArea = ({ onSeatClick }: SeatStatusAreaProps): ReactNode => {
   const WINDOW_SEAT_GROUP = Array.from({ length: 6 }, (_, idx) => idx + 1)
   const DEST_SEAT_GROUP = Array.from({ length: 12 }, (_, idx) => idx + 7)
   return (
@@ -14,6 +18,7 @@ export const SeatStatusArea = ({}: SeatStatusAreaProps): ReactNode => {
         {WINDOW_SEAT_GROUP.map(seat => (
           <p
             key={seat}
+            onClick={() => onSeatClick(seat)}
             className='flex aspect-square h-full cursor-pointer items-center justify-center bg-swGrayLight text-base font-semibold hover:bg-swGreenLight md:text-xl'
           >
             {seat}
@@ -25,6 +30,7 @@ export const SeatStatusArea = ({}: SeatStatusAreaProps): ReactNode => {
         {DEST_SEAT_GROUP.map(seat => (
           <p
             key={seat}
+            onClick={() => onSeatClick(seat)}
             className='flex aspect-square h-full cursor-pointer items-center justify-center bg-swGrayLight text-base font-semibold hover:bg-swGreenLight md:text-xl'
           >
             {seat}
@@ -46,7 +52,19 @@ const SEAT_WARNINGS = [
 ]
 const INFORMAL_USER_WARNING = '좌석 배정 이후, AI에 의해 긴 시간 부재로 인해 자동반납될 경우, SoKK 규정에 의해 좌석이 정리될 수 있습니다.'
 const ReservePage = ({}: ReservePageProps): ReactNode => {
+  const { isOpen, modalData, Modal, openModal } = useModal()
+  // Hooks
+  const [selectedSeat, setSelectedSeat] = useState<number>(-1)
+
+  // Functions
+  const seatSelectHandler = (seat_number: number) => {
+    setSelectedSeat(seat_number)
+    openModal(ClientModalData.SEAT.RESERVATION(seat_number))
+  }
   const QRReserveHandler = () => {}
+
+  // TODO:예약하기 API
+  const reserveHandler = () => {}
   return (
     <div className='relative mt-24 grid w-[90%] max-w-[1800px] flex-grow grid-cols-1 place-items-center gap-8 py-6 md:grid-cols-[7fr,3fr] lg:mt-0'>
       <div className='flex h-full w-full flex-col items-start justify-start gap-3'>
@@ -63,7 +81,7 @@ const ReservePage = ({}: ReservePageProps): ReactNode => {
           </div>
         </div>
 
-        <SeatStatusArea />
+        <SeatStatusArea onSeatClick={seatSelectHandler} />
       </div>
 
       <div className='flex h-full w-full flex-col items-start justify-start gap-3 md:w-4/5'>
@@ -92,6 +110,7 @@ const ReservePage = ({}: ReservePageProps): ReactNode => {
           <span>QR코드 배정하기</span>
         </Button>
       </div>
+      <Modal onConfirm={reserveHandler} />
     </div>
   )
 }
