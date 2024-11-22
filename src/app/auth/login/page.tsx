@@ -10,6 +10,7 @@ import { Button } from '@/src/components/ui/button'
 import { Input } from '@/src/components/ui/input'
 import { Label } from '@/src/components/ui/label'
 import { ROUTES } from '@/src/lib/constants/route'
+import useAuthStore from '@/src/lib/context/authContext'
 import { LoginType } from '@/src/lib/HTTP/api/auth/api'
 import { useMutationStore } from '@/src/lib/HTTP/api/tanstack-query'
 
@@ -17,6 +18,7 @@ interface LoginPageProps {}
 
 const LoginPage = ({}: LoginPageProps): ReactNode => {
   const router = useRouter()
+  const { setAuthData } = useAuthStore()
 
   // States
   const [studentId, setStudentId] = useState<string>()
@@ -50,7 +52,13 @@ const LoginPage = ({}: LoginPageProps): ReactNode => {
         { student_id: studentId, password: password },
         {
           onSuccess(data, variables, context) {
-            console.log(data)
+            if (data.content?.student_id && data.content?.name) {
+              const { student_id, name } = data.content
+              setAuthData(student_id, name)
+              router.push(ROUTES.MAIN.url)
+            } else {
+              console.error('Content is missing required fields:', data.content)
+            }
           },
         },
       )
@@ -97,7 +105,12 @@ const LoginPage = ({}: LoginPageProps): ReactNode => {
               onChange={e => inputChangeHandler(e, 'password')}
               className='h-full w-full border-none'
             />
-            <LucideIcon name={!showPassword ? 'EyeOff' : 'Eye'} onClick={toggleShowPassword} className='absolute right-4 top-0 h-full opacity-40' size={24} />
+            <LucideIcon
+              name={!showPassword ? 'EyeOff' : 'Eye'}
+              onClick={toggleShowPassword}
+              className='absolute right-4 top-0 h-full opacity-40'
+              size={24}
+            />
           </div>
         </div>
         <Button variant='swBlack' className='mb-4 mt-10 w-full' onClick={loginHandler}>

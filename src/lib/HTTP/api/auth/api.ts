@@ -1,8 +1,15 @@
+import { Nullable } from '@/src/lib/utils/typeUtils'
+
 import { API_ROUTES, Fetch } from '../../endpoint'
 
 export interface LoginType {
   student_id: string
   password: string
+}
+
+export type SuccessResponse = {
+  content: Nullable<{ [key: string]: string }>
+  message: string
 }
 
 export const Login = async ({ student_id, password }: LoginType) => {
@@ -12,7 +19,6 @@ export const Login = async ({ student_id, password }: LoginType) => {
     student_id,
     password,
   }
-  console.log('Exectued login')
 
   const res = await Fetch(ROUTE.url, {
     method: ROUTE.method,
@@ -29,7 +35,7 @@ export const Login = async ({ student_id, password }: LoginType) => {
     throw error
   }
 
-  const data = await res.json()
+  const data: SuccessResponse = await res.json()
 
   return data
 }

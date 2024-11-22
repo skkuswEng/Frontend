@@ -3,7 +3,7 @@ import { useMutation } from '@tanstack/react-query'
 import { queryClient } from '@/src/components/provider/QueryClientProvider'
 
 import { ExtractValueByKey } from '../../utils/typeUtils'
-import { Login, Register, Unregister } from './auth/api'
+import { Login, Register, SuccessResponse, Unregister } from './auth/api'
 
 /*
  * Mutation Keys to use Mutations convenient
@@ -55,5 +55,5 @@ queryClient.setMutationDefaults(MUTATION_KEYS.AUTH.UNREGISTER.key, {
 export type MutationKeyType = ExtractValueByKey<typeof MUTATION_KEYS, 'key'>
 
 export const useMutationStore = <T>(mutationKey: MutationKeyType) => {
-  return useMutation<unknown, Error, T, unknown>({ mutationKey })
+  return useMutation<SuccessResponse, Error, T, unknown>({ mutationKey })
 }

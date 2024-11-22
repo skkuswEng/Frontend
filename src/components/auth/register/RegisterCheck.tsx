@@ -2,6 +2,7 @@ import { useRouter } from 'next/navigation'
 import { ReactNode, useEffect, useState } from 'react'
 
 import { ClientModalData } from '@/src/lib/constants/modal_data'
+import { ROUTES } from '@/src/lib/constants/route'
 import useModal from '@/src/lib/hooks/useModal'
 import { RegisterType } from '@/src/lib/HTTP/api/auth/api'
 import { useMutationStore } from '@/src/lib/HTTP/api/tanstack-query'
@@ -84,7 +85,7 @@ const RegisterCheck = ({}: RegisterCheckProps): ReactNode => {
     RegisterMutate(userInfo as RegisterType, {
       // Save User Data
       onSuccess: (data, variables) => {
-        console.log(data)
+        router.push(ROUTES.AUTH.LOGIN.url)
       },
     })
   }
