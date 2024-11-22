@@ -1,6 +1,8 @@
 import Image from 'next/image'
+import Link from 'next/link'
 import React, { ReactNode } from 'react'
 
+import { ROUTES } from '@/src/lib/constants/route'
 import { InstallLink } from '@/src/lib/utils/install-prompt'
 
 import LogoImg from '../../../public/images/skku_logo.png'
@@ -25,8 +27,12 @@ const Footer = ({}: FooterProps): ReactNode => {
       </div>
       <div className='mt-4 flex w-full items-center justify-center gap-6 text-sm lg:justify-start'>
         <InstallLink className='cursor-pointer font-medium'>앱 다운로드</InstallLink>
-        <span className='cursor-pointer font-medium'>개인정보 처리방침</span>
-        <span className='cursor-pointer font-medium'>문의하기</span>
+        <Link className='cursor-pointer font-medium' target='_blank' href={ROUTES.ETC.PERSONAL_INFO_RULES.url}>
+          개인정보 처리방침
+        </Link>
+        <Link href={ROUTES.ETC.SERVICE_CENTER.url} target='_blank' className='cursor-pointer font-medium'>
+          문의하기
+        </Link>
         {/* 
         TODO: 개인정보 처리방침 및 문의하기 페이지 만들어서 Link 달기 
         <Link href={앱 다운로드 링크}>앱 다운로드</Link>

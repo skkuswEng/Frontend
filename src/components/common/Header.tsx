@@ -55,7 +55,7 @@ const DesktopHeader = ({ studentId, name, className }: HeaderProps) => {
         <Link href={ROUTES.SEAT.RESERVE(-1).url} className={linkStyle}>
           좌석 배정
         </Link>
-        <Link href={ROUTES.RULES.url} className={linkStyle}>
+        <Link href={ROUTES.ETC.LOUNGE_RULES.url} className={linkStyle}>
           이용 수칙
         </Link>
       </div>
@@ -136,14 +136,14 @@ const MobileHeader = ({ studentId, name, className }: HeaderProps) => {
 
         <div className='flex w-4/5 flex-col items-center justify-start gap-6 border-b border-solid border-swGray py-8 text-lg font-normal text-swGrayDark'>
           {/* TODO: 아래 3가지 Route 추가하기*/}
-          <Link href={ROUTES.RULES.url} onClick={toggleDropdown} className='w-full text-center'>
+          <Link href={ROUTES.ETC.LOUNGE_RULES.url} onClick={toggleDropdown} className='w-full text-center'>
             이용 수칙
           </Link>
           <InstallLink className='w-full text-center'>앱 다운로드</InstallLink>
-          <Link href={ROUTES.ROOM.RESERVE.STEP1.url} onClick={toggleDropdown} className='w-full text-center'>
+          <Link href={ROUTES.ETC.PERSONAL_INFO_RULES.url} target='_blank' onClick={toggleDropdown} className='w-full text-center'>
             개인정보 처리방침
           </Link>
-          <Link href={ROUTES.RULES.url} onClick={toggleDropdown} className='w-full text-center'>
+          <Link href={ROUTES.ETC.SERVICE_CENTER.url} target='_blank' onClick={toggleDropdown} className='w-full text-center'>
             문의하기
           </Link>
         </div>

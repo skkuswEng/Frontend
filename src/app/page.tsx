@@ -55,7 +55,7 @@ const MainPage = () => {
         <Card
           title='이용 수칙'
           subtitle='이용 수칙 확인하기'
-          href={ROUTES.RULES.url}
+          href={ROUTES.ETC.LOUNGE_RULES.url}
           className='h-60 w-full bg-swGray hover:bg-swHoverGray lg:order-3 lg:aspect-card lg:h-auto'
         />
       </div>

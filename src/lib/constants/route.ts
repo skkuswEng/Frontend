@@ -59,9 +59,19 @@ export const ROUTES = {
       url: '/room/history',
     },
   },
-  RULES: {
-    name: '이용수칙',
-    url: '/rules',
+  ETC: {
+    LOUNGE_RULES: {
+      name: '이용수칙',
+      url: '/rules',
+    },
+    PERSONAL_INFO_RULES: {
+      name: '이용수칙',
+      url: 'https://short-adapter-fc5.notion.site/SOKK-145a9bbfc70780f39253ef114413f353?pvs=4',
+    },
+    SERVICE_CENTER: {
+      name: '이용수칙',
+      url: 'http://pf.kakao.com/_TIqMn/chat',
+    },
   },
 } as const
 
