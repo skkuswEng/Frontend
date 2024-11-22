@@ -17,7 +17,7 @@ export const API_ROUTES = {
   },
 }
 
-const baseUrl = 'http://localhost:8001'
+const baseUrl = 'http://localhost:8000'
 
 export const Fetch = async (url: string, options: RequestInit) => {
   const URL = `${baseUrl}${url}`

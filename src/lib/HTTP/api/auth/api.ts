@@ -23,8 +23,9 @@ export const Login = async ({ student_id, password }: LoginType) => {
   })
 
   if (!res.ok) {
-    const error = new Error('로그인 실패')
-    error.message = await res.json()
+    const error = new Error()
+    const data = await res.json()
+    error.message = data.message
     throw error
   }
 
@@ -49,7 +50,6 @@ export const Register = async ({ student_id, password, student_name, email }: Re
     student_name,
     email,
   }
-  console.log('Exectued register')
 
   const res = await Fetch(ROUTE.url, {
     method: ROUTE.method,
@@ -60,8 +60,10 @@ export const Register = async ({ student_id, password, student_name, email }: Re
   })
 
   if (!res.ok) {
-    const error = new Error('회원가입 실패')
-    error.message = await res.json()
+    const error = new Error()
+    const data = await res.json()
+    error.message = data.message
+
     throw error
   }
 
@@ -92,8 +94,9 @@ export const Unregister = async ({ student_id, password }: UnregisterType) => {
   })
 
   if (!res.ok) {
-    const error = new Error('회원탈퇴 실패')
-    error.message = await res.json()
+    const error = new Error()
+    const data = await res.json()
+    error.message = data.message
     throw error
   }
 

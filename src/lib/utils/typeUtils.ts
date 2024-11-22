@@ -16,6 +16,10 @@ export type Mutable<T> = {
 
 export type Nullable<T> = T | null
 
+export type NullableObject<T> = {
+  [K in keyof T]: Nullable<T[K]>
+}
+
 /**
  * Type T에서 key K의 value들로 이루어진 Type 생성하는 유틸
  */
