@@ -7,6 +7,7 @@ import { Button } from '@/src/components/ui/button'
 import { ClientModalData } from '@/src/lib/constants/modal_data'
 import { ROUTES } from '@/src/lib/constants/route'
 import useModal from '@/src/lib/hooks/useModal'
+
 interface SeatStatusAreaProps {
   onSeatClick: (seat_number: number) => void
 }

@@ -1,6 +1,7 @@
 import './globals.css'
 
 import type { Metadata } from 'next'
+import { Suspense } from 'react'
 
 import { pretendard } from '../../public/fonts/fonts'
 import Footer from '../components/common/Footer'
@@ -31,7 +32,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
     <html lang='ko'>
       <body className={cn(pretendard.className)}>
         <Header />
-        {children}
+        <Suspense fallback={<div>Loading...</div>}>{children}</Suspense>
         <InstallPrompt />
         <Footer />
       </body>
