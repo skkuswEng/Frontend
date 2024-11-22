@@ -41,7 +41,7 @@ const MainPage = () => {
         <Card
           title='좌석 배정'
           subtitle='라운지 좌석 배정하기'
-          href={ROUTES.SEAT.RESERVE.url}
+          href={ROUTES.SEAT.RESERVE(-1).url}
           qr={true}
           qrHref={ROUTES.SEAT.QR.STEP1.url}
           className='h-60 w-full bg-swGreen hover:bg-swHoverGreen sm:col-span-2 lg:order-2 lg:col-span-1 lg:aspect-card lg:h-auto'

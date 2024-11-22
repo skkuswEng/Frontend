@@ -29,9 +29,8 @@ export const ROUTES = {
     },
   },
   SEAT: {
-    RESERVE: {
-      name: '좌석 배정',
-      url: '/seat/reserve',
+    RESERVE: (n: number) => {
+      return { name: '좌석 배정', url: `/seat/reserve?n=${n}` }
     },
     QR: {
       STEP1: {
