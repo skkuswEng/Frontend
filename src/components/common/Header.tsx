@@ -86,7 +86,7 @@ const MobileHeader = ({ className }: { className: string }) => {
           <Link href={ROUTES.SEAT.RESERVE.url} onClick={toggleDropdown}>
             좌석 배정
           </Link>
-          <Link href={ROUTES.SEAT.QR.url} className='flex items-center justify-center gap-2' onClick={toggleDropdown}>
+          <Link href={ROUTES.SEAT.QR.STEP2.url} className='flex items-center justify-center gap-2' onClick={toggleDropdown}>
             <LucideIcon name='ScanLine' size={24} />
             QR 좌석 배정
           </Link>

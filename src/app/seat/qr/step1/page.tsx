@@ -1,11 +1,11 @@
 'use client'
+import { useRouter } from 'next/navigation'
 import React, { ReactNode, useEffect, useState } from 'react'
 
 import LucideIcon from '@/src/components/provider/LucideIcon'
 import { ClientModalData } from '@/src/lib/constants/modal_data'
-import useModal from '@/src/lib/hooks/useModal'
-import { useRouter, useSearchParams } from 'next/navigation'
 import { ROUTES } from '@/src/lib/constants/route'
+import useModal from '@/src/lib/hooks/useModal'
 
 interface LocationCheckPageProps {}
 

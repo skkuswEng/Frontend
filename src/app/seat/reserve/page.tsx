@@ -1,6 +1,6 @@
 'use client'
-import { useRouter } from 'next/navigation'
-import React, { ReactNode, useState } from 'react'
+import { useRouter, useSearchParams } from 'next/navigation'
+import React, { ReactNode, useEffect, useState } from 'react'
 
 import LucideIcon from '@/src/components/provider/LucideIcon'
 import { Button } from '@/src/components/ui/button'
@@ -55,9 +55,21 @@ const SEAT_WARNINGS = [
 const INFORMAL_USER_WARNING = '좌석 배정 이후, AI에 의해 긴 시간 부재로 인해 자동반납될 경우, SoKK 규정에 의해 좌석이 정리될 수 있습니다.'
 const ReservePage = ({}: ReservePageProps): ReactNode => {
   const router = useRouter()
-  const { isOpen, modalData, Modal, openModal } = useModal()
+  const searchParams = useSearchParams()
   // Hooks
+  const { isOpen, modalData, Modal, openModal } = useModal()
   const [selectedSeat, setSelectedSeat] = useState<number>(-1)
+
+  useEffect(() => {
+    if (searchParams.has('n') && searchParams.get('n') != null) {
+      const seat_number = parseInt(searchParams.get('n') as string)
+      setSelectedSeat(seat_number)
+      // QR코드를 찍고 방문한 경우
+      if (seat_number != -1) {
+        openModal(ClientModalData.SEAT.RESERVATION.RESERVE(seat_number))
+      }
+    }
+  }, [])
 
   // Functions
   const seatSelectHandler = (seat_number: number) => {
@@ -65,12 +77,12 @@ const ReservePage = ({}: ReservePageProps): ReactNode => {
     openModal(ClientModalData.SEAT.RESERVATION.RESERVE(seat_number))
   }
 
-  const routeHandler = () => {
+  const QRRouteHandler = () => {
     if (window.innerWidth >= 1024) {
       openModal(ClientModalData.SEAT.QR)
       return
     }
-    router.push(ROUTES.SEAT.QR.url)
+    router.push(ROUTES.SEAT.QR.STEP1.url)
   }
   // TODO:예약하기 API
   const reserveHandler = () => {}
@@ -114,7 +126,7 @@ const ReservePage = ({}: ReservePageProps): ReactNode => {
           <p className='text-pretty text-sm font-medium xl:text-sm'>{INFORMAL_USER_WARNING}</p>
         </div>
 
-        <Button variant='swGreen' className='mt-5 flex w-full items-center justify-center gap-2' onClick={routeHandler}>
+        <Button variant='swGreen' className='mt-5 flex w-full items-center justify-center gap-2' onClick={QRRouteHandler}>
           <LucideIcon name='ScanLine' strokeWidth={2} />
           <span>QR코드 배정하기</span>
         </Button>
