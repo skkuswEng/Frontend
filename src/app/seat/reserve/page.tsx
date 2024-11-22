@@ -11,7 +11,7 @@ interface SeatStatusAreaProps {
   onSeatClick: (seat_number: number) => void
 }
 
-export const SeatStatusArea = ({ onSeatClick }: SeatStatusAreaProps): ReactNode => {
+const SeatStatusArea = ({ onSeatClick }: SeatStatusAreaProps): ReactNode => {
   const WINDOW_SEAT_GROUP = Array.from({ length: 6 }, (_, idx) => idx + 1)
   const DEST_SEAT_GROUP = Array.from({ length: 12 }, (_, idx) => idx + 7)
   return (
