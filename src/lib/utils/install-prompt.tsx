@@ -13,11 +13,13 @@ const InstallPrompt = () => {
   const { deferredPrompt, setDeferredPrompt, showPrompt, setShowPrompt, triggerInstall } = useInstallPromptStore()
   const [isShow, setIsShow] = useState<boolean>(false)
 
-  useEffect(() => {
-    const handleBeforeInstallPrompt = (e: Event) => {
-      e.preventDefault()
-      console.log('entered here')
 
+  useEffect(() => {
+    console.log("useEffect entered!");
+    const handleBeforeInstallPrompt = (e: Event) => {
+      // e.preventDefault()
+      console.log('added handleBeforeInstallPrompt listener')
+  
       setDeferredPrompt(prev => {
         return prev || (e as BeforeInstallPromptEvent)
       })
@@ -25,14 +27,13 @@ const InstallPrompt = () => {
         setIsShow(true)
       }
     }
-
+    
     window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt)
 
     return () => {
       window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt)
     }
-  }, [setDeferredPrompt, showPrompt])
-
+  }, [])
   useEffect(() => {
     console.log('deferredPrompt:', deferredPrompt)
   }, [deferredPrompt])
@@ -43,6 +44,7 @@ const InstallPrompt = () => {
   useEffect(() => {
     console.log('showPrompt:', showPrompt)
   }, [showPrompt])
+
   //Functions
   const closeHandler = () => {
     setIsShow(false)
@@ -86,7 +88,7 @@ export const InstallLink = ({ className, onClick, children }: InstallLinkProps):
   return (
     <p
       onClick={() => {
-        if (onClick) onClick()
+        // if (onClick) onClick()
         triggerInstall()
         // console.log('clciekd')
       }}

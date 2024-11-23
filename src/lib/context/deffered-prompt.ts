@@ -1,7 +1,6 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 
-import { toast } from '../hooks/useToast'
 
 export interface BeforeInstallPromptEvent extends Event {
   prompt: () => Promise<void>
@@ -36,14 +35,19 @@ export const useInstallPromptStore = create(
       setShowPrompt: value => set({ showPrompt: value }),
       triggerInstall: async () => {
         // PWA 설치 여부 확인
-        const isInstalled = window.matchMedia('(display-mode: standalone)').matches || (window.navigator as any).standalone === true
+        // const isInstalled = window.matchMedia('(display-mode: standalone)').matches || (window.navigator as any).standalone === true
 
-        if (isInstalled) {
-          toast({ title: '이미 설치된 상태입니다', variant: 'success' })
-          return
-        }
-
+        // if (isInstalled) {
+        //   console.log("is already installed!");
+          
+        //   toast({ title: '이미 설치된 상태입니다', variant: 'success' })
+        //   return
+        // }
+        console.log("entered trigger install");
+        
         const deferredPrompt = get().deferredPrompt
+        console.log(deferredPrompt);
+        
         if (deferredPrompt) {
           await deferredPrompt.prompt()
           const { outcome } = await deferredPrompt.userChoice

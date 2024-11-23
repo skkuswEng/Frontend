@@ -1,6 +1,6 @@
 'use client'
 import Link from 'next/link'
-import React, { ReactNode } from 'react'
+import React, { ReactNode, useEffect } from 'react'
 
 import { ROUTES } from '@/src/lib/constants/route'
 import useAuthStore, { AuthState } from '@/src/lib/context/authContext'
@@ -14,8 +14,14 @@ import Logo from './Logo'
 
 const Header = (): ReactNode => {
   const authData = useAuthStore()
-
   const dropdownData = useDropdown()
+  const initializeAuth = useAuthStore(state => state.initializeAuth)
+
+  useEffect(() => {
+    // 로컬 스토리지에서 데이터 불러오기
+    initializeAuth()
+  }, [initializeAuth])
+
   return (
     <>
       <MobileHeader dropdownData={dropdownData} authData={authData} className='flex lg:hidden' />
