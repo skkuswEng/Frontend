@@ -1,6 +1,8 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 
+import { toast } from '../hooks/useToast'
+
 export interface BeforeInstallPromptEvent extends Event {
   prompt: () => Promise<void>
   userChoice: Promise<{ outcome: 'accepted' | 'dismissed' }>
@@ -12,7 +14,9 @@ type InstallPromptStoreState = {
 
 type InstallPromptState = {
   deferredPrompt: BeforeInstallPromptEvent | null
-  setDeferredPrompt: (event: BeforeInstallPromptEvent | null | ((prev: BeforeInstallPromptEvent | null) => BeforeInstallPromptEvent | null)) => void
+  setDeferredPrompt: (
+    event: BeforeInstallPromptEvent | null | ((prev: BeforeInstallPromptEvent | null) => BeforeInstallPromptEvent | null),
+  ) => void
   setShowPrompt: (value: boolean) => void
   triggerInstall: () => Promise<void>
 }
@@ -31,6 +35,14 @@ export const useInstallPromptStore = create(
       showPrompt: true, // true : 닫은적 없음 +  false: 닫은적 있음
       setShowPrompt: value => set({ showPrompt: value }),
       triggerInstall: async () => {
+        // PWA 설치 여부 확인
+        const isInstalled = window.matchMedia('(display-mode: standalone)').matches || (window.navigator as any).standalone === true
+
+        if (isInstalled) {
+          toast({ title: '이미 설치된 상태입니다', variant: 'success' })
+          return
+        }
+
         const deferredPrompt = get().deferredPrompt
         if (deferredPrompt) {
           await deferredPrompt.prompt()

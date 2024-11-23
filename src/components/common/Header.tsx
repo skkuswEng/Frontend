@@ -199,7 +199,9 @@ const HeaderToggleMenu = ({ dropdownData, authData, className }: HeaderToggleMen
         <Link href={ROUTES.ETC.LOUNGE_RULES.url} onClick={toggleDropdown} className='w-full cursor-pointer text-center hover:text-swBlack'>
           이용 수칙
         </Link>
-        <InstallLink className='w-full cursor-pointer text-center hover:text-swBlack'>앱 다운로드</InstallLink>
+        <InstallLink onClick={toggleDropdown} className='w-full cursor-pointer text-center hover:text-swBlack'>
+          앱 다운로드
+        </InstallLink>
         <Link
           href={ROUTES.ETC.PERSONAL_INFO_RULES.url}
           target='_blank'

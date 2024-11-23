@@ -4,6 +4,7 @@ import { ReactNode, useEffect, useState } from 'react'
 import { ClientModalData } from '@/src/lib/constants/modal_data'
 import { ROUTES } from '@/src/lib/constants/route'
 import useModal from '@/src/lib/hooks/useModal'
+import { toast } from '@/src/lib/hooks/useToast'
 import { RegisterType } from '@/src/lib/HTTP/api/auth/api'
 import { useMutationStore } from '@/src/lib/HTTP/api/tanstack-query'
 import { NullableObject } from '@/src/lib/utils/typeUtils'
@@ -85,6 +86,8 @@ const RegisterCheck = ({}: RegisterCheckProps): ReactNode => {
     RegisterMutate(userInfo as RegisterType, {
       // Save User Data
       onSuccess: (data, variables) => {
+        toast({ title: '회원가입 성공', variant: 'success' })
+
         router.push(ROUTES.AUTH.LOGIN.url)
       },
     })

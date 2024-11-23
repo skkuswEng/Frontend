@@ -77,14 +77,16 @@ export default InstallPrompt
 
 interface InstallLinkProps {
   className?: string
+  onClick?: () => void
   children: ReactNode
 }
-export const InstallLink = ({ className, children }: InstallLinkProps): ReactNode => {
+export const InstallLink = ({ className, onClick, children }: InstallLinkProps): ReactNode => {
   const { triggerInstall } = useInstallPromptStore()
 
   return (
     <p
       onClick={() => {
+        if (onClick) onClick()
         triggerInstall()
         // console.log('clciekd')
       }}

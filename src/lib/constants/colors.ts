@@ -26,6 +26,7 @@ export const colorSet = {
   swHoverGreen: config.theme.extend.colors.swHoverGreen,
 
   swHoverRed: config.theme.extend.colors.swHoverRed,
+  swHoverBlue: config.theme.extend.colors.swHoverBlue,
   // Disable 색
   swDisabledGreen: config.theme.extend.colors.swDisabledGreen,
   swDisabledGreenLight: config.theme.extend.colors.swDisabledGreenLight,

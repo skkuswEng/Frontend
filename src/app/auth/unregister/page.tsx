@@ -63,7 +63,7 @@ const Unregister = ({}: UnregisterProps): ReactNode => {
       {
         onSuccess(data, variables, context) {
           clearAuthData()
-          toast({ title: '회원탈퇴 성공' })
+          toast({ title: '회원탈퇴 성공', variant: 'success' })
           router.push(ROUTES.MAIN.url)
         },
       },

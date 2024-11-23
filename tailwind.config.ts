@@ -76,6 +76,7 @@ const config = {
         swHoverGreen: '#00EF53',
         swHoverGray: '#E9E8E8',
         swHoverRed: '#FF8080',
+        swHoverBlue: '#2C8DFF',
         // Disable 색
         swDisabledGreen: '#00DE4D66',
         swDisabledGreenLight: '#CEF65F66',

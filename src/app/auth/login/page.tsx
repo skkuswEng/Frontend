@@ -118,7 +118,7 @@ const LoginPage = ({}: LoginPageProps): ReactNode => {
         </Button>
 
         <Divider />
-        <p className='mt-4 cursor-pointer text-swGrayDark hover:text-swBlack'>계정이 없으신가요?</p>
+        <p className='mt-4 cursor-pointer text-sm text-swGrayDark hover:text-swBlack'>계정이 없으신가요?</p>
 
         <Button variant='swLightGreen' className='w-full' onClick={() => router.push(ROUTES.AUTH.REGISTER.url)}>
           회원가입
