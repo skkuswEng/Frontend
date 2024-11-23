@@ -2,7 +2,7 @@
 import { create } from 'zustand'
 
 // Zustand 상태 정의
-interface AuthState {
+export interface AuthState {
   studentId: string | null
   name: string | null
   setAuthData: (studentId: string, studentName: string) => void

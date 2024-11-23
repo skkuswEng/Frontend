@@ -42,7 +42,7 @@ export function useDropdown(): {
  * 드롭다운 적용할 Element에 적용할 Wrapper
  */
 interface ToggleWrapperProps {
-  ref: React.RefObject<HTMLDivElement>
+  ref?: React.Ref<HTMLDivElement> // ref를 HTMLDivElement로 명시
   isOpen: boolean // 드롭다운이 열렸는지 여부
   children: ReactNode
   style?: CSSProperties // Optional style prop
@@ -53,12 +53,12 @@ const ToggleWrapper = React.forwardRef<HTMLDivElement, ToggleWrapperProps>(({ ch
   if (!isOpen) return null
 
   return (
-    <div className={cn('absolute z-10', className)} ref={ref} style={style}>
+    <div className={cn('absolute z-10', className)} style={style} ref={ref}>
       {children}
     </div>
   )
 })
 
-ToggleWrapper.displayName = 'ToggleWrapper' // forwardRef 사용 시 displayName 설정
+ToggleWrapper.displayName = 'ToggleWrapper'
 
 export default ToggleWrapper

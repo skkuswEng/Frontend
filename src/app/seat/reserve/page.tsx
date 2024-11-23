@@ -22,19 +22,21 @@ const SeatStatusArea = ({ onSeatClick }: SeatStatusAreaProps): ReactNode => {
           <p
             key={seat}
             onClick={() => onSeatClick(seat)}
-            className='flex aspect-square h-full cursor-pointer items-center justify-center bg-swGrayLight text-base font-semibold hover:bg-swGreenLight md:text-xl'
+            className='flex aspect-square h-full cursor-pointer items-center justify-center rounded-sm bg-swGrayLight text-base font-semibold hover:bg-swGreenLight md:text-xl'
           >
             {seat}
           </p>
         ))}
       </div>
-      <div className='flex aspect-video w-1/2 items-center justify-center bg-[#FFF495] text-lg font-semibold md:aspect-[5/2] md:text-2xl'>휴게 공간</div>
+      <div className='flex aspect-video w-1/2 items-center justify-center rounded-lg bg-[#FFF495] text-lg font-semibold md:aspect-[5/2] md:text-2xl'>
+        휴게 공간
+      </div>
       <div className='mx-4 my-6 grid h-[24%] w-fit grid-cols-6 grid-rows-2 gap-2 self-end md:mx-8 md:h-[30%] md:gap-4'>
         {DEST_SEAT_GROUP.map(seat => (
           <p
             key={seat}
             onClick={() => onSeatClick(seat)}
-            className='flex aspect-square h-full cursor-pointer items-center justify-center bg-swGrayLight text-base font-semibold hover:bg-swGreenLight md:text-xl'
+            className='flex aspect-square h-full cursor-pointer items-center justify-center rounded-sm bg-swGrayLight text-base font-semibold hover:bg-swGreenLight md:text-xl'
           >
             {seat}
           </p>
@@ -113,7 +115,10 @@ const ReservePage = ({}: ReservePageProps): ReactNode => {
         </div>
         <div className='relative flex w-full flex-col items-center justify-start gap-1 md:gap-2'>
           {SEAT_WARNINGS.map(warning => (
-            <p key={warning} className='w-full rounded-lg border border-solid border-swGray bg-swGrayLight py-3 text-center text-sm font-medium lg:text-sm'>
+            <p
+              key={warning}
+              className='w-full rounded-lg border border-solid border-swGray bg-swGrayLight py-3 text-center text-sm font-medium lg:text-sm'
+            >
               {warning}
             </p>
           ))}
