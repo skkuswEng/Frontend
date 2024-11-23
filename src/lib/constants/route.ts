@@ -27,6 +27,10 @@ export const ROUTES = {
       name: '로그인',
       url: '/auth/register',
     },
+    UNREGISTER: {
+      name: '회원탈퇴',
+      url: '/auth/unregister',
+    },
   },
   SEAT: {
     RESERVE: (n: number) => {

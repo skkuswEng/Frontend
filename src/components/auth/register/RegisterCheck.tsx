@@ -89,23 +89,6 @@ const RegisterCheck = ({}: RegisterCheckProps): ReactNode => {
       },
     })
   }
-  // const { mutate: UnregisterMutate, isPending: isUnregistering } = useMutationStore<UnregisterType>(['unregister'])
-
-  // const unregisterHandler = () => {
-  //   console.log('executed')
-
-  //   UnregisterMutate(
-  //     {
-  //       student_id: '2019311945',
-  //       password: 'swe1234!',
-  //     },
-  //     {
-  //       onSuccess(data, variables, context) {
-  //         console.log(data)
-  //       },
-  //     },
-  //   )
-  // }
 
   return (
     <>

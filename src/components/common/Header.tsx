@@ -196,15 +196,15 @@ const HeaderToggleMenu = ({ dropdownData, authData, className }: HeaderToggleMen
       </div>
 
       <div className='flex w-4/5 flex-col items-center justify-start gap-6 py-8 text-lg font-normal text-swGrayDark'>
-        <Link href={ROUTES.ETC.LOUNGE_RULES.url} onClick={toggleDropdown} className='w-full text-center hover:text-swBlack'>
+        <Link href={ROUTES.ETC.LOUNGE_RULES.url} onClick={toggleDropdown} className='w-full cursor-pointer text-center hover:text-swBlack'>
           이용 수칙
         </Link>
-        <InstallLink className='w-full text-center hover:text-swBlack'>앱 다운로드</InstallLink>
+        <InstallLink className='w-full cursor-pointer text-center hover:text-swBlack'>앱 다운로드</InstallLink>
         <Link
           href={ROUTES.ETC.PERSONAL_INFO_RULES.url}
           target='_blank'
           onClick={toggleDropdown}
-          className='w-full text-center hover:text-swBlack'
+          className='w-full cursor-pointer text-center hover:text-swBlack'
         >
           개인정보 처리방침
         </Link>
@@ -212,14 +212,23 @@ const HeaderToggleMenu = ({ dropdownData, authData, className }: HeaderToggleMen
           href={ROUTES.ETC.SERVICE_CENTER.url}
           target='_blank'
           onClick={toggleDropdown}
-          className='w-full text-center hover:text-swBlack'
+          className='w-full cursor-pointer text-center hover:text-swBlack'
         >
           문의하기
         </Link>
         {isLogin && (
-          <div className='flex w-full cursor-pointer items-center justify-center text-center hover:text-swBlack' onClick={logoutHandler}>
-            로그아웃
-          </div>
+          <>
+            <Link
+              href={ROUTES.AUTH.UNREGISTER.url}
+              className='flex w-full cursor-pointer items-center justify-center text-center hover:text-swBlack'
+              onClick={toggleDropdown}
+            >
+              회원탈퇴
+            </Link>
+            <div onClick={logoutHandler} className='flex w-full cursor-pointer items-center justify-center text-center hover:text-swBlack'>
+              로그아웃
+            </div>
+          </>
         )}
       </div>
     </ToggleWrapper>
