@@ -196,7 +196,7 @@ const HeaderToggleMenu = ({ dropdownData, authData, className }: HeaderToggleMen
       </div>
 
       <div className='flex w-4/5 flex-col items-center justify-start gap-6 py-8 text-lg font-normal text-swGrayDark'>
-        <Link href={ROUTES.ETC.LOUNGE_RULES.url} onClick={toggleDropdown} className='w-full cursor-pointer text-center hover:text-swBlack'>
+        <Link href={ROUTES.ETC.LOUNGE_RULES.url} target='_blank' onClick={toggleDropdown} className='w-full cursor-pointer text-center hover:text-swBlack'>
           이용 수칙
         </Link>
         <InstallLink onClick={toggleDropdown} className='w-full cursor-pointer text-center hover:text-swBlack'>

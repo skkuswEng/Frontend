@@ -80,7 +80,15 @@ const Card = ({ title, subtitle, href, qrHref, qr, className }: CardProps) => {
 
   // 메인 링크로 이동하는 함수
   const handleCardClick = (e: React.MouseEvent) => {
-    if (e.currentTarget === e.target) router.push(href)
+    if (e.currentTarget === e.target) {
+      if(title == "이용 수칙"){
+        console.log("here");
+        
+        window.open(ROUTES.ETC.LOUNGE_RULES.url, "_blank")
+        return
+      }
+      router.push(href)
+    }
   }
 
   // QR 버튼 전용 링크로 이동하는 함수
@@ -91,7 +99,7 @@ const Card = ({ title, subtitle, href, qrHref, qr, className }: CardProps) => {
       openModal(ClientModalData.SEAT.QR)
       return
     }
-    if (qrHref) {
+    if (qrHref) {     
       router.push(qrHref)
     }
   }

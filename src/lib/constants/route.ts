@@ -65,15 +65,15 @@ export const ROUTES = {
   },
   ETC: {
     LOUNGE_RULES: {
-      name: '이용수칙',
-      url: '/rules',
+      name: '라운지 이용수칙',
+      url: 'https://short-adapter-fc5.notion.site/SW-SOKK-147a9bbfc707804eb09ed8ab1b2ec233',
     },
     PERSONAL_INFO_RULES: {
-      name: '이용수칙',
+      name: '개인정보 처리방침',
       url: 'https://short-adapter-fc5.notion.site/SOKK-145a9bbfc70780f39253ef114413f353?pvs=4',
     },
     SERVICE_CENTER: {
-      name: '이용수칙',
+      name: '문의하기',
       url: 'http://pf.kakao.com/_TIqMn/chat',
     },
   },
