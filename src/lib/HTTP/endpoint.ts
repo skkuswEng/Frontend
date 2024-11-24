@@ -15,6 +15,24 @@ export const API_ROUTES = {
       url: '/user/unregister',
     },
   },
+  SEAT: {
+    STATUS: {
+      method: HttpMethod.GET,
+      url: '/seat/status',
+    },
+    USER_RESERVATION: {
+      method: HttpMethod.GET,
+      url: '/seat/reservation',
+    },
+    RESERVE: {
+      method: HttpMethod.POST,
+      url: '/seat/reserve',
+    },
+    UNRESERVE: {
+      method: HttpMethod.DELETE,
+      url: '/seat/unreserve',
+    },
+  },
 }
 
 const baseUrl = 'http://localhost:8000'

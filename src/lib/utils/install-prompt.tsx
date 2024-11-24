@@ -13,13 +13,12 @@ const InstallPrompt = () => {
   const { deferredPrompt, setDeferredPrompt, showPrompt, setShowPrompt, triggerInstall } = useInstallPromptStore()
   const [isShow, setIsShow] = useState<boolean>(false)
 
-
   useEffect(() => {
-    console.log("useEffect entered!");
+    console.log('useEffect entered!')
     const handleBeforeInstallPrompt = (e: Event) => {
       // e.preventDefault()
       console.log('added handleBeforeInstallPrompt listener')
-  
+
       setDeferredPrompt(prev => {
         return prev || (e as BeforeInstallPromptEvent)
       })
@@ -27,7 +26,7 @@ const InstallPrompt = () => {
         setIsShow(true)
       }
     }
-    
+
     window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt)
 
     return () => {
@@ -55,8 +54,8 @@ const InstallPrompt = () => {
 
   return (
     <>
-      <Backdrop className='fixed z-40 h-screen w-screen' />
-      <div className='fixed bottom-8 z-40 flex aspect-card w-4/5 max-w-[350px] flex-col items-center justify-start gap-4 rounded-2xl bg-swWhite py-4'>
+      <Backdrop className='fixed z-[60] h-screen w-screen' />
+      <div className='fixed bottom-8 z-[60] flex aspect-card w-4/5 max-w-[350px] flex-col items-center justify-start gap-4 rounded-2xl bg-swWhite py-4'>
         <LucideIcon name='X' className='self-end px-4' size={26} onClick={closeHandler} />
         <Logo text='SoKK' className='font-sen text-6xl font-bold' />
         <p className='text-center font-semibold'>

@@ -1,4 +1,5 @@
 'use client'
+import { useQuery } from '@tanstack/react-query'
 import { useRouter, useSearchParams } from 'next/navigation'
 import React, { ReactNode, useEffect, useState } from 'react'
 
@@ -7,43 +8,76 @@ import { Button } from '@/src/components/ui/button'
 import { ClientModalData } from '@/src/lib/constants/modal_data'
 import { ROUTES } from '@/src/lib/constants/route'
 import useModal from '@/src/lib/hooks/useModal'
+import { SeatStatus } from '@/src/lib/HTTP/api/seat/api'
+import { QUERY_KEYS } from '@/src/lib/HTTP/api/tanstack-query'
+import { cn } from '@/src/lib/utils/cn'
 
 interface SeatStatusAreaProps {
   onSeatClick: (seat_number: number) => void
 }
 
+type seat = {
+  seat_number: number
+  isSeated: boolean
+}
+
 const SeatStatusArea = ({ onSeatClick }: SeatStatusAreaProps): ReactNode => {
-  const WINDOW_SEAT_GROUP = Array.from({ length: 6 }, (_, idx) => idx + 1)
-  const DEST_SEAT_GROUP = Array.from({ length: 12 }, (_, idx) => idx + 7)
-  return (
-    <div className='relative flex aspect-square w-full flex-grow flex-col items-center justify-between bg-swWhite md:aspect-auto'>
-      <div className='mx-4 my-6 grid h-[11%] w-fit grid-cols-6 grid-rows-1 gap-2 self-start md:mx-8 md:h-[15%] md:gap-4'>
-        {WINDOW_SEAT_GROUP.map(seat => (
-          <p
-            key={seat}
-            onClick={() => onSeatClick(seat)}
-            className='flex aspect-square h-full cursor-pointer items-center justify-center rounded-sm bg-swGrayLight text-base font-semibold hover:bg-swGreenLight md:text-xl'
-          >
-            {seat}
-          </p>
-        ))}
+  const { data, isPending, isError, error } = useQuery({
+    queryKey: QUERY_KEYS.SEAT.STATUS,
+    queryFn: ({ signal }) => SeatStatus(),
+  })
+
+  let contents
+  if (isPending) {
+    contents = <div>Loading...</div>
+  }
+  if (data) {
+    const WINDOW_SEAT_GROUP = Array.from({ length: 6 }, (_, idx) => {
+      return { seat_number: idx + 1, isSeated: data.content?.seat_list[idx] } as seat
+    })
+    const DEST_SEAT_GROUP = Array.from({ length: 12 }, (_, idx) => {
+      return { seat_number: idx + 7, isSeated: data.content?.seat_list[idx + 6] } as seat
+    })
+
+    contents = (
+      <div className='relative flex aspect-square w-full flex-grow flex-col items-center justify-between bg-swWhite md:aspect-auto'>
+        <div className='mx-4 my-6 grid h-[11%] w-fit grid-cols-6 grid-rows-1 gap-2 self-start md:mx-8 md:h-[15%] md:gap-4'>
+          {WINDOW_SEAT_GROUP.map(seat => (
+            <p
+              key={seat.seat_number}
+              onClick={() => onSeatClick(seat.seat_number)}
+              className={cn(
+                'flex aspect-square h-full cursor-pointer items-center justify-center rounded-sm text-base font-semibold md:text-xl',
+                seat.isSeated ? 'bg-swGrayLight hover:bg-swGreenLight' : 'bg-swGreenLight hover:bg-swGrayLight',
+              )}
+            >
+              {seat.seat_number}
+            </p>
+          ))}
+        </div>
+        <div className='flex aspect-video w-1/2 items-center justify-center rounded-lg bg-[#FFF495] text-lg font-semibold md:aspect-[5/2] md:text-2xl'>
+          휴게 공간
+        </div>
+        <div className='mx-4 my-6 grid h-[24%] w-fit grid-cols-6 grid-rows-2 gap-2 self-end md:mx-8 md:h-[30%] md:gap-4'>
+          {DEST_SEAT_GROUP.map(seat => (
+            <p
+              key={seat.seat_number}
+              onClick={() => onSeatClick(seat.seat_number)}
+              className={cn(
+                'flex aspect-square h-full cursor-pointer items-center justify-center rounded-sm text-base font-semibold md:text-xl',
+                seat.isSeated ? 'bg-swGrayLight hover:bg-swGreenLight' : 'bg-swGreenLight hover:bg-swGrayLight',
+              )}
+            >
+              {seat.seat_number}
+            </p>
+          ))}
+        </div>
       </div>
-      <div className='flex aspect-video w-1/2 items-center justify-center rounded-lg bg-[#FFF495] text-lg font-semibold md:aspect-[5/2] md:text-2xl'>
-        휴게 공간
-      </div>
-      <div className='mx-4 my-6 grid h-[24%] w-fit grid-cols-6 grid-rows-2 gap-2 self-end md:mx-8 md:h-[30%] md:gap-4'>
-        {DEST_SEAT_GROUP.map(seat => (
-          <p
-            key={seat}
-            onClick={() => onSeatClick(seat)}
-            className='flex aspect-square h-full cursor-pointer items-center justify-center rounded-sm bg-swGrayLight text-base font-semibold hover:bg-swGreenLight md:text-xl'
-          >
-            {seat}
-          </p>
-        ))}
-      </div>
-    </div>
-  )
+    )
+    console.log('fetched data: ', data)
+  }
+
+  return contents
 }
 
 interface ReservePageProps {}
