@@ -46,8 +46,6 @@ const SeatStatusArea = ({ onSeatClick }: SeatStatusAreaProps): ReactNode => {
     const DEST_SEAT_GROUP = Array.from({ length: 12 }, (_, idx) => {
       return { seat_number: idx + 7, isSeated: data.content?.seat_list[idx + 6] } as seat
     })
-    console.log(WINDOW_SEAT_GROUP)
-    console.log(DEST_SEAT_GROUP)
 
     contents = (
       <div className='relative flex aspect-square w-full flex-grow flex-col items-center justify-between bg-swWhite md:aspect-auto'>
@@ -84,7 +82,6 @@ const SeatStatusArea = ({ onSeatClick }: SeatStatusAreaProps): ReactNode => {
         </div>
       </div>
     )
-    console.log('fetched data: ', data)
   }
 
   return contents
