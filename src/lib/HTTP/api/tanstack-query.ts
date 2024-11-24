@@ -78,13 +78,13 @@ queryClient.setMutationDefaults(MUTATION_KEYS.AUTH.UNREGISTER.key, {
 queryClient.setMutationDefaults(MUTATION_KEYS.SEAT.RESERVE.key, {
   mutationFn: MUTATION_KEYS.SEAT.RESERVE.function,
   onSuccess(data, variables, context) {
-    // queryClient.invalidateQueries({ queryKey: QUERY_KEYS.USER.PLANS.INDEX })
+    queryClient.invalidateQueries({ queryKey: QUERY_KEYS.SEAT.STATUS })
   },
 })
 queryClient.setMutationDefaults(MUTATION_KEYS.SEAT.UNRESERVE.key, {
   mutationFn: MUTATION_KEYS.SEAT.UNRESERVE.function,
   onSuccess(data, variables, context) {
-    // queryClient.invalidateQueries({ queryKey: QUERY_KEYS.USER.PLANS.INDEX })
+    queryClient.invalidateQueries({ queryKey: QUERY_KEYS.SEAT.STATUS })
   },
 })
 

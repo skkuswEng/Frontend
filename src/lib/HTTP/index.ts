@@ -43,3 +43,7 @@ export const attachQuery = (API: string, query: Queries): string => {
 
   return `${API}?${queryString}`
 }
+
+export const dataToISOString = (date: Date) => {
+  return date.toISOString().slice(0, 16).replace('T', ' ')
+}

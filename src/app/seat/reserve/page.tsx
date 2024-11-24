@@ -3,13 +3,17 @@ import { useQuery } from '@tanstack/react-query'
 import { useRouter, useSearchParams } from 'next/navigation'
 import React, { ReactNode, useEffect, useState } from 'react'
 
+import Loading from '@/src/components/common/Loading'
 import LucideIcon from '@/src/components/provider/LucideIcon'
 import { Button } from '@/src/components/ui/button'
 import { ClientModalData } from '@/src/lib/constants/modal_data'
 import { ROUTES } from '@/src/lib/constants/route'
+import useAuthStore from '@/src/lib/context/authContext'
 import useModal from '@/src/lib/hooks/useModal'
-import { SeatStatus } from '@/src/lib/HTTP/api/seat/api'
-import { QUERY_KEYS } from '@/src/lib/HTTP/api/tanstack-query'
+import { toast } from '@/src/lib/hooks/useToast'
+import { dataToISOString } from '@/src/lib/HTTP'
+import { SeatReserveType, SeatStatus } from '@/src/lib/HTTP/api/seat/api'
+import { QUERY_KEYS, useMutationStore } from '@/src/lib/HTTP/api/tanstack-query'
 import { cn } from '@/src/lib/utils/cn'
 
 interface SeatStatusAreaProps {
@@ -29,7 +33,11 @@ const SeatStatusArea = ({ onSeatClick }: SeatStatusAreaProps): ReactNode => {
 
   let contents
   if (isPending) {
-    contents = <div>Loading...</div>
+    contents = (
+      <div className='relative flex aspect-square w-full flex-grow flex-col items-center justify-center bg-swWhite md:aspect-auto'>
+        <Loading size={40} />
+      </div>
+    )
   }
   if (data) {
     const WINDOW_SEAT_GROUP = Array.from({ length: 6 }, (_, idx) => {
@@ -38,6 +46,8 @@ const SeatStatusArea = ({ onSeatClick }: SeatStatusAreaProps): ReactNode => {
     const DEST_SEAT_GROUP = Array.from({ length: 12 }, (_, idx) => {
       return { seat_number: idx + 7, isSeated: data.content?.seat_list[idx + 6] } as seat
     })
+    console.log(WINDOW_SEAT_GROUP)
+    console.log(DEST_SEAT_GROUP)
 
     contents = (
       <div className='relative flex aspect-square w-full flex-grow flex-col items-center justify-between bg-swWhite md:aspect-auto'>
@@ -93,9 +103,13 @@ const INFORMAL_USER_WARNING = '좌석 배정 이후, AI에 의해 긴 시간 부
 const ReservePage = ({}: ReservePageProps): ReactNode => {
   const router = useRouter()
   const searchParams = useSearchParams()
+  const { studentId } = useAuthStore()
   // Hooks
   const { isOpen, modalData, Modal, openModal } = useModal()
   const [selectedSeat, setSelectedSeat] = useState<number>(-1)
+
+  // Query & Mutation
+  const { mutate: ReserveMutate, isPending: isReserving } = useMutationStore<SeatReserveType>(['seat_reserve'])
 
   useEffect(() => {
     if (searchParams.has('n') && searchParams.get('n') != null) {
@@ -122,7 +136,33 @@ const ReservePage = ({}: ReservePageProps): ReactNode => {
     router.push(ROUTES.SEAT.QR.STEP1.url)
   }
   // TODO:예약하기 API
-  const reserveHandler = () => {}
+  const reserveHandler = () => {
+    switch (JSON.stringify(modalData)) {
+      case JSON.stringify(ClientModalData.SEAT.RESERVATION.RESERVE(selectedSeat)):
+        if (!studentId) {
+          toast({ title: '로그인이 필요합니다' })
+          router.push(ROUTES.AUTH.LOGIN.url)
+          return
+        }
+
+        ReserveMutate(
+          {
+            studentId: studentId,
+            seat_number: selectedSeat,
+            reservation_date: dataToISOString(new Date()), // ISO String Format
+          },
+          {
+            onSuccess(data, variables, context) {
+              router.push(ROUTES.MAIN.url)
+            },
+          },
+        )
+        break
+
+      default:
+        break
+    }
+  }
   return (
     <div className='relative mt-24 grid w-[90%] max-w-[1800px] flex-grow grid-cols-1 place-items-center gap-8 py-6 md:grid-cols-[7fr,3fr] lg:mt-0'>
       <div className='flex h-full w-full flex-col items-start justify-start gap-3'>

@@ -23,7 +23,7 @@ export const SeatStatus = async () => {
   if (!res.ok) {
     const error = new Error()
     const data = await res.json()
-    error.message = data.message
+    error.message = data.detail
     throw error
   }
 
@@ -56,7 +56,7 @@ export const SeatUserReservation = async ({ studentId }: SeatUserReservationType
   if (!res.ok) {
     const error = new Error()
     const data = await res.json()
-    error.message = data.message
+    error.message = data.detail
     throw error
   }
 
@@ -65,28 +65,34 @@ export const SeatUserReservation = async ({ studentId }: SeatUserReservationType
   return data
 }
 
-export interface SeatReserveType {}
+export interface SeatReserveType {
+  studentId: string
+  seat_number: number
+  reservation_date: string // ISO String Format
+}
 
-export const SeatReserve = async ({}: SeatReserveType) => {
+export const SeatReserve = async ({ studentId, seat_number, reservation_date }: SeatReserveType) => {
   const ROUTE = API_ROUTES.SEAT.RESERVE
 
-  // const body = {
-  //   student_id,
-  //   password,
-  // }
+  const body = {
+    student_id: studentId,
+    seat_number,
+    reservation_date,
+  }
 
   const res = await Fetch(ROUTE.url, {
     method: ROUTE.method,
     headers: {
       'Content-Type': 'application/json',
     },
-    // body: JSON.stringify(body),
+    body: JSON.stringify(body),
   })
 
   if (!res.ok) {
     const error = new Error()
     const data = await res.json()
-    error.message = data.message
+
+    error.message = data.detail
     throw error
   }
 
@@ -116,7 +122,7 @@ export const SeatUnreserve = async ({}: SeatUnreserve) => {
   if (!res.ok) {
     const error = new Error()
     const data = await res.json()
-    error.message = data.message
+    error.message = data.detail
     throw error
   }
 

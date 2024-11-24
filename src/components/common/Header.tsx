@@ -53,7 +53,7 @@ const DesktopHeader = ({ dropdownData, authData, className }: HeaderProps) => {
     isLogin = true
   }
 
-  const linkStyle = 'flex items-center justify-center text-lg font-bold hover:border-b hover:border-black hover:border-solid'
+  const linkStyle = 'flex items-center justify-center text-base font-bold hover:border-b hover:border-black hover:border-solid'
   return (
     <div
       className={cn(
@@ -76,7 +76,7 @@ const DesktopHeader = ({ dropdownData, authData, className }: HeaderProps) => {
           이용 수칙
         </Link>
       </div>
-      <div className='flex h-full cursor-pointer items-center justify-center gap-8 px-3 py-1 text-lg font-bold'>
+      <div className='flex h-full cursor-pointer items-center justify-center gap-8 px-3 py-1 text-base font-bold'>
         <LucideIcon name='Bell' size={20} />
         {!isLogin ? (
           <Link href={ROUTES.AUTH.LOGIN.url}>로그인</Link>
@@ -202,7 +202,12 @@ const HeaderToggleMenu = ({ dropdownData, authData, className }: HeaderToggleMen
       </div>
 
       <div className='flex w-4/5 flex-col items-center justify-start gap-6 py-8 text-lg font-normal text-swGrayDark'>
-        <Link href={ROUTES.ETC.LOUNGE_RULES.url} target='_blank' onClick={toggleDropdown} className='w-full cursor-pointer text-center hover:text-swBlack'>
+        <Link
+          href={ROUTES.ETC.LOUNGE_RULES.url}
+          target='_blank'
+          onClick={toggleDropdown}
+          className='w-full cursor-pointer text-center hover:text-swBlack'
+        >
           이용 수칙
         </Link>
         <InstallLink onClick={toggleDropdown} className='w-full cursor-pointer text-center hover:text-swBlack'>
