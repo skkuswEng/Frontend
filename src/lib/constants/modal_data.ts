@@ -75,6 +75,14 @@ export const ClientModalData = {
         description: '위치정보를 허용해주세요',
         isError: true,
       },
+      UNRESERVE: (seat_number: number): ModalData => {
+        return {
+          id: 'confirm',
+          title: `${seat_number}번 좌석 반납`,
+          description: '해당 좌석을 반납하시겠습니까? (자리를 정리해주세요)',
+          isError: false,
+        }
+      },
     },
     QR: {
       id: 'info',

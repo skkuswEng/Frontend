@@ -101,22 +101,25 @@ export const SeatReserve = async ({ studentId, seat_number, reservation_date }: 
   return data
 }
 
-export interface SeatUnreserve {}
+export interface SeatUnreserveType {
+  studentId: string
+  seat_number: number
+}
 
-export const SeatUnreserve = async ({}: SeatUnreserve) => {
-  const ROUTE = API_ROUTES.SEAT.STATUS
+export const SeatUnreserve = async ({ studentId, seat_number }: SeatUnreserveType) => {
+  const ROUTE = API_ROUTES.SEAT.UNRESERVE
 
-  // const body = {
-  //   student_id,
-  //   password,
-  // }
+  const body = {
+    student_id: studentId,
+    seat_number,
+  }
 
   const res = await Fetch(ROUTE.url, {
     method: ROUTE.method,
     headers: {
       'Content-Type': 'application/json',
     },
-    // body: JSON.stringify(body),
+    body: JSON.stringify(body),
   })
 
   if (!res.ok) {

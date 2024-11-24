@@ -15,8 +15,9 @@ import { ClientModalData } from '../lib/constants/modal_data'
 import { ROUTES, RouteType } from '../lib/constants/route'
 import useAuthStore from '../lib/context/authContext'
 import useModal from '../lib/hooks/useModal'
-import { SeatUserReservation } from '../lib/HTTP/api/seat/api'
-import { QUERY_KEYS } from '../lib/HTTP/api/tanstack-query'
+import { toast } from '../lib/hooks/useToast'
+import { SeatUnreserveType, SeatUserReservation } from '../lib/HTTP/api/seat/api'
+import { QUERY_KEYS, useMutationStore } from '../lib/HTTP/api/tanstack-query'
 import { cn } from '../lib/utils/cn'
 
 const MainPage = () => {
@@ -109,6 +110,9 @@ interface CardProps {
 const Card = ({ title, subtitle, href, qrHref, qr, user_seat, isPendingSeat, className }: CardProps) => {
   const router = useRouter()
   const { isOpen, modalData, Modal, openModal } = useModal()
+  const { studentId } = useAuthStore()
+
+  const { mutate: UnreserveMutate, isPending } = useMutationStore<SeatUnreserveType>(['seat_unreserve'])
 
   // 메인 링크로 이동하는 함수
   const handleCardClick = (e: React.MouseEvent) => {
@@ -134,6 +138,62 @@ const Card = ({ title, subtitle, href, qrHref, qr, user_seat, isPendingSeat, cla
     }
   }
 
+  const confirmHandler = () => {
+    switch (JSON.stringify(modalData)) {
+      case JSON.stringify(ClientModalData.SEAT.RESERVATION.UNRESERVE(user_seat as number)):
+        if (!user_seat) {
+          toast({ title: '배정된 좌석이 없습니다' })
+          return
+        }
+        if (!studentId) {
+          toast({ title: '로그인 해주세요' })
+          return
+        }
+
+        UnreserveMutate(
+          { studentId: studentId, seat_number: user_seat },
+          {
+            onSuccess(data, variables, context) {
+              toast({ title: '좌석이 반납되었습니다' })
+              router.refresh()
+            },
+          },
+        )
+        break
+
+      default:
+        break
+    }
+  }
+
+  let btnContent
+  if (qr) {
+    if (isPendingSeat) {
+      btnContent = (
+        <Loading className='absolute bottom-5 right-5 flex items-center justify-center gap-2 rounded-full font-bold text-swWhite' />
+      )
+    } else if (user_seat) {
+      btnContent = (
+        <button
+          onClick={() => openModal(ClientModalData.SEAT.RESERVATION.UNRESERVE(user_seat))} // QR 버튼 클릭 시 전용 링크로 이동
+          className='absolute bottom-5 right-5 flex items-center justify-center gap-2 rounded-full bg-swBlack px-5 py-3 font-bold text-swWhite hover:border hover:border-solid hover:border-swBlack hover:bg-swWhite hover:text-swBlack'
+        >
+          <LucideIcon name='Undo2' strokeWidth={4} />
+          반납
+        </button>
+      )
+    } else {
+      btnContent = (
+        <button
+          onClick={handleQRClick} // QR 버튼 클릭 시 전용 링크로 이동
+          className='absolute bottom-5 right-5 flex items-center justify-center gap-2 rounded-full bg-swBlack px-5 py-3 font-bold text-swWhite hover:border hover:border-solid hover:border-swBlack hover:bg-swWhite hover:text-swBlack'
+        >
+          <LucideIcon name='ScanLine' strokeWidth={4} />
+          QR
+        </button>
+      )
+    }
+  }
   return (
     <div
       onClick={handleCardClick}
@@ -144,33 +204,14 @@ const Card = ({ title, subtitle, href, qrHref, qr, user_seat, isPendingSeat, cla
     >
       <h1 className='text-3xl font-bold'>{title}</h1>
       <p className='text-base text-gray-600'>{subtitle}</p>
-      {qr && user_seat && (
+      {qr && user_seat !== 0 && (
         <p className='absolute bottom-8 border-b border-solid border-swBlack font-semibold'>{user_seat}번 좌석 이용 중</p>
       )}
       <div className='absolute right-5 top-5 flex h-12 w-12 items-center justify-center rounded-full border-2 border-swBlack group-hover:bg-swWhite'>
         <LucideIcon name='ArrowUpRight' size={26} />
       </div>
-      {qr && (
-        <button
-          onClick={handleQRClick} // QR 버튼 클릭 시 전용 링크로 이동
-          className='absolute bottom-5 right-5 flex items-center justify-center gap-2 rounded-full bg-swBlack px-5 py-3 font-bold text-swWhite hover:border hover:border-solid hover:border-swBlack hover:bg-swWhite hover:text-swBlack'
-        >
-          {isPendingSeat ? (
-            <Loading className='' />
-          ) : user_seat ? (
-            <>
-              <LucideIcon name='Undo2' strokeWidth={4} />
-              반납
-            </>
-          ) : (
-            <>
-              <LucideIcon name='ScanLine' strokeWidth={4} />
-              QR
-            </>
-          )}
-        </button>
-      )}
-      <Modal onConfirm={() => {}} />
+      {btnContent}
+      <Modal onConfirm={confirmHandler} />
     </div>
   )
 }
