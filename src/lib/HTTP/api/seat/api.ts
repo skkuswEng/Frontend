@@ -23,7 +23,7 @@ export const SeatStatus = async () => {
   if (!res.ok) {
     const error = new Error()
     const data = await res.json()
-    error.message = data.detail
+    error.message = data.message
     throw error
   }
 
@@ -56,7 +56,7 @@ export const SeatUserReservation = async ({ studentId }: SeatUserReservationType
   if (!res.ok) {
     const error = new Error()
     const data = await res.json()
-    error.message = data.detail
+    error.message = data.message
     throw error
   }
 
@@ -92,7 +92,7 @@ export const SeatReserve = async ({ studentId, seat_number, reservation_date }: 
     const error = new Error()
     const data = await res.json()
 
-    error.message = data.detail
+    error.message = data.message
     throw error
   }
 
@@ -122,7 +122,7 @@ export const SeatUnreserve = async ({}: SeatUnreserve) => {
   if (!res.ok) {
     const error = new Error()
     const data = await res.json()
-    error.message = data.detail
+    error.message = data.message
     throw error
   }
 

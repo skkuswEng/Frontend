@@ -14,11 +14,8 @@ const InstallPrompt = () => {
   const [isShow, setIsShow] = useState<boolean>(false)
 
   useEffect(() => {
-    console.log('useEffect entered!')
     const handleBeforeInstallPrompt = (e: Event) => {
-      // e.preventDefault()
-      console.log('added handleBeforeInstallPrompt listener')
-
+      e.preventDefault()
       setDeferredPrompt(prev => {
         return prev || (e as BeforeInstallPromptEvent)
       })
@@ -32,7 +29,7 @@ const InstallPrompt = () => {
     return () => {
       window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt)
     }
-  }, [])
+  }, [showPrompt])
   useEffect(() => {
     console.log('deferredPrompt:', deferredPrompt)
   }, [deferredPrompt])

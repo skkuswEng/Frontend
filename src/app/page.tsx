@@ -1,5 +1,6 @@
 'use client'
 // pages/index.js
+import { useQuery } from '@tanstack/react-query'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import React from 'react'
@@ -7,14 +8,40 @@ import React from 'react'
 import SKKUCharacterImg from '../../public/images/skku_character.png'
 import Asterisk from '../components/common/Asterisk'
 import Eyes from '../components/common/Eyes'
+import Loading from '../components/common/Loading'
 import Logo from '../components/common/Logo'
 import LucideIcon from '../components/provider/LucideIcon'
 import { ClientModalData } from '../lib/constants/modal_data'
 import { ROUTES, RouteType } from '../lib/constants/route'
+import useAuthStore from '../lib/context/authContext'
 import useModal from '../lib/hooks/useModal'
+import { SeatUserReservation } from '../lib/HTTP/api/seat/api'
+import { QUERY_KEYS } from '../lib/HTTP/api/tanstack-query'
 import { cn } from '../lib/utils/cn'
 
 const MainPage = () => {
+  const { studentId } = useAuthStore()
+  const {
+    data,
+    isPending: isPendingSeat,
+    isError,
+    error,
+  } = useQuery({
+    queryKey: QUERY_KEYS.SEAT.USER_STATUS,
+    queryFn: ({ signal }) => {
+      // if (!studentId) {
+      //   toast({ title: '로그인이 필요합니다' })
+      //   return
+      // }
+      return SeatUserReservation({ studentId: studentId as string })
+    },
+    enabled: studentId != null,
+  })
+  let user_seat // 0 : no seat / 1 ~ 18: seat 배정
+  if (data) {
+    user_seat = data.content?.seat_number
+  }
+
   return (
     <div className='relative mt-24 flex w-screen flex-grow flex-col items-center justify-center gap-4 lg:mt-0'>
       <Logo text='SoKK' className='py-4 text-7xl lg:hidden' />
@@ -44,6 +71,8 @@ const MainPage = () => {
           href={ROUTES.SEAT.RESERVE(-1).url}
           qr={true}
           qrHref={ROUTES.SEAT.QR.STEP1.url}
+          isPendingSeat={isPendingSeat}
+          user_seat={user_seat}
           className='h-60 w-full bg-swGreen hover:bg-swHoverGreen sm:col-span-2 lg:order-2 lg:col-span-1 lg:aspect-card lg:h-auto'
         />
         <Card
@@ -71,20 +100,21 @@ interface CardProps {
   href: RouteType | string
   qrHref?: RouteType // QR 버튼 전용 링크를 추가
   qr?: boolean
+  user_seat?: number
+  isPendingSeat?: boolean
+
   className?: string
 }
 
-const Card = ({ title, subtitle, href, qrHref, qr, className }: CardProps) => {
+const Card = ({ title, subtitle, href, qrHref, qr, user_seat, isPendingSeat, className }: CardProps) => {
   const router = useRouter()
   const { isOpen, modalData, Modal, openModal } = useModal()
 
   // 메인 링크로 이동하는 함수
   const handleCardClick = (e: React.MouseEvent) => {
     if (e.currentTarget === e.target) {
-      if(title == "이용 수칙"){
-        console.log("here");
-        
-        window.open(ROUTES.ETC.LOUNGE_RULES.url, "_blank")
+      if (title == '이용 수칙') {
+        window.open(ROUTES.ETC.LOUNGE_RULES.url, '_blank')
         return
       }
       router.push(href)
@@ -99,7 +129,7 @@ const Card = ({ title, subtitle, href, qrHref, qr, className }: CardProps) => {
       openModal(ClientModalData.SEAT.QR)
       return
     }
-    if (qrHref) {     
+    if (qrHref) {
       router.push(qrHref)
     }
   }
@@ -114,6 +144,9 @@ const Card = ({ title, subtitle, href, qrHref, qr, className }: CardProps) => {
     >
       <h1 className='text-3xl font-bold'>{title}</h1>
       <p className='text-base text-gray-600'>{subtitle}</p>
+      {qr && user_seat && (
+        <p className='absolute bottom-8 border-b border-solid border-swBlack font-semibold'>{user_seat}번 좌석 이용 중</p>
+      )}
       <div className='absolute right-5 top-5 flex h-12 w-12 items-center justify-center rounded-full border-2 border-swBlack group-hover:bg-swWhite'>
         <LucideIcon name='ArrowUpRight' size={26} />
       </div>
@@ -122,8 +155,19 @@ const Card = ({ title, subtitle, href, qrHref, qr, className }: CardProps) => {
           onClick={handleQRClick} // QR 버튼 클릭 시 전용 링크로 이동
           className='absolute bottom-5 right-5 flex items-center justify-center gap-2 rounded-full bg-swBlack px-5 py-3 font-bold text-swWhite hover:border hover:border-solid hover:border-swBlack hover:bg-swWhite hover:text-swBlack'
         >
-          <LucideIcon name='ScanLine' strokeWidth={4} />
-          QR
+          {isPendingSeat ? (
+            <Loading className='' />
+          ) : user_seat ? (
+            <>
+              <LucideIcon name='Undo2' strokeWidth={4} />
+              반납
+            </>
+          ) : (
+            <>
+              <LucideIcon name='ScanLine' strokeWidth={4} />
+              QR
+            </>
+          )}
         </button>
       )}
       <Modal onConfirm={() => {}} />
