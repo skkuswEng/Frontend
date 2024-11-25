@@ -194,6 +194,11 @@ const Card = ({ title, subtitle, href, qrHref, qr, user_seat, isPendingSeat, cla
       )
     }
   }
+
+  let seat_text
+  if (qr && user_seat) {
+    seat_text = <p className='absolute bottom-8 border-b border-solid border-swBlack font-semibold'>{user_seat}번 좌석 이용 중</p>
+  }
   return (
     <div
       onClick={handleCardClick}
@@ -204,12 +209,12 @@ const Card = ({ title, subtitle, href, qrHref, qr, user_seat, isPendingSeat, cla
     >
       <h1 className='text-3xl font-bold'>{title}</h1>
       <p className='text-base text-gray-600'>{subtitle}</p>
-      {qr && user_seat !== 0 && (
-        <p className='absolute bottom-8 border-b border-solid border-swBlack font-semibold'>{user_seat}번 좌석 이용 중</p>
+      {seat_text}
+      {title === '이용 수칙' && (
+        <div className='absolute right-5 top-5 flex h-12 w-12 items-center justify-center rounded-full border-2 border-swBlack group-hover:bg-swWhite'>
+          <LucideIcon name='ArrowUpRight' size={26} />
+        </div>
       )}
-      <div className='absolute right-5 top-5 flex h-12 w-12 items-center justify-center rounded-full border-2 border-swBlack group-hover:bg-swWhite'>
-        <LucideIcon name='ArrowUpRight' size={26} />
-      </div>
       {btnContent}
       <Modal onConfirm={confirmHandler} />
     </div>

@@ -1,7 +1,11 @@
 'use client'
+import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import React, { ReactNode, useEffect, useState } from 'react'
 
+import SPACE_A from '@/public/images/공용공간A.jpg'
+import SPACE_B from '@/public/images/공용공간B.jpg'
+import STUDY_ROOM_B from '@/public/images/스터디룸B.jpg'
 import { Divider } from '@/src/components/common/Dividers'
 import { Button } from '@/src/components/ui/button'
 import { ROUTES } from '@/src/lib/constants/route'
@@ -9,9 +13,6 @@ import useCalenderDropdown from '@/src/lib/hooks/useCalenderDropdown'
 import useSelectDropdown from '@/src/lib/hooks/useSelectDropdown'
 import { cn } from '@/src/lib/utils/cn'
 
-interface StudyRoomReservePageProps {}
-
-const [START_TIME, END_TIME] = ['09:00', '01:00']
 const generateTimeIntervals = (startTime = START_TIME, endTime = END_TIME, intervalMinutes = 30) => {
   const times = []
   let [hour, minute] = startTime.split(':').map(Number)
@@ -31,7 +32,11 @@ const generateTimeIntervals = (startTime = START_TIME, endTime = END_TIME, inter
 
   return times
 }
+const [START_TIME, END_TIME] = ['09:00', '01:00']
 const timeSelections = generateTimeIntervals(START_TIME, END_TIME)
+
+const ROOMS = [STUDY_ROOM_B, SPACE_A, SPACE_B]
+interface StudyRoomReservePageProps {}
 
 type reserveTime = {
   startTime: string | undefined
@@ -42,10 +47,22 @@ const StudyRoomReservePage = ({}: StudyRoomReservePageProps): ReactNode => {
   const [isDone, setIsDone] = useState<boolean>(false) // Route Decider
 
   // #1. Input Values
-  const { value: room_number, SelectDropdown: SelectRoomDropdown } = useSelectDropdown({
+  const { value: room_name, SelectDropdown: SelectRoomDropdown } = useSelectDropdown({
     placeHolder: '이용공간을 선택해주세요',
     candidates: ['스터리룸B', '공용공간A', '공용공간B'],
   })
+  let room_number: number | undefined = undefined
+  switch (room_name) {
+    case '스터리룸B':
+      room_number = 0
+      break
+    case '공용공간A':
+      room_number = 1
+      break
+    case '공용공간B':
+      room_number = 2
+      break
+  }
 
   const { date, CalenderDropdown } = useCalenderDropdown({
     placeHolder: '예약 날짜를 선택해주세요',
@@ -57,12 +74,12 @@ const StudyRoomReservePage = ({}: StudyRoomReservePageProps): ReactNode => {
   // })
 
   useEffect(() => {
-    if (room_number && date) {
+    if (room_name && date) {
       setIsDone(true)
     } else if (isDone) {
       setIsDone(false)
     }
-  }, [room_number, date])
+  }, [room_name, date])
 
   // Functions
   const stepHandler = () => {
@@ -75,7 +92,11 @@ const StudyRoomReservePage = ({}: StudyRoomReservePageProps): ReactNode => {
         <p className='text-2xl font-bold'>1. 이용공간</p>
         <div className='flex h-fit w-full flex-col items-start justify-start gap-2'>
           <SelectRoomDropdown className='h-16 w-64 bg-swWhite px-3 py-1' />
-          <div className='flex aspect-card w-full items-center justify-center rounded-md bg-swGray text-2xl font-bold'>스터디룸 사진</div>
+          {!room_name ? (
+            <div className='flex aspect-card w-full items-center justify-center rounded-md bg-swGray text-2xl font-bold'>스터디룸 사진</div>
+          ) : (
+            <Image src={ROOMS[room_number as number]} alt='선택된 공간' />
+          )}
         </div>
       </div>
       <Divider className='my-6 md:hidden' />
@@ -124,7 +145,12 @@ interface TimeSelectorProps {
 }
 const TimeSelector = ({ time, className }: TimeSelectorProps): ReactNode => {
   return (
-    <p className={cn('cursor-pointer rounded-sm border border-solid border-swGrayDark bg-swWhite text-center text-sm hover:bg-swHoverGreenLight', className)}>
+    <p
+      className={cn(
+        'cursor-pointer rounded-sm border border-solid border-swGrayDark bg-swWhite text-center text-sm hover:bg-swHoverGreenLight',
+        className,
+      )}
+    >
       {time}
     </p>
   )
