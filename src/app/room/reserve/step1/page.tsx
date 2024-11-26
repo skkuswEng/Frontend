@@ -60,7 +60,7 @@ const [START_TIME, END_TIME] = ['09:00', '20:00']
 const timeSelections = generateTimeIntervals(START_TIME, END_TIME)
 
 const ROOM_IMAGES = [STUDY_ROOM_B, SPACE_A, SPACE_B]
-
+export const ROOM_TEXT_CANDIDATES = ['스터디룸B', '공용공간A', '공용공간B']
 interface StudyRoomReservePageProps {}
 
 const StudyRoomReservePage = ({}: StudyRoomReservePageProps): ReactNode => {
@@ -89,7 +89,7 @@ const StudyRoomReservePage = ({}: StudyRoomReservePageProps): ReactNode => {
   // #1. 이용공간 State
   const { value: room_name, SelectDropdown: SelectRoomDropdown } = useSelectDropdown<string>({
     placeHolder: '이용공간을 선택해주세요',
-    candidates: ['스터디룸B', '공용공간A', '공용공간B'],
+    candidates: ROOM_TEXT_CANDIDATES,
   })
   useEffect(() => {
     if (room_name) {
@@ -111,6 +111,7 @@ const StudyRoomReservePage = ({}: StudyRoomReservePageProps): ReactNode => {
 
   // #3. 시간 State
   const isDone: boolean = Boolean(leader && room_number && date && time && time.startTime && time.endTime) // 모든게 있으면 완료 상태
+  console.log('time: ', time.startTime, time.endTime)
 
   const {
     data,
@@ -120,19 +121,7 @@ const StudyRoomReservePage = ({}: StudyRoomReservePageProps): ReactNode => {
   } = useQuery({
     queryKey: QUERY_KEYS.ROOM.STATUS,
     queryFn: ({ signal }) => {
-      console.log('room_number: ', room_number)
-      console.log('date: ', date?.toISOString())
-
-      // if (!room_number) {
-      //   toast({ title: '공간을 선택해주세요' })
-      //   return
-      // }
-      // if (!date) {
-      //   toast({ title: '예약날짜를 선택해주세요' })
-      //   return
-      // }
-
-      return RoomStatus({ signal, room_number: (room_number as number) + 1, date: date?.toISOString() as string })
+      return RoomStatus({ signal, room_number: room_number as number, date: date?.toISOString().split('T')[0] as string })
     },
     enabled: room_number !== undefined && date !== undefined,
   })
@@ -236,6 +225,10 @@ const TimeSelector = ({ value, time, setTime, className }: TimeSelectorProps): R
   }
 
   const isColored = (): boolean => {
+    // 시작시간인 경우
+    if (time?.startTime && time.startTime === value) {
+      return true
+    }
     if (!time?.startTime || !time.endTime || !value) {
       return false
     }
