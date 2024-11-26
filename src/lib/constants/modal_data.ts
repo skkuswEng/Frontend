@@ -91,4 +91,14 @@ export const ClientModalData = {
       isError: true,
     },
   },
+  ROOM: {
+    RESERVE: {
+      AUTH_REQUIRED: {
+        id: 'info',
+        title: '로그인 필요',
+        description: '예약을 위해서 로그인해주세요',
+        isError: true,
+      },
+    },
+  },
 } as const

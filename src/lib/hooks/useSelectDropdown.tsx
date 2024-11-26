@@ -8,19 +8,19 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from '@/src/co
 import { cn } from '../utils/cn'
 import { useDropdown } from './useToggle'
 
-interface useSelectDropdownProps {
+interface useSelectDropdownProps<T> {
   placeHolder: string
-  candidates: string[]
+  candidates: T[]
 }
 
-const useSelectDropdown = ({ placeHolder, candidates }: useSelectDropdownProps) => {
+const useSelectDropdown = <T,>({ placeHolder, candidates }: useSelectDropdownProps<T>) => {
   const {
     isOpen,
     refs: [buttonRef, dropdownRef],
     toggleDropdown,
   } = useDropdown()
 
-  const [value, setvalue] = useState<string | undefined>()
+  const [value, setvalue] = useState<T>()
 
   const SelectDropdown = ({ className }: { className?: string }) => {
     return (
@@ -32,7 +32,7 @@ const useSelectDropdown = ({ placeHolder, candidates }: useSelectDropdownProps) 
             className,
           )}
         >
-          <p>{!value ? placeHolder : value}</p>
+          <p>{!value ? placeHolder : String(value)}</p>
           <LucideIcon name={!isOpen ? 'ChevronDown' : 'ChevronUp'} size={26} />
         </DropdownMenuTrigger>
         {/* 드롭다운 */}
@@ -50,7 +50,7 @@ const useSelectDropdown = ({ placeHolder, candidates }: useSelectDropdownProps) 
               onClick={() => setvalue(candidate)}
               className='relative z-10 cursor-pointer px-3 py-2 font-medium hover:bg-swGrayLight'
             >
-              {candidate}
+              {String(candidate)}
             </DropdownMenuItem>
           ))}
         </DropdownMenuContent>

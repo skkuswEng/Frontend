@@ -57,7 +57,7 @@ const DesktopHeader = ({ dropdownData, authData, className }: HeaderProps) => {
   return (
     <div
       className={cn(
-        'relative z-50 mt-8 flex h-16 w-[90%] max-w-[1800px] items-center justify-between gap-14 rounded-full bg-swWhite px-12 py-7',
+        'relative z-50 mt-8 flex h-16 w-[90%] max-w-[1800px] items-center justify-between gap-14 rounded-full px-12 py-7',
         className,
       )}
     >
@@ -111,7 +111,12 @@ const MobileHeader = ({ dropdownData, authData, className }: HeaderProps) => {
   }
 
   return (
-    <div className={cn('absolute z-50 flex h-24 w-screen items-center justify-between bg-swWhite px-8 py-7', className)}>
+    <div
+      className={cn(
+        'absolute z-50 flex h-24 w-screen items-center justify-between border-b border-solid border-swGray bg-swWhite px-8 py-7',
+        className,
+      )}
+    >
       <Link href={ROUTES.MAIN.url}>
         <Logo text='SoKK' className='text-4xl' />
       </Link>

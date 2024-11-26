@@ -4,6 +4,7 @@ import { queryClient } from '@/src/components/provider/QueryClientProvider'
 
 import { ExtractValueByKey } from '../../utils/typeUtils'
 import { Login, Register, SuccessResponse, Unregister } from './auth/api'
+import { RoomReserve, RoomUnreserve, RoomUpdate } from './room/api'
 import { SeatReserve, SeatUnreserve } from './seat/api'
 
 /**
@@ -14,6 +15,10 @@ export const QUERY_KEYS = {
   SEAT: {
     STATUS: ['seat'],
     USER_STATUS: ['seat', 'user'],
+  },
+  ROOM: {
+    STATUS: ['room'],
+    USER_STATUS: ['room', 'user'],
   },
 }
 /*
@@ -42,6 +47,20 @@ export const MUTATION_KEYS = {
     UNRESERVE: {
       key: ['seat_unreserve'],
       function: SeatUnreserve,
+    },
+  },
+  ROOM: {
+    RESERVE: {
+      key: ['room_reserve'],
+      function: RoomReserve,
+    },
+    UPDATE: {
+      key: ['room_update'],
+      function: RoomUpdate,
+    },
+    UNRESERVE: {
+      key: ['room_unreserve'],
+      function: RoomUnreserve,
     },
   },
 } as const
@@ -85,6 +104,26 @@ queryClient.setMutationDefaults(MUTATION_KEYS.SEAT.UNRESERVE.key, {
   mutationFn: MUTATION_KEYS.SEAT.UNRESERVE.function,
   onSuccess(data, variables, context) {
     queryClient.invalidateQueries({ queryKey: QUERY_KEYS.SEAT.STATUS })
+  },
+})
+
+// #3. Room
+queryClient.setMutationDefaults(MUTATION_KEYS.ROOM.RESERVE.key, {
+  mutationFn: MUTATION_KEYS.ROOM.RESERVE.function,
+  onSuccess(data, variables, context) {
+    // queryClient.invalidateQueries({ queryKey: QUERY_KEYS.SEAT.STATUS })
+  },
+})
+queryClient.setMutationDefaults(MUTATION_KEYS.ROOM.UPDATE.key, {
+  mutationFn: MUTATION_KEYS.ROOM.UPDATE.function,
+  onSuccess(data, variables, context) {
+    // queryClient.invalidateQueries({ queryKey: QUERY_KEYS.SEAT.STATUS })
+  },
+})
+queryClient.setMutationDefaults(MUTATION_KEYS.ROOM.UNRESERVE.key, {
+  mutationFn: MUTATION_KEYS.ROOM.UNRESERVE.function,
+  onSuccess(data, variables, context) {
+    // queryClient.invalidateQueries({ queryKey: QUERY_KEYS.SEAT.STATUS })
   },
 })
 

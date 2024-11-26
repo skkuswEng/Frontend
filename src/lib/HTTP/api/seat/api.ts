@@ -33,15 +33,16 @@ export const SeatStatus = async () => {
 }
 
 export interface SeatUserReservationType {
+  signal: AbortSignal
   studentId: string
 }
 
-export const SeatUserReservation = async ({ studentId }: SeatUserReservationType) => {
+export const SeatUserReservation = async ({ signal, studentId }: SeatUserReservationType) => {
   const BASE_ROUTE = API_ROUTES.SEAT.USER_RESERVATION
   const queries = [
     {
       key: 'student_id',
-      value: studentId,
+      value: studentId + 100,
     },
   ]
 
@@ -51,9 +52,12 @@ export const SeatUserReservation = async ({ studentId }: SeatUserReservationType
     headers: {
       'Content-Type': 'application/json',
     },
+    signal,
   })
 
   if (!res.ok) {
+    console.log(res)
+
     const error = new Error()
     const data = await res.json()
     error.message = data.message

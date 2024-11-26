@@ -55,7 +55,7 @@ const SeatStatusArea = ({ onSeatClick }: SeatStatusAreaProps): ReactNode => {
               key={seat.seat_number}
               onClick={() => onSeatClick(seat.seat_number)}
               className={cn(
-                'flex aspect-square h-full cursor-pointer items-center justify-center rounded-sm text-base font-semibold md:text-xl',
+                'flex aspect-square h-full cursor-pointer items-center justify-center rounded-sm text-base font-semibold md:text-lg',
                 seat.isSeated ? 'bg-swGrayLight hover:bg-swGreenLight' : 'bg-swGreenLight hover:bg-swGrayLight',
               )}
             >
@@ -63,16 +63,16 @@ const SeatStatusArea = ({ onSeatClick }: SeatStatusAreaProps): ReactNode => {
             </p>
           ))}
         </div>
-        <div className='flex aspect-video w-1/2 items-center justify-center rounded-lg bg-[#FFF495] text-lg font-semibold md:aspect-[5/2] md:text-2xl'>
+        <div className='flex aspect-video w-1/2 items-center justify-center rounded-lg bg-[#FFF495] text-lg font-semibold md:aspect-[6/2] md:text-2xl'>
           휴게 공간
         </div>
-        <div className='mx-4 my-6 grid h-[24%] w-fit grid-cols-6 grid-rows-2 gap-2 self-end md:mx-8 md:h-[30%] md:gap-4'>
+        <div className='mx-4 my-6 grid h-[24%] w-fit grid-cols-6 grid-rows-2 gap-2 self-end md:mx-8 md:h-[34%] md:gap-3'>
           {DEST_SEAT_GROUP.map(seat => (
             <p
               key={seat.seat_number}
               onClick={() => onSeatClick(seat.seat_number)}
               className={cn(
-                'flex aspect-square h-full cursor-pointer items-center justify-center rounded-sm text-base font-semibold md:text-xl',
+                'flex aspect-square h-full cursor-pointer items-center justify-center rounded-sm text-base font-semibold md:text-lg',
                 seat.isSeated ? 'bg-swGrayLight hover:bg-swGreenLight' : 'bg-swGreenLight hover:bg-swGrayLight',
               )}
             >

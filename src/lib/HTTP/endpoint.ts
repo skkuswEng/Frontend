@@ -33,6 +33,28 @@ export const API_ROUTES = {
       url: '/seat/unreserve',
     },
   },
+  ROOM: {
+    STATUS: {
+      method: HttpMethod.GET,
+      url: '/room/status',
+    },
+    USER_RESERVATION: {
+      method: HttpMethod.GET,
+      url: '/room/reservation',
+    },
+    RESERVE: {
+      method: HttpMethod.POST,
+      url: '/room/reserve',
+    },
+    UPDATE: {
+      method: HttpMethod.POST,
+      url: '/room/update',
+    },
+    UNRESERVE: {
+      method: HttpMethod.DELETE,
+      url: '/room/unreserve',
+    },
+  },
 }
 
 const baseUrl = 'http://localhost:8000'

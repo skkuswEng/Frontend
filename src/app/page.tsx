@@ -34,13 +34,16 @@ const MainPage = () => {
       //   toast({ title: '로그인이 필요합니다' })
       //   return
       // }
-      return SeatUserReservation({ studentId: studentId as string })
+      return SeatUserReservation({ signal, studentId: studentId as string })
     },
     enabled: studentId != null,
   })
+
+  // Access the key, status and page variables in your query function!
+
   let user_seat // 0 : no seat / 1 ~ 18: seat 배정
   if (data) {
-    user_seat = data.content?.seat_number
+    user_seat = parseInt(data.content?.seat_number as string)
   }
 
   return (
