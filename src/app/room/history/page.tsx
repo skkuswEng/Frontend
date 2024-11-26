@@ -1,8 +1,12 @@
 'use client'
+import { useRouter } from 'next/navigation'
 import React, { ReactNode } from 'react'
 
 import { Divider } from '@/src/components/common/Dividers'
 import { TMP_ROOM_DATA } from '@/src/lib/constants/dummy_data'
+import { ClientModalData } from '@/src/lib/constants/modal_data'
+import { ROUTES } from '@/src/lib/constants/route'
+import useModal from '@/src/lib/hooks/useModal'
 import { cn } from '@/src/lib/utils/cn'
 import { formatDateToString, formatTimeRange } from '@/src/lib/utils/date-utils'
 
@@ -17,29 +21,29 @@ const RoomHistory = ({}: RoomHistoryProps): ReactNode => {
   const upcomingReservations = TMP_ROOM_DATA.filter(data => new Date(data.startDate) >= now)
 
   return (
-    <div className='relative mt-24 grid w-[90%] max-w-[1800px] flex-grow grid-cols-1 place-items-center gap-8 py-6 md:grid-cols-2 lg:mt-0'>
+    <div className='relative mt-24 grid w-[90%] max-w-[1700px] flex-grow grid-cols-1 place-items-center gap-8 py-6 md:grid-cols-2 lg:mt-0'>
       {/* 왼쪽 */}
       <div className='relative flex h-full w-full flex-col items-start justify-start gap-5'>
         <p className='text-2xl font-bold'>스터디룸 예약현황</p>
-        <span className='text-sm text-swBackDrop'>* 스터디룸 예약 현황, 지난 스터디룸 이용내역</span>
+        <span className='text-sm text-swBackDrop'>* 앞으로 다가오는 스터디룸 예약 정보입니다.</span>
         {/* 예약 내역 */}
         {upcomingReservations.length > 0 ? (
           upcomingReservations.map((data, index) => <HistoryCard key={index} data={data} className='w-full' />)
         ) : (
           <p className='text-sm text-swGray'>예약된 내역이 없습니다.</p>
         )}
-        <Divider />
-        <p className='mt-5 text-2xl font-bold'>지난 예약 내역</p>
-
+        <Divider className='md:hidden' />
+      </div>
+      <div className='relative flex h-full w-full flex-col items-start justify-start gap-5'>
+        <p className='text-2xl font-bold'>지난 예약 내역</p>
+        <span className='text-sm text-swBackDrop'>* 과거 스터디룸 예약 정보입니다.</span>
         {/* 지난 내역 */}
         {pastReservations.length > 0 ? (
-          pastReservations.map((data, index) => <HistoryCard key={index} data={data} className='w-full' />)
+          pastReservations.map((data, index) => <HistoryCard key={index} data={data} prev={true} className='w-full' />)
         ) : (
           <p className='text-sm text-swGray'>지난 예약 내역이 없습니다.</p>
         )}
       </div>
-      {/* 오른쪽 */}
-      <div className='flex h-full w-full flex-col items-start justify-start gap-3'></div>
     </div>
   )
 }
@@ -61,14 +65,30 @@ export type tmp_room_data_type = {
 }
 interface HistoryCardProps {
   data: tmp_room_data_type
+  prev?: boolean
   className?: string
 }
 
-const HistoryCard = ({ data, className }: HistoryCardProps): ReactNode => {
-  // console.log(data)
-  const { room_number, startDate, endDate, leader, companion } = data
+const HistoryCard = ({ data, prev, className }: HistoryCardProps): ReactNode => {
+  const router = useRouter()
+  const { modalData, openModal, Modal } = useModal()
 
+  // Static Data
+  const { room_number, startDate, endDate, leader, companion } = data
   const cnt_users = 1 + companion.length
+
+  const updateClickHandler = () => {
+    // TODO: RoomContext를 해당 정보 (data)로 변경 후 이동.
+    router.push(ROUTES.ROOM.RESERVE.STEP1.url)
+  }
+
+  const confirmHandler = () => {
+    switch (modalData) {
+      // TODO: 삭제 API 연동하기
+      case ClientModalData.ROOM.UNRESERVE.CONFIRM:
+    }
+  }
+
   return (
     <div
       className={cn(
@@ -91,10 +111,20 @@ const HistoryCard = ({ data, className }: HistoryCardProps): ReactNode => {
           <NameCard key={index} student_id={item.student_id} name={item.name} />
         ))}
       </div>
-      <div className='absolute right-4 top-6 flex items-center justify-center gap-3'>
-        <span className='cursor-pointer text-sm text-swRed hover:font-medium hover:text-swHoverRed hover:underline'>예약 취소</span>
-        <span className='cursor-pointer text-sm hover:font-medium hover:underline'>수정</span>
-      </div>
+      {!prev && (
+        <div className='absolute right-6 top-6 flex items-center justify-center gap-3'>
+          <span
+            onClick={() => openModal(ClientModalData.ROOM.UNRESERVE.CONFIRM)}
+            className='cursor-pointer text-sm text-swRed hover:font-medium hover:text-swHoverRed hover:underline'
+          >
+            예약 취소
+          </span>
+          <span onClick={updateClickHandler} className='cursor-pointer text-sm hover:font-medium hover:underline'>
+            수정
+          </span>
+        </div>
+      )}
+      <Modal onConfirm={confirmHandler} />
     </div>
   )
 }
