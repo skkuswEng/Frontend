@@ -8,6 +8,7 @@ import SPACE_A from '@/public/images/공용공간A.jpg'
 import SPACE_B from '@/public/images/공용공간B.jpg'
 import STUDY_ROOM_B from '@/public/images/스터디룸B.jpg'
 import { Divider } from '@/src/components/common/Dividers'
+import Loading from '@/src/components/common/Loading'
 import { Button } from '@/src/components/ui/button'
 import { ClientModalData } from '@/src/lib/constants/modal_data'
 import { ROUTES } from '@/src/lib/constants/route'
@@ -32,7 +33,7 @@ const convertRoomNameToNumber = (room_name: string): number => {
   return 0
 }
 
-const generateTimeIntervals = (startTime = START_TIME, endTime = END_TIME, intervalMinutes = 30) => {
+const generateTimeIntervals = (startTime: string, endTime: string, intervalMinutes = 30) => {
   const times = []
   let [hour, minute] = startTime.split(':').map(Number)
   const [endHour, endMinute] = endTime.split(':').map(Number)
@@ -56,8 +57,6 @@ const generateTimeIntervals = (startTime = START_TIME, endTime = END_TIME, inter
 
   return times
 }
-const [START_TIME, END_TIME] = ['09:00', '20:00']
-const timeSelections = generateTimeIntervals(START_TIME, END_TIME)
 
 const ROOM_IMAGES = [STUDY_ROOM_B, SPACE_A, SPACE_B]
 export const ROOM_TEXT_CANDIDATES = ['스터디룸B', '공용공간A', '공용공간B']
@@ -111,7 +110,6 @@ const StudyRoomReservePage = ({}: StudyRoomReservePageProps): ReactNode => {
 
   // #3. 시간 State
   const isDone: boolean = Boolean(leader && room_number && date && time && time.startTime && time.endTime) // 모든게 있으면 완료 상태
-  console.log('time: ', time.startTime, time.endTime)
 
   const {
     data,
@@ -125,6 +123,27 @@ const StudyRoomReservePage = ({}: StudyRoomReservePageProps): ReactNode => {
     },
     enabled: room_number !== undefined && date !== undefined,
   })
+  let time_contents
+  if (isPendingRoomStatus) {
+    time_contents = <Loading className='flex items-center justify-center' />
+  }
+  if (data && data.content) {
+    const [START_TIME, END_TIME] = ['09:00', '20:00']
+    const timeSelections = generateTimeIntervals(START_TIME, END_TIME)
+
+    const isAvailableObj = data.content
+
+    time_contents = timeSelections.map(timeSelection => (
+      <TimeSelector
+        key={timeSelection}
+        value={timeSelection}
+        isAvailable={isAvailableObj[timeSelection]}
+        time={time}
+        setTime={setTime}
+        className='w-full px-3 py-2 text-sm'
+      />
+    ))
+  }
 
   // Functions
   const onConfirmHandler = () => {
@@ -177,11 +196,13 @@ const StudyRoomReservePage = ({}: StudyRoomReservePageProps): ReactNode => {
             </div>
           </div>
 
-          <div className='grid w-full grid-cols-4 items-start justify-start gap-x-2 gap-y-2 sm:grid-cols-5 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-7'>
-            {timeSelections.map(timeSelection => (
-              <TimeSelector key={timeSelection} value={timeSelection} time={time} setTime={setTime} className='w-full px-3 py-2 text-sm' />
-            ))}
-          </div>
+          {room_number == undefined || date == undefined ? (
+            <div className='flex h-11 items-center justify-start font-semibold'>이용공간과 날짜를 선택해주세요.</div>
+          ) : (
+            <div className='grid w-full grid-cols-4 items-start justify-start gap-x-2 gap-y-2 sm:grid-cols-5 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-7'>
+              {time_contents}
+            </div>
+          )}
 
           <Button variant={isDone ? 'swBlack' : 'swBlackDisabled'} className='mt-5 w-full' disabled={!isDone} onClick={stepHandler}>
             다음
@@ -197,11 +218,12 @@ export default StudyRoomReservePage
 
 interface TimeSelectorProps {
   value: string
+  isAvailable: boolean
   time?: RoomReservationTime
   setTime: (startTime: string, endTime: string | undefined) => void
   className: string
 }
-const TimeSelector = ({ value, time, setTime, className }: TimeSelectorProps): ReactNode => {
+const TimeSelector = ({ value, isAvailable, time, setTime, className }: TimeSelectorProps): ReactNode => {
   const clickHandler = () => {
     // 시작시간이 없거나, 시작과 끝 시간이 둘 다 있는 경우 (초기화)
     if (!time?.startTime || (time.startTime && time.endTime)) {

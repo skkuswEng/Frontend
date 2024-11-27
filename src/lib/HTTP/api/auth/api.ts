@@ -8,7 +8,7 @@ export interface LoginType {
 }
 
 export type SuccessResponse = {
-  content: Nullable<{ [key: string]: string }>
+  content: Nullable<{ [key: string]: any }>
   message: string
 }
 
