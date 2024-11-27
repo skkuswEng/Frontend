@@ -140,6 +140,20 @@ export interface RoomUpdateType {}
 export const RoomUpdate = async ({}: RoomUpdateType) => {
   const ROUTE = API_ROUTES.SEAT.STATUS
 
+  // const body = {
+  //   student_id: ,
+  //   room_number: ,
+  //   start_time: ,
+  //   end_time: ,
+  //   modified_start_time: ,
+  //   modified_end_time: ,
+  //   companion: [
+  //     {
+  //       student_id: ,
+  //       name: ,
+  //     },
+  //   ],
+  // }
   const res = await Fetch(ROUTE.url, {
     method: ROUTE.method,
     headers: {
@@ -158,16 +172,28 @@ export const RoomUpdate = async ({}: RoomUpdateType) => {
 
   return data
 }
-export interface RoomUnreserveType {}
+export interface RoomUnreserveType {
+  student_id: string
+  room_number: number
+  startDate: Date
+  endDate: Date
+}
 
-export const RoomUnreserve = async ({}: RoomUnreserveType) => {
+export const RoomUnreserve = async ({ student_id, room_number, startDate, endDate }: RoomUnreserveType) => {
   const ROUTE = API_ROUTES.SEAT.STATUS
 
+  const body = {
+    student_id: student_id,
+    room_number: room_number,
+    startDate: ISOFormatWithoutBack(startDate),
+    endDate: ISOFormatWithoutBack(endDate),
+  }
   const res = await Fetch(ROUTE.url, {
     method: ROUTE.method,
     headers: {
       'Content-Type': 'application/json',
     },
+    body: JSON.stringify(body),
   })
 
   if (!res.ok) {

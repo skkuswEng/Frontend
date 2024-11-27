@@ -1,56 +1,24 @@
 'use client'
+import { useQuery } from '@tanstack/react-query'
 import { useRouter } from 'next/navigation'
 import React, { ReactNode } from 'react'
 
 import { Divider } from '@/src/components/common/Dividers'
-import { TMP_ROOM_DATA } from '@/src/lib/constants/dummy_data'
+import Loading from '@/src/components/common/Loading'
 import { ClientModalData } from '@/src/lib/constants/modal_data'
 import { ROUTES } from '@/src/lib/constants/route'
+import useAuthStore from '@/src/lib/context/authContext'
 import useModal from '@/src/lib/hooks/useModal'
+import { toast } from '@/src/lib/hooks/useToast'
+import { RoomUnreserveType, RoomUserReservation } from '@/src/lib/HTTP/api/room/api'
+import { QUERY_KEYS, useMutationStore } from '@/src/lib/HTTP/api/tanstack-query'
 import { cn } from '@/src/lib/utils/cn'
 import { formatDateToString, formatTimeRange } from '@/src/lib/utils/date-utils'
 
 import { ROOM_TEXT_CANDIDATES } from '../reserve/step1/page'
 
-interface RoomHistoryProps {}
-
-const RoomHistory = ({}: RoomHistoryProps): ReactNode => {
-  const now = new Date()
-  // 지난 내역과 예약 내역 분리
-  const pastReservations = TMP_ROOM_DATA.filter(data => new Date(data.startDate) < now)
-  const upcomingReservations = TMP_ROOM_DATA.filter(data => new Date(data.startDate) >= now)
-
-  return (
-    <div className='relative mt-24 grid w-[90%] max-w-[1700px] flex-grow grid-cols-1 place-items-center gap-8 py-6 md:grid-cols-2 lg:mt-0'>
-      {/* 왼쪽 */}
-      <div className='relative flex h-full w-full flex-col items-start justify-start gap-5'>
-        <p className='text-2xl font-bold'>스터디룸 예약현황</p>
-        <span className='text-sm text-swBackDrop'>* 앞으로 다가오는 스터디룸 예약 정보입니다.</span>
-        {/* 예약 내역 */}
-        {upcomingReservations.length > 0 ? (
-          upcomingReservations.map((data, index) => <HistoryCard key={index} data={data} className='w-full' />)
-        ) : (
-          <p className='text-sm text-swGray'>예약된 내역이 없습니다.</p>
-        )}
-        <Divider className='md:hidden' />
-      </div>
-      <div className='relative flex h-full w-full flex-col items-start justify-start gap-5'>
-        <p className='text-2xl font-bold'>지난 예약 내역</p>
-        <span className='text-sm text-swBackDrop'>* 과거 스터디룸 예약 정보입니다.</span>
-        {/* 지난 내역 */}
-        {pastReservations.length > 0 ? (
-          pastReservations.map((data, index) => <HistoryCard key={index} data={data} prev={true} className='w-full' />)
-        ) : (
-          <p className='text-sm text-swGray'>지난 예약 내역이 없습니다.</p>
-        )}
-      </div>
-    </div>
-  )
-}
-
-export default RoomHistory
 // 백엔드가 보내주는 데이터 형식
-export type tmp_room_data_type = {
+export type RoomDataType = {
   room_number: number
   startDate: Date
   endDate: Date
@@ -63,13 +31,68 @@ export type tmp_room_data_type = {
     name: string
   }[]
 }
+interface RoomHistoryProps {}
+
+const RoomHistory = ({}: RoomHistoryProps): ReactNode => {
+  const { studentId, name } = useAuthStore()
+
+  // #1. 스터디룸 예약 정보 Fetch
+  const { data, isPending: isPendingRoom } = useQuery({
+    queryKey: QUERY_KEYS.ROOM.USER_STATUS,
+    queryFn: ({ signal }) => {
+      return RoomUserReservation({ signal, studentId: studentId as string })
+    },
+    enabled: studentId != null,
+  })
+
+  let room_data: RoomDataType[] = []
+  if (data && data.content) {
+    console.log(data)
+
+    room_data = data.content.reserve.map((item: any) => ({
+      room_number: item.room_number,
+      startDate: new Date(item.startDate),
+      endDate: new Date(item.endDate),
+      leader: {
+        student_id: item.leader.student_id,
+        name: item.leader.name,
+      },
+      companion: item.companionData.map((comp: any) => ({
+        student_id: comp.student_id,
+        name: comp.name,
+      })),
+    }))
+    console.log(room_data)
+  }
+
+  return (
+    <div className='relative mt-24 flex w-[90%] max-w-[1700px] flex-grow flex-col items-start justify-start gap-4 py-6 lg:mt-0'>
+      <p className='text-2xl font-bold'>스터디룸 예약현황</p>
+      <span className='text-sm text-swBackDrop'>* 앞으로 다가오는 스터디룸 예약 정보입니다.</span>
+
+      <div className='relative grid h-full w-full grid-cols-1 place-items-start gap-5 md:grid-cols-2'>
+        {/* 예약 내역 */}
+        {room_data.length > 0 ? (
+          room_data.map((data, index) => <HistoryCard key={index} data={data} userStudentId={studentId} className='h-full w-full' />)
+        ) : (
+          <p className='text-sm text-swGray'>예약된 내역이 없습니다.</p>
+        )}
+        <Divider className='md:hidden' />
+      </div>
+    </div>
+  )
+}
+
+export default RoomHistory
+
 interface HistoryCardProps {
-  data: tmp_room_data_type
+  data: RoomDataType
+  userStudentId: string | null
   prev?: boolean
   className?: string
 }
 
-const HistoryCard = ({ data, prev, className }: HistoryCardProps): ReactNode => {
+const HistoryCard = ({ data, prev, userStudentId, className }: HistoryCardProps): ReactNode => {
   const router = useRouter()
   const { modalData, openModal, Modal } = useModal()
 
@@ -77,15 +100,43 @@ const HistoryCard = ({ data, prev, className }: HistoryCardProps): ReactNode => 
   const { room_number, startDate, endDate, leader, companion } = data
   const cnt_users = 1 + companion.length
 
-  const updateClickHandler = () => {
+  const updateHandler = () => {
     // TODO: RoomContext를 해당 정보 (data)로 변경 후 이동.
     router.push(ROUTES.ROOM.RESERVE.STEP1.url)
   }
 
+  const { mutate: UnreserveMutate, isPending: isDeleting } = useMutationStore<RoomUnreserveType>(['room_unreserve'])
+
   const confirmHandler = () => {
     switch (modalData) {
-      // TODO: 삭제 API 연동하기
       case ClientModalData.ROOM.UNRESERVE.CONFIRM:
+        // 로그인하지 않은 경우
+        if (!userStudentId) {
+          toast({ title: '로그인이 필요합니다!' })
+          router.push(ROUTES.AUTH.LOGIN.url)
+          return
+        }
+        // 대표가 아닌 경우
+        if (userStudentId !== leader.student_id) {
+          toast({ title: '예약 대표만이 취소할 수 있습니다!' })
+          return
+        }
+        if (userStudentId) {
+          UnreserveMutate(
+            {
+              student_id: userStudentId,
+              room_number,
+              startDate,
+              endDate,
+            },
+            {
+              onSuccess(data, variables, context) {
+                toast({ title: '스터디룸 예약을 취소하였습니다', variant: 'success' })
+                window.open(ROUTES.ROOM.HISTORY.url)
+              },
+            },
+          )
+        }
     }
   }
 
@@ -113,13 +164,17 @@ const HistoryCard = ({ data, prev, className }: HistoryCardProps): ReactNode => 
       </div>
       {!prev && (
         <div className='absolute right-6 top-6 flex items-center justify-center gap-3'>
-          <span
-            onClick={() => openModal(ClientModalData.ROOM.UNRESERVE.CONFIRM)}
-            className='cursor-pointer text-sm text-swRed hover:font-medium hover:text-swHoverRed hover:underline'
-          >
-            예약 취소
-          </span>
-          <span onClick={updateClickHandler} className='cursor-pointer text-sm hover:font-medium hover:underline'>
+          {!isDeleting ? (
+            <span
+              onClick={() => openModal(ClientModalData.ROOM.UNRESERVE.CONFIRM)}
+              className='cursor-pointer text-sm text-swRed hover:font-medium hover:text-swHoverRed hover:underline'
+            >
+              예약 취소
+            </span>
+          ) : (
+            <Loading />
+          )}
+          <span onClick={updateHandler} className='cursor-pointer text-sm hover:font-medium hover:underline'>
             수정
           </span>
         </div>
