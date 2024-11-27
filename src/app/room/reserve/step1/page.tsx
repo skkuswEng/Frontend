@@ -95,6 +95,7 @@ const StudyRoomReservePage = ({}: StudyRoomReservePageProps): ReactNode => {
       const converted_room_number = convertRoomNameToNumber(room_name)
       setRoomNumber(converted_room_number)
     }
+    setTime(undefined, undefined)
   }, [room_name])
 
   // #2. 날짜 State
@@ -106,6 +107,7 @@ const StudyRoomReservePage = ({}: StudyRoomReservePageProps): ReactNode => {
     if (tmp_date) {
       setDate(tmp_date)
     }
+    setTime(undefined, undefined)
   }, [tmp_date])
 
   // #3. 시간 State
@@ -117,9 +119,9 @@ const StudyRoomReservePage = ({}: StudyRoomReservePageProps): ReactNode => {
     isError,
     error,
   } = useQuery({
-    queryKey: QUERY_KEYS.ROOM.STATUS,
+    queryKey: [QUERY_KEYS.ROOM.STATUS, room_number, date],
     queryFn: ({ signal }) => {
-      return RoomStatus({ signal, room_number: room_number as number, date: date?.toISOString().split('T')[0] as string })
+      return RoomStatus({ signal, room_number: room_number as number, date: date?.toLocaleDateString('en-CA') as string })
     },
     enabled: room_number !== undefined && date !== undefined,
   })
@@ -131,13 +133,13 @@ const StudyRoomReservePage = ({}: StudyRoomReservePageProps): ReactNode => {
     const [START_TIME, END_TIME] = ['09:00', '20:00']
     const timeSelections = generateTimeIntervals(START_TIME, END_TIME)
 
-    const isAvailableObj = data.content
+    const isOccupiedObj = data.content
 
     time_contents = timeSelections.map(timeSelection => (
       <TimeSelector
         key={timeSelection}
         value={timeSelection}
-        isAvailable={isAvailableObj[timeSelection]}
+        isOccupied={isOccupiedObj[timeSelection]}
         time={time}
         setTime={setTime}
         className='w-full px-3 py-2 text-sm'
@@ -155,6 +157,8 @@ const StudyRoomReservePage = ({}: StudyRoomReservePageProps): ReactNode => {
   }
 
   const stepHandler = () => {
+    // console.log('leader is ', leader)
+
     router.push(ROUTES.ROOM.RESERVE.STEP2.url)
   }
 
@@ -187,11 +191,11 @@ const StudyRoomReservePage = ({}: StudyRoomReservePageProps): ReactNode => {
 
           <div className='flex items-center justify-start gap-4'>
             <div className='flex items-center justify-between gap-2'>
-              <span className='h-4 w-10 rounded-sm border border-solid border-swGrayDark bg-swGreenLight' />
+              <span className='h-4 w-10 rounded-sm border border-solid border-swGrayDark bg-swWhite' />
               <span className='text-sm font-bold'>예약 가능</span>
             </div>
             <div className='flex items-center justify-between gap-2'>
-              <span className='h-4 w-10 rounded-sm border border-solid border-swGrayDark bg-swGrayLight' />
+              <span className='h-4 w-10 rounded-sm border border-solid border-swGrayDark bg-swBackDrop' />
               <span className='text-sm font-bold text-swGrayDark'>예약 확정</span>
             </div>
           </div>
@@ -218,12 +222,12 @@ export default StudyRoomReservePage
 
 interface TimeSelectorProps {
   value: string
-  isAvailable: boolean
+  isOccupied: boolean
   time?: RoomReservationTime
   setTime: (startTime: string, endTime: string | undefined) => void
   className: string
 }
-const TimeSelector = ({ value, isAvailable, time, setTime, className }: TimeSelectorProps): ReactNode => {
+const TimeSelector = ({ value, isOccupied, time, setTime, className }: TimeSelectorProps): ReactNode => {
   const clickHandler = () => {
     // 시작시간이 없거나, 시작과 끝 시간이 둘 다 있는 경우 (초기화)
     if (!time?.startTime || (time.startTime && time.endTime)) {
@@ -280,7 +284,8 @@ const TimeSelector = ({ value, isAvailable, time, setTime, className }: TimeSele
     <p
       className={cn(
         'cursor-pointer rounded-sm border border-solid border-swGrayDark text-center text-sm',
-        isColored() ? 'bg-swGreenLight' : 'bg-swWhite hover:bg-swGreenLight',
+        isOccupied ? 'bg-swBackDrop' : 'bg-swWhite',
+        isColored() ? 'bg-swGreenLight' : '',
         className,
       )}
       onClick={clickHandler}

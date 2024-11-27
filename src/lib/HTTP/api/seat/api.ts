@@ -42,7 +42,7 @@ export const SeatUserReservation = async ({ signal, studentId }: SeatUserReserva
   const queries = [
     {
       key: 'student_id',
-      value: studentId + 100,
+      value: studentId,
     },
   ]
 

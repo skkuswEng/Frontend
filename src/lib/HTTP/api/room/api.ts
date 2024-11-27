@@ -1,3 +1,6 @@
+import { Companion, RoomReservationTime } from '@/src/lib/context/roomContext'
+import { ISOFormatWithoutBack } from '@/src/lib/utils/date-utils'
+
 import { attachQuery, Queries } from '../..'
 import { API_ROUTES, Fetch } from '../../endpoint'
 import { SuccessResponse } from '../auth/api'
@@ -34,7 +37,7 @@ export const RoomStatus = async ({ signal, room_number, date }: RoomStatusType) 
   if (!res.ok) {
     const error = new Error()
     const data = await res.json()
-    error.message = data.message
+    error.message = data.detail
     throw error
   }
 
@@ -44,13 +47,24 @@ export const RoomStatus = async ({ signal, room_number, date }: RoomStatusType) 
   return data
 }
 
-export interface RoomUserReservationType {}
+export interface RoomUserReservationType {
+  signal: AbortSignal
+  studentId: string
+}
 
-export const RoomUserReservation = async ({}: RoomUserReservationType) => {
-  const ROUTE = API_ROUTES.SEAT.STATUS
+export const RoomUserReservation = async ({ signal, studentId }: RoomUserReservationType) => {
+  const BASE_ROUTE = API_ROUTES.ROOM.USER_RESERVATION
 
-  const res = await Fetch(ROUTE.url, {
-    method: ROUTE.method,
+  const queries: Queries = [
+    {
+      key: 'student_id',
+      value: studentId,
+    },
+  ]
+  const ROUTE = attachQuery(BASE_ROUTE.url, queries)
+
+  const res = await Fetch(ROUTE, {
+    method: BASE_ROUTE.method,
     headers: {
       'Content-Type': 'application/json',
     },
@@ -59,7 +73,7 @@ export const RoomUserReservation = async ({}: RoomUserReservationType) => {
   if (!res.ok) {
     const error = new Error()
     const data = await res.json()
-    error.message = data.message
+    error.message = data.detail
     throw error
   }
 
@@ -67,22 +81,52 @@ export const RoomUserReservation = async ({}: RoomUserReservationType) => {
 
   return data
 }
-export interface RoomReserveType {}
+export interface RoomReserveType {
+  studentId: string
+  room_number: number
+  date: Date
+  time: RoomReservationTime
+  companion: Array<Companion>
+}
 
-export const RoomReserve = async ({}: RoomReserveType) => {
-  const ROUTE = API_ROUTES.SEAT.STATUS
+export const RoomReserve = async ({ studentId, room_number, date, time, companion }: RoomReserveType) => {
+  const ROUTE = API_ROUTES.ROOM.RESERVE
+  const combineDateAndTime = (baseDate: Date, timeStr: string): Date => {
+    const [hours, minutes] = timeStr.split(':').map(Number)
+    const newDate = new Date(baseDate)
+    newDate.setHours(hours, minutes, 0, 0)
+    return newDate
+  }
+
+  // Calculate start_date and end_date
+  let start_date = combineDateAndTime(date, time.startTime!)
+  let end_date = combineDateAndTime(date, time.endTime!)
+  const companionList = companion.map(item => ({
+    student_id: item.studentId,
+    name: item.name,
+  }))
+
+  const body = {
+    student_id: studentId,
+    room_id: room_number,
+    start_time: ISOFormatWithoutBack(start_date),
+    end_time: ISOFormatWithoutBack(end_date),
+    companion: companionList,
+  }
+  console.log(body)
 
   const res = await Fetch(ROUTE.url, {
     method: ROUTE.method,
     headers: {
       'Content-Type': 'application/json',
     },
+    body: JSON.stringify(body),
   })
 
   if (!res.ok) {
     const error = new Error()
     const data = await res.json()
-    error.message = data.message
+    error.message = data.detail
     throw error
   }
 
@@ -106,7 +150,7 @@ export const RoomUpdate = async ({}: RoomUpdateType) => {
   if (!res.ok) {
     const error = new Error()
     const data = await res.json()
-    error.message = data.message
+    error.message = data.detail
     throw error
   }
 
@@ -129,7 +173,7 @@ export const RoomUnreserve = async ({}: RoomUnreserveType) => {
   if (!res.ok) {
     const error = new Error()
     const data = await res.json()
-    error.message = data.message
+    error.message = data.detail
     throw error
   }
 

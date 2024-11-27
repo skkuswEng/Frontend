@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 
-interface Companion {
+export interface Companion {
   studentId: string
   name: string
 }
@@ -15,18 +15,22 @@ interface RoomDataState {
   date?: Date
   time: RoomReservationTime
   leader?: Companion
-  companionList?: Array<Companion>
+  companionList: Array<Companion>
 }
 
 export interface RoomState extends RoomDataState {
   setRoomNumber: (roomNumber: number) => void
   setDate: (date: Date) => void
-  setTime: (startTime: string, endTime: string | undefined) => void
+  setTime: (startTime: string | undefined, endTime: string | undefined) => void
   setLeader: (leader: Companion) => void
-  addCompanion: (companion: Companion) => void
-  removeCompanion: (id: string) => void
+  setCompanion: (companions: Array<Companion>) => void
+}
+export const INIT_COMPANION: Companion = {
+  studentId: '',
+  name: '',
 }
 
+export const INIT_COMPANIONS: Array<Companion> = [INIT_COMPANION]
 const useRoomStateStore = create<RoomState>(set => ({
   room_number: undefined,
   date: undefined,
@@ -35,7 +39,7 @@ const useRoomStateStore = create<RoomState>(set => ({
     endTime: undefined,
   },
   leader: undefined,
-  companionList: undefined,
+  companionList: INIT_COMPANIONS,
 
   setRoomNumber: roomNumber =>
     set(() => ({
@@ -57,14 +61,9 @@ const useRoomStateStore = create<RoomState>(set => ({
       leader,
     })),
 
-  addCompanion: companion =>
-    set(state => ({
-      companionList: [...(state.companionList || []), companion],
-    })),
-
-  removeCompanion: id =>
-    set(state => ({
-      companionList: (state.companionList || []).filter(comp => comp.studentId !== id),
+  setCompanion: companions =>
+    set(() => ({
+      companionList: companions,
     })),
 }))
 

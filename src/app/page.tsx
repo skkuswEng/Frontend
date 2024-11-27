@@ -16,34 +16,42 @@ import { ROUTES, RouteType } from '../lib/constants/route'
 import useAuthStore from '../lib/context/authContext'
 import useModal from '../lib/hooks/useModal'
 import { toast } from '../lib/hooks/useToast'
+import { RoomUserReservation } from '../lib/HTTP/api/room/api'
 import { SeatUnreserveType, SeatUserReservation } from '../lib/HTTP/api/seat/api'
 import { QUERY_KEYS, useMutationStore } from '../lib/HTTP/api/tanstack-query'
 import { cn } from '../lib/utils/cn'
+import { formatDateRange } from '../lib/utils/date-utils'
 
 const MainPage = () => {
   const { studentId } = useAuthStore()
-  const {
-    data,
-    isPending: isPendingSeat,
-    isError,
-    error,
-  } = useQuery({
+  // #1. 좌석 정보 Fetch
+  const { data: user_seat_data, isPending: isPendingSeat } = useQuery({
     queryKey: QUERY_KEYS.SEAT.USER_STATUS,
     queryFn: ({ signal }) => {
-      // if (!studentId) {
-      //   toast({ title: '로그인이 필요합니다' })
-      //   return
-      // }
       return SeatUserReservation({ signal, studentId: studentId as string })
     },
     enabled: studentId != null,
   })
-
-  // Access the key, status and page variables in your query function!
-
   let user_seat // 0 : no seat / 1 ~ 18: seat 배정
-  if (data) {
-    user_seat = parseInt(data.content?.seat_number as string)
+  if (user_seat_data) {
+    user_seat = parseInt(user_seat_data.content?.seat_number as string)
+  }
+
+  // #2. 스터디룸 예약 정보 Fetch
+  const { data: user_room_data, isPending: isPendingRoom } = useQuery({
+    queryKey: QUERY_KEYS.ROOM.USER_STATUS,
+    queryFn: ({ signal }) => {
+      return RoomUserReservation({ signal, studentId: studentId as string })
+    },
+    enabled: studentId != null,
+  })
+  let user_room
+  if (user_room_data) {
+    user_room = user_room_data.content?.reserve.map((item: any) => ({
+      startDate: item.startDate,
+      endDate: item.endDate,
+      cnt: item.companionData.length + 1, // 자기자신 넣기
+    }))
   }
 
   return (
@@ -83,6 +91,7 @@ const MainPage = () => {
           title='스터디룸 예약'
           subtitle='스터디룸 예약하기'
           href={ROUTES.ROOM.RESERVE.STEP1.url}
+          user_room={user_room}
           className='h-60 w-full bg-swGreenLight hover:bg-swHoverGreenLight lg:order-1 lg:aspect-card lg:h-auto'
         />
         <Card
@@ -106,11 +115,15 @@ interface CardProps {
   qr?: boolean
   user_seat?: number
   isPendingSeat?: boolean
-
+  user_room?: {
+    startDate: Date
+    endDate: Date
+    cnt: number
+  }[]
   className?: string
 }
 
-const Card = ({ title, subtitle, href, qrHref, qr, user_seat, isPendingSeat, className }: CardProps) => {
+const Card = ({ title, subtitle, href, qrHref, qr, user_seat, isPendingSeat, user_room, className }: CardProps) => {
   const router = useRouter()
   const { isOpen, modalData, Modal, openModal } = useModal()
   const { studentId } = useAuthStore()
@@ -202,6 +215,15 @@ const Card = ({ title, subtitle, href, qrHref, qr, user_seat, isPendingSeat, cla
   if (qr && user_seat) {
     seat_text = <p className='absolute bottom-8 border-b border-solid border-swBlack font-semibold'>{user_seat}번 좌석 이용 중</p>
   }
+
+  let room_text
+  if (user_room) {
+    room_text = [...user_room].reverse().map((item, index) => (
+      <p key={index} className='font-semibold'>
+        {formatDateRange(new Date(item.startDate), new Date(item.endDate))} ({item.cnt}명)
+      </p>
+    ))
+  }
   return (
     <div
       onClick={handleCardClick}
@@ -212,6 +234,7 @@ const Card = ({ title, subtitle, href, qrHref, qr, user_seat, isPendingSeat, cla
     >
       <h1 className='text-3xl font-bold'>{title}</h1>
       <p className='text-base text-gray-600'>{subtitle}</p>
+      {<div className='absolute bottom-4'>{room_text}</div>}
       {seat_text}
       {title === '이용 수칙' && (
         <div className='absolute right-5 top-5 flex h-12 w-12 items-center justify-center rounded-full border-2 border-swBlack group-hover:bg-swWhite'>

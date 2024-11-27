@@ -92,6 +92,12 @@ export const ClientModalData = {
   },
   ROOM: {
     RESERVE: {
+      ATTEMPT: {
+        id: 'confirm',
+        title: '스터디룸 예약',
+        description: '해당 정보를 토대로 예약하시겠습니까?',
+        isError: false,
+      },
       AUTH_REQUIRED: {
         id: 'info',
         title: '로그인 필요',
