@@ -92,6 +92,7 @@ const MainPage = () => {
           subtitle='스터디룸 예약하기'
           href={ROUTES.ROOM.RESERVE.STEP1.url}
           user_room={user_room}
+          isPendingRoom={isPendingRoom}
           className='h-60 w-full bg-swGreenLight hover:bg-swHoverGreenLight lg:order-1 lg:aspect-card lg:h-auto'
         />
         <Card
@@ -120,10 +121,11 @@ interface CardProps {
     endDate: Date
     cnt: number
   }[]
+  isPendingRoom?: boolean
   className?: string
 }
 
-const Card = ({ title, subtitle, href, qrHref, qr, user_seat, isPendingSeat, user_room, className }: CardProps) => {
+const Card = ({ title, subtitle, href, qrHref, qr, user_seat, isPendingSeat, user_room, isPendingRoom, className }: CardProps) => {
   const router = useRouter()
   const { isOpen, modalData, Modal, openModal } = useModal()
   const { studentId } = useAuthStore()
@@ -217,6 +219,9 @@ const Card = ({ title, subtitle, href, qrHref, qr, user_seat, isPendingSeat, use
   }
 
   let room_text
+  if (isPendingRoom) {
+    room_text = <Loading className='absolute bottom-5 left-5 flex items-center justify-center gap-2 rounded-full font-bold text-swWhite' />
+  }
   if (user_room) {
     room_text = [...user_room].reverse().map((item, index) => (
       <p key={index} className='font-semibold'>
