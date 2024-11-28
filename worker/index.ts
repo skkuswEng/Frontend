@@ -23,13 +23,15 @@ if (isSupported) {
   const messaging = firebase.messaging()
 
   messaging.onBackgroundMessage(payload => {
-    const {
-      notification: { title, body },
-      data: { reservation },
-    } = payload
-    console.log('메세지를 획득함 from 서비스워커', payload)
+    console.log('onBackgroundMessage')
 
-    const reservationId = parseInt(reservation)
-    self.registration.showNotification(title, { body })
+    console.log(payload)
+    const {
+      data: { title, body },
+      // data: { reservation },
+    } = payload
+
+    // const reservationId = parseInt(reservation)
+    self.registration.showNotification(title, { body, icon: '/icons/icon-48x48.png' })
   })
 }

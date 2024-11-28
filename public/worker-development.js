@@ -23,19 +23,20 @@ const isSupported = firebase.messaging.isSupported();
 if (isSupported) {
   const messaging = firebase.messaging();
   messaging.onBackgroundMessage(payload => {
+    console.log('onBackgroundMessage');
+    console.log(payload);
     const {
-      notification: {
+      data: {
         title,
         body
-      },
-      data: {
-        reservation
       }
+      // data: { reservation },
     } = payload;
-    console.log('메세지를 획득함 from 서비스워커', payload);
-    const reservationId = parseInt(reservation);
+
+    // const reservationId = parseInt(reservation)
     self.registration.showNotification(title, {
-      body
+      body,
+      icon: '/icons/icon-48x48.png'
     });
   });
 }
