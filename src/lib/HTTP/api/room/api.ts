@@ -1,5 +1,5 @@
 import { Companion, RoomReservationTime } from '@/src/lib/context/roomContext'
-import { ISOFormatWithoutBack } from '@/src/lib/utils/date-utils'
+import { add30Minutes, ISOFormatWithoutBack } from '@/src/lib/utils/date-utils'
 
 import { attachQuery, Queries } from '../..'
 import { API_ROUTES, Fetch } from '../../endpoint'
@@ -100,7 +100,7 @@ export const RoomReserve = async ({ studentId, room_number, date, time, companio
 
   // Calculate start_date and end_date
   let start_date = combineDateAndTime(date, time.startTime!)
-  let end_date = combineDateAndTime(date, time.endTime!)
+  let end_date = combineDateAndTime(date, add30Minutes(time.endTime!))
   const companionList = companion.map(item => ({
     student_id: item.studentId,
     name: item.name,
@@ -113,8 +113,6 @@ export const RoomReserve = async ({ studentId, room_number, date, time, companio
     end_time: ISOFormatWithoutBack(end_date),
     companion: companionList,
   }
-  console.log(body)
-
   const res = await Fetch(ROUTE.url, {
     method: ROUTE.method,
     headers: {

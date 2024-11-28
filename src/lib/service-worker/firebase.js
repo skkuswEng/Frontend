@@ -1,6 +1,6 @@
 // lib/firebase.js
 import { getApps, initializeApp } from 'firebase/app'
-import { getToken, isSupported } from 'firebase/messaging'
+import { getMessaging, getToken, isSupported } from 'firebase/messaging'
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,

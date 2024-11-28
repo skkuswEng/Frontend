@@ -61,3 +61,19 @@ export function formatDateRange(startDate: Date, endDate: Date) {
   // 최종 문자열 생성
   return `${year}. ${month}. ${day}. ${startHours}:${startMinutes} ~ ${endHours}:${endMinutes}`
 }
+
+// HH:MM 시가능ㄹ 30분 더하기
+export function add30Minutes(timeStr: string) {
+  let [hours, minutes] = timeStr.split(':').map(Number)
+
+  minutes += 30
+
+  // 60분을 초과하면 시간과 분을 조정
+  if (minutes >= 60) {
+    minutes -= 60
+    hours += 1
+  }
+
+  // HH:MM 형식으로 반환 (시간과 분이 한 자리 수일 경우 0으로 패딩)
+  return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`
+}

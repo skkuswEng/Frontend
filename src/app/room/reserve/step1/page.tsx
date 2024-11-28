@@ -130,7 +130,7 @@ const StudyRoomReservePage = ({}: StudyRoomReservePageProps): ReactNode => {
     time_contents = <Loading className='flex items-center justify-center' />
   }
   if (data && data.content) {
-    const [START_TIME, END_TIME] = ['09:00', '20:00']
+    const [START_TIME, END_TIME] = ['08:00', '20:00']
     const timeSelections = generateTimeIntervals(START_TIME, END_TIME)
 
     const isOccupiedObj = data.content
@@ -162,6 +162,10 @@ const StudyRoomReservePage = ({}: StudyRoomReservePageProps): ReactNode => {
     router.push(ROUTES.ROOM.RESERVE.STEP2.url)
   }
 
+  useEffect(() => {
+    console.log('startTime: ', time.startTime, 'endTime: ', time.endTime)
+  }, [time])
+
   return (
     <div className='relative mt-24 grid w-[90%] max-w-[1800px] flex-grow grid-cols-1 place-items-center gap-8 py-6 md:grid-cols-2 lg:mt-0'>
       <div className='flex h-full w-full flex-col items-start justify-start gap-3'>
@@ -191,12 +195,16 @@ const StudyRoomReservePage = ({}: StudyRoomReservePageProps): ReactNode => {
 
           <div className='flex items-center justify-start gap-4'>
             <div className='flex items-center justify-between gap-2'>
+              <span className='h-4 w-10 rounded-sm border border-solid bg-swGreenLight' />
+              <span className='text-sm font-semibold'>선택 시간</span>
+            </div>
+            <div className='flex items-center justify-between gap-2'>
               <span className='h-4 w-10 rounded-sm border border-solid border-swGrayDark bg-swWhite' />
-              <span className='text-sm font-bold'>예약 가능</span>
+              <span className='text-sm font-semibold'>예약 가능</span>
             </div>
             <div className='flex items-center justify-between gap-2'>
               <span className='h-4 w-10 rounded-sm border border-solid border-swGrayDark bg-swBackDrop' />
-              <span className='text-sm font-bold text-swGrayDark'>예약 확정</span>
+              <span className='text-sm font-light text-swGrayDark'>예약 확정</span>
             </div>
           </div>
 
@@ -281,16 +289,17 @@ const TimeSelector = ({ value, isOccupied, time, setTime, className }: TimeSelec
   }
 
   return (
-    <p
+    <button
       className={cn(
-        'cursor-pointer rounded-sm border border-solid border-swGrayDark text-center text-sm',
-        isOccupied ? 'bg-swBackDrop' : 'bg-swWhite',
+        'rounded-sm border border-solid border-swGrayDark text-center text-sm',
+        isOccupied ? 'cursor-not-allowed bg-swBackDrop' : 'cursor-pointer bg-swWhite',
         isColored() ? 'bg-swGreenLight' : '',
         className,
       )}
+      disabled={isOccupied}
       onClick={clickHandler}
     >
       {value}
-    </p>
+    </button>
   )
 }
