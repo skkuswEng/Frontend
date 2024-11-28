@@ -14,6 +14,10 @@ export const API_ROUTES = {
       method: HttpMethod.POST,
       url: '/user/unregister',
     },
+    FCM_TOKEN: {
+      method: HttpMethod.POST,
+      url: '/auth/message-token',
+    },
   },
   SEAT: {
     STATUS: {

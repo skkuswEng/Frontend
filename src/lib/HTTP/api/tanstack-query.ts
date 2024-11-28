@@ -3,7 +3,7 @@ import { useMutation } from '@tanstack/react-query'
 import { queryClient } from '@/src/components/provider/QueryClientProvider'
 
 import { ExtractValueByKey } from '../../utils/typeUtils'
-import { Login, Register, SuccessResponse, Unregister } from './auth/api'
+import { FCMToken, Login, Register, SuccessResponse, Unregister } from './auth/api'
 import { RoomReserve, RoomUnreserve, RoomUpdate } from './room/api'
 import { SeatReserve, SeatUnreserve } from './seat/api'
 
@@ -37,6 +37,10 @@ export const MUTATION_KEYS = {
     UNREGISTER: {
       key: ['unregister'],
       function: Unregister,
+    },
+    FCM_TOKEN: {
+      key: ['fcm_token'],
+      function: FCMToken,
     },
   },
   SEAT: {
@@ -88,6 +92,12 @@ queryClient.setMutationDefaults(MUTATION_KEYS.AUTH.REGISTER.key, {
 })
 queryClient.setMutationDefaults(MUTATION_KEYS.AUTH.UNREGISTER.key, {
   mutationFn: MUTATION_KEYS.AUTH.UNREGISTER.function,
+  onSuccess(data, variables, context) {
+    // queryClient.invalidateQueries({ queryKey: QUERY_KEYS.USER.PLANS.INDEX })
+  },
+})
+queryClient.setMutationDefaults(MUTATION_KEYS.AUTH.FCM_TOKEN.key, {
+  mutationFn: MUTATION_KEYS.AUTH.FCM_TOKEN.function,
   onSuccess(data, variables, context) {
     // queryClient.invalidateQueries({ queryKey: QUERY_KEYS.USER.PLANS.INDEX })
   },

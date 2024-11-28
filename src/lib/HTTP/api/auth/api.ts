@@ -110,3 +110,36 @@ export const Unregister = async ({ student_id, password }: UnregisterType) => {
 
   return data
 }
+
+export interface FCMTokenType {
+  student_id: string
+  token: string
+}
+
+export const FCMToken = async ({ student_id, token }: FCMTokenType) => {
+  const ROUTE = API_ROUTES.AUTH.FCM_TOKEN
+
+  const body = {
+    student_id,
+    token,
+  }
+
+  const res = await Fetch(ROUTE.url, {
+    method: ROUTE.method,
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(body),
+  })
+
+  if (!res.ok) {
+    const error = new Error()
+    const data = await res.json()
+    error.message = data.message
+    throw error
+  }
+
+  const data = await res.json()
+
+  return data
+}

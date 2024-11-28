@@ -13,6 +13,7 @@ import useAuthStore from '@/src/lib/context/authContext'
 import useModal from '@/src/lib/hooks/useModal'
 import { toast } from '@/src/lib/hooks/useToast'
 import { dataToISOString } from '@/src/lib/HTTP'
+import { FCMTokenType } from '@/src/lib/HTTP/api/auth/api'
 import { SeatReserveType, SeatStatus } from '@/src/lib/HTTP/api/seat/api'
 import { QUERY_KEYS, useMutationStore } from '@/src/lib/HTTP/api/tanstack-query'
 import { requestPermissionAndGetToken } from '@/src/lib/service-worker/firebase'
@@ -110,6 +111,7 @@ const ReservePage = ({}: ReservePageProps): ReactNode => {
 
   // Query & Mutation
   const { mutate: ReserveMutate, isPending: isReserving } = useMutationStore<SeatReserveType>(['seat_reserve'])
+  const { mutate: TokenMutate, isPending: isSendingToken } = useMutationStore<FCMTokenType>(['fcm_token'])
 
   useEffect(() => {
     if (searchParams.has('n') && searchParams.get('n') != null) {
@@ -141,8 +143,19 @@ const ReservePage = ({}: ReservePageProps): ReactNode => {
       // initFirebaseApp()
       const messaging = getMessaging()
       const token = await requestPermissionAndGetToken(messaging)
-      if (token) {
+      if (token && studentId) {
         // TODO: 백엔드로 토큰 보내기
+        TokenMutate(
+          {
+            student_id: studentId,
+            token: token,
+          },
+          {
+            onSuccess(data, variables, context) {
+              console.log('token을 정상적으로 보냈습니다.')
+            },
+          },
+        )
       }
     } catch (error) {
       console.log('error occured in handleGetToken', error)
