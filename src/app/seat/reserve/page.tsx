@@ -1,5 +1,6 @@
 'use client'
 import { useQuery } from '@tanstack/react-query'
+import { getMessaging } from 'firebase/messaging'
 import { useRouter, useSearchParams } from 'next/navigation'
 import React, { ReactNode, useEffect, useState } from 'react'
 
@@ -14,6 +15,8 @@ import { toast } from '@/src/lib/hooks/useToast'
 import { dataToISOString } from '@/src/lib/HTTP'
 import { SeatReserveType, SeatStatus } from '@/src/lib/HTTP/api/seat/api'
 import { QUERY_KEYS, useMutationStore } from '@/src/lib/HTTP/api/tanstack-query'
+import { requestPermissionAndGetToken } from '@/src/lib/service-worker/firebase'
+// import { initFirebaseApp, requestPermissionAndGetToken } from '@/src/lib/service-worker/firebase'
 import { cn } from '@/src/lib/utils/cn'
 
 interface SeatStatusAreaProps {
@@ -132,6 +135,19 @@ const ReservePage = ({}: ReservePageProps): ReactNode => {
     }
     router.push(ROUTES.SEAT.QR.STEP1.url)
   }
+  //Functions
+  const handleGetToken = async () => {
+    try {
+      // initFirebaseApp()
+      const messaging = getMessaging()
+      const token = await requestPermissionAndGetToken(messaging)
+      if (token) {
+        // TODO: 백엔드로 토큰 보내기
+      }
+    } catch (error) {
+      console.log('error occured in handleGetToken', error)
+    }
+  }
   // TODO:예약하기 API
   const reserveHandler = () => {
     switch (JSON.stringify(modalData)) {
@@ -151,6 +167,7 @@ const ReservePage = ({}: ReservePageProps): ReactNode => {
           {
             onSuccess(data, variables, context) {
               router.push(ROUTES.MAIN.url)
+              handleGetToken() // 토큰 받아오기
             },
           },
         )

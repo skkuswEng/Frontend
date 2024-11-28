@@ -3,7 +3,7 @@
 import { useQuery } from '@tanstack/react-query'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
-import React, { useState } from 'react'
+import React, { useEffect } from 'react'
 
 import SKKUCharacterImg from '../../public/images/skku_character.png'
 import Asterisk from '../components/common/Asterisk'
@@ -14,20 +14,18 @@ import LucideIcon from '../components/provider/LucideIcon'
 import { ClientModalData } from '../lib/constants/modal_data'
 import { ROUTES, RouteType } from '../lib/constants/route'
 import useAuthStore from '../lib/context/authContext'
-import { requestPermissionAndGetToken } from '../lib/firebase'
 import useModal from '../lib/hooks/useModal'
 import { toast } from '../lib/hooks/useToast'
 import { RoomUserReservation } from '../lib/HTTP/api/room/api'
 import { SeatUnreserveType, SeatUserReservation } from '../lib/HTTP/api/seat/api'
 import { QUERY_KEYS, useMutationStore } from '../lib/HTTP/api/tanstack-query'
+import { registerServiceWorker } from '../lib/service-worker'
 import { cn } from '../lib/utils/cn'
 import { formatDateRange } from '../lib/utils/date-utils'
 
 const MainPage = () => {
   const { studentId } = useAuthStore()
 
-  // States
-  const [fcmToken, setFcmToken] = useState<string>()
   // #1. 좌석 정보 Fetch
   const { data: user_seat_data, isPending: isPendingSeat } = useQuery({
     queryKey: QUERY_KEYS.SEAT.USER_STATUS,
@@ -57,19 +55,13 @@ const MainPage = () => {
       cnt: item.companionData.length + 1, // 자기자신 넣기
     }))
   }
-
-  //Functions
-  const handleGetToken = async () => {
-    try {
-      const token = await requestPermissionAndGetToken()
-      if (token) {
-        console.log('FCM Token:', token)
-        setFcmToken(token)
-      }
-    } catch (error) {
-      console.log('error occured in handleGetToken', error)
-    }
-  }
+  // 서비스 워커 등록하기
+  useEffect(() => {
+    registerServiceWorker()
+    // initFirebaseApp()
+    // 직접 푸시 알림 테스트
+    // sendPushNotification('테스트 알림', '테스트 알림입니다.')
+  }, [])
   return (
     <div className='relative mt-24 flex w-screen flex-grow flex-col items-center justify-center gap-4 lg:mt-0'>
       <Logo text='SoKK' className='py-4 text-7xl lg:hidden' />
@@ -78,7 +70,7 @@ const MainPage = () => {
         <br />
         AI 통합 관리 시스템
       </p>
-      <button onClick={handleGetToken}>알림 권한 요청 및 FCM 토큰 가져오기</button>
+
       <section className='relative flex h-44 w-[90%] max-w-[1800px] items-center justify-between lg:h-1/3'>
         <Asterisk className='w-20 self-start bg-[#DDFEC0] sm:w-24 lg:w-28' />
         <div className='flex h-max w-auto items-center justify-center self-end'>
@@ -189,7 +181,7 @@ const Card = ({ title, subtitle, href, qrHref, qr, user_seat, isPendingSeat, use
           { studentId: studentId, seat_number: user_seat },
           {
             onSuccess(data, variables, context) {
-              toast({ title: '좌석이 반납되었습니다' })
+              toast({ title: '좌석이 반납되었습니다', variant: 'success' })
               router.refresh()
             },
           },
@@ -203,7 +195,7 @@ const Card = ({ title, subtitle, href, qrHref, qr, user_seat, isPendingSeat, use
 
   let btnContent
   if (qr) {
-    if (isPendingSeat) {
+    if (studentId && isPendingSeat) {
       btnContent = (
         <Loading className='absolute bottom-5 right-5 flex items-center justify-center gap-2 rounded-full font-bold text-swWhite' />
       )
@@ -236,7 +228,7 @@ const Card = ({ title, subtitle, href, qrHref, qr, user_seat, isPendingSeat, use
   }
 
   let room_text
-  if (isPendingRoom) {
+  if (studentId && isPendingRoom) {
     room_text = <Loading className='absolute bottom-5 left-5 flex items-center justify-center gap-2 rounded-full font-bold text-swWhite' />
   }
   if (user_room) {

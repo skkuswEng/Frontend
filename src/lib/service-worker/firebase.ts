@@ -1,6 +1,6 @@
 // lib/firebase.js
-import { initializeApp } from 'firebase/app'
-import { getMessaging, getToken } from 'firebase/messaging'
+import { getApps, initializeApp } from 'firebase/app'
+import { getMessaging, getToken, isSupported } from 'firebase/messaging'
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -11,24 +11,22 @@ const firebaseConfig = {
   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
 }
 
-const app = initializeApp(firebaseConfig)
-const messaging = getMessaging(app)
+export const initFirebaseApp = () => {
+  const apps = getApps()
 
-export { getToken, messaging }
+  if (!apps.length) {
+    const app = initializeApp(firebaseConfig)
+    const messaging = getMessaging(app)
+  }
+}
 
-import { isSupported } from 'firebase/messaging'
-
-export async function requestPermissionAndGetToken() {
-  console.log('vapid key is:', process.env.NEXT_PUBLIC_FIREBASE_VAPID_KEY)
-  const messaging = getMessaging(app)
-
+export async function requestPermissionAndGetToken(messaging: any) {
   try {
     // 브라우저 지원 여부 확인
     const supported = await isSupported()
     if (!supported) {
       throw new Error('현재 브라우저는 Firebase Messaging을 지원하지 않습니다.')
     }
-    console.log('is suported')
 
     // 알림 권한 요청
     const permission = await Notification.requestPermission()
@@ -36,7 +34,10 @@ export async function requestPermissionAndGetToken() {
       throw new Error('알림 권한이 거부되었습니다.')
     }
 
-    // FCM 토큰 가져오기
+    // TODO: 서버의 토큰을 가져오고 / 서버에 토큰이 없으면 새로운 토큰을 반환, 서버에 저장
+    // #1. 서버의 토큰을 가져오기
+
+    // #2. 서버에 토큰이 없는 경우 새로운 토큰 발급받기
     const token = await getToken(messaging, {
       vapidKey: process.env.NEXT_PUBLIC_FIREBASE_VAPID_KEY,
     })
@@ -45,6 +46,7 @@ export async function requestPermissionAndGetToken() {
       throw new Error('FCM 토큰을 가져올 수 없습니다.')
     }
 
+    // #3. 서버에 토큰을 저장하기
     return token
   } catch (error) {
     console.error('FCM 토큰 요청 중 에러 발생:', error)

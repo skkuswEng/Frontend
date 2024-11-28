@@ -1,7 +1,6 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 
-
 export interface BeforeInstallPromptEvent extends Event {
   prompt: () => Promise<void>
   userChoice: Promise<{ outcome: 'accepted' | 'dismissed' }>
@@ -39,23 +38,23 @@ export const useInstallPromptStore = create(
 
         // if (isInstalled) {
         //   console.log("is already installed!");
-          
+
         //   toast({ title: '이미 설치된 상태입니다', variant: 'success' })
         //   return
         // }
-        console.log("entered trigger install");
-        
+        // console.log("entered trigger install");
+
         const deferredPrompt = get().deferredPrompt
-        console.log(deferredPrompt);
-        
+        // console.log(deferredPrompt);
+
         if (deferredPrompt) {
           await deferredPrompt.prompt()
           const { outcome } = await deferredPrompt.userChoice
           if (outcome === 'accepted') {
-            console.log('PWA installed successfully')
+            // console.log('PWA installed successfully')
             set({ deferredPrompt: null, showPrompt: false })
           } else {
-            console.log('User dismissed the install prompt')
+            // console.log('User dismissed the install prompt')
             set({ showPrompt: false })
           }
         }

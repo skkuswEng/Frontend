@@ -6,6 +6,7 @@ import { Suspense } from 'react'
 import { pretendard } from '../../public/fonts/fonts'
 import Footer from '../components/common/Footer'
 import Header from '../components/common/Header'
+import { PushNotificationLayout } from '../components/provider/PushNotificationLayout'
 import CustomQueryClientProvider from '../components/provider/QueryClientProvider'
 import { ToastProvider } from '../components/ui/toast'
 import { Toaster } from '../components/ui/toaster'
@@ -35,13 +36,15 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
     <html lang='ko'>
       <body className={cn(pretendard.className)}>
         <Header />
-        <CustomQueryClientProvider>
-          <ToastProvider>
-            <Suspense fallback={<div>Loading...</div>}>{children}</Suspense>
-            <Toaster />
-          </ToastProvider>
-        </CustomQueryClientProvider>
-        <InstallPrompt />
+        <PushNotificationLayout>
+          <CustomQueryClientProvider>
+            <ToastProvider>
+              <Suspense fallback={<div>Loading...</div>}>{children}</Suspense>
+              <Toaster />
+            </ToastProvider>
+          </CustomQueryClientProvider>
+          <InstallPrompt />
+        </PushNotificationLayout>
         <Footer />
       </body>
     </html>
