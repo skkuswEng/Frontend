@@ -3,7 +3,7 @@
 import { useQuery } from '@tanstack/react-query'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
-import React from 'react'
+import React, { useState } from 'react'
 
 import SKKUCharacterImg from '../../public/images/skku_character.png'
 import Asterisk from '../components/common/Asterisk'
@@ -14,6 +14,7 @@ import LucideIcon from '../components/provider/LucideIcon'
 import { ClientModalData } from '../lib/constants/modal_data'
 import { ROUTES, RouteType } from '../lib/constants/route'
 import useAuthStore from '../lib/context/authContext'
+import { requestPermissionAndGetToken } from '../lib/firebase'
 import useModal from '../lib/hooks/useModal'
 import { toast } from '../lib/hooks/useToast'
 import { RoomUserReservation } from '../lib/HTTP/api/room/api'
@@ -24,6 +25,9 @@ import { formatDateRange } from '../lib/utils/date-utils'
 
 const MainPage = () => {
   const { studentId } = useAuthStore()
+
+  // States
+  const [fcmToken, setFcmToken] = useState<string>()
   // #1. 좌석 정보 Fetch
   const { data: user_seat_data, isPending: isPendingSeat } = useQuery({
     queryKey: QUERY_KEYS.SEAT.USER_STATUS,
@@ -54,6 +58,18 @@ const MainPage = () => {
     }))
   }
 
+  //Functions
+  const handleGetToken = async () => {
+    try {
+      const token = await requestPermissionAndGetToken()
+      if (token) {
+        console.log('FCM Token:', token)
+        setFcmToken(token)
+      }
+    } catch (error) {
+      console.log('error occured in handleGetToken', error)
+    }
+  }
   return (
     <div className='relative mt-24 flex w-screen flex-grow flex-col items-center justify-center gap-4 lg:mt-0'>
       <Logo text='SoKK' className='py-4 text-7xl lg:hidden' />
@@ -62,6 +78,7 @@ const MainPage = () => {
         <br />
         AI 통합 관리 시스템
       </p>
+      <button onClick={handleGetToken}>알림 권한 요청 및 FCM 토큰 가져오기</button>
       <section className='relative flex h-44 w-[90%] max-w-[1800px] items-center justify-between lg:h-1/3'>
         <Asterisk className='w-20 self-start bg-[#DDFEC0] sm:w-24 lg:w-28' />
         <div className='flex h-max w-auto items-center justify-center self-end'>
