@@ -8,19 +8,19 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from '@/src/co
 import { cn } from '../utils/cn'
 import { useDropdown } from './useToggle'
 
-interface useSelectDropdownProps<T> {
+interface useSelectDropdownProps {
   placeHolder: string
-  candidates: T[]
+  candidates: string[]
 }
 
-const useSelectDropdown = <T,>({ placeHolder, candidates }: useSelectDropdownProps<T>) => {
+const useSelectDropdown = ({ placeHolder, candidates }: useSelectDropdownProps) => {
   const {
     isOpen,
     refs: [buttonRef, dropdownRef],
     toggleDropdown,
   } = useDropdown()
 
-  const [value, setvalue] = useState<T>()
+  const [value, setvalue] = useState<string>()
 
   const SelectDropdown = ({ className }: { className?: string }) => {
     return (

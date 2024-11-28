@@ -59,7 +59,7 @@ const generateTimeIntervals = (startTime: string, endTime: string, intervalMinut
 }
 
 const ROOM_IMAGES = [STUDY_ROOM_B, SPACE_A, SPACE_B]
-export const ROOM_TEXT_CANDIDATES = ['스터디룸B', '공용공간A', '공용공간B']
+// export const ROOM_TEXT_CANDIDATES: string[] = ['스터디룸B', '공용공간A', '공용공간B']
 interface StudyRoomReservePageProps {}
 
 const StudyRoomReservePage = ({}: StudyRoomReservePageProps): ReactNode => {
@@ -86,9 +86,9 @@ const StudyRoomReservePage = ({}: StudyRoomReservePageProps): ReactNode => {
   }, [studentId, name])
 
   // #1. 이용공간 State
-  const { value: room_name, SelectDropdown: SelectRoomDropdown } = useSelectDropdown<string>({
+  const { value: room_name, SelectDropdown: SelectRoomDropdown } = useSelectDropdown({
     placeHolder: '이용공간을 선택해주세요',
-    candidates: ROOM_TEXT_CANDIDATES,
+    candidates: ['스터디룸B', '공용공간A', '공용공간B'],
   })
   useEffect(() => {
     if (room_name) {

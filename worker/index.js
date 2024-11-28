@@ -1,8 +1,8 @@
 // firebase-messaging-sw.js
 
-'use strict'
+// 'use strict'
 
-self.__WB_DISABLE_DEV_LOGS = true
+// self.__WB_DISABLE_DEV_LOGS = true
 
 importScripts('https://www.gstatic.com/firebasejs/9.5.0/firebase-app-compat.js')
 importScripts('https://www.gstatic.com/firebasejs/9.5.0/firebase-messaging-compat.js')

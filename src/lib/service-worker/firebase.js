@@ -1,6 +1,6 @@
 // lib/firebase.js
 import { getApps, initializeApp } from 'firebase/app'
-import { getMessaging, getToken, isSupported } from 'firebase/messaging'
+import { getToken, isSupported } from 'firebase/messaging'
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -20,7 +20,7 @@ export const initFirebaseApp = () => {
   }
 }
 
-export async function requestPermissionAndGetToken(messaging: any) {
+export async function requestPermissionAndGetToken(messaging) {
   try {
     // 브라우저 지원 여부 확인
     const supported = await isSupported()

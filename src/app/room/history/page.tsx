@@ -15,8 +15,6 @@ import { QUERY_KEYS, useMutationStore } from '@/src/lib/HTTP/api/tanstack-query'
 import { cn } from '@/src/lib/utils/cn'
 import { formatDateToString, formatTimeRange } from '@/src/lib/utils/date-utils'
 
-import { ROOM_TEXT_CANDIDATES } from '../reserve/step1/page'
-
 // 백엔드가 보내주는 데이터 형식
 export type RoomDataType = {
   room_number: number
@@ -149,7 +147,7 @@ const HistoryCard = ({ data, prev, userStudentId, className }: HistoryCardProps)
     >
       <p className='text-base font-bold md:text-xl'>예약 정보</p>
 
-      <Description text='스터디룸' value={ROOM_TEXT_CANDIDATES[room_number - 1]} />
+      <Description text='스터디룸' value={['스터디룸B', '공용공간A', '공용공간B'][room_number - 1]} />
       <Description text='예약날짜' value={formatDateToString(startDate)} />
       <Description text='예약시간' value={formatTimeRange(startDate, endDate)} />
 
