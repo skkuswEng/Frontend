@@ -140,7 +140,7 @@ const ReservePage = ({}: ReservePageProps): ReactNode => {
   const handleGetToken = async () => {
     try {
       // initFirebaseApp()
-      const messaging = checkMessageSupport()
+      const messaging = await checkMessageSupport()
       const token = await requestPermissionAndGetToken(messaging)
       if (token && studentId) {
         // TODO: 백엔드로 토큰 보내기

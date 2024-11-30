@@ -17,7 +17,7 @@ export const initFirebaseApp = async () => {
   if (!apps.length) {
     const app = initializeApp(firebaseConfig)
 
-    const messaging = checkMessageSupport(app)
+    const messaging = await checkMessageSupport(app)
   }
 }
 export async function checkMessageSupport(app) {
