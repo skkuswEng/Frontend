@@ -1,6 +1,5 @@
 'use client'
 import { useQuery } from '@tanstack/react-query'
-import { getMessaging } from 'firebase/messaging'
 import { useRouter, useSearchParams } from 'next/navigation'
 import React, { ReactNode, useEffect, useState } from 'react'
 
@@ -16,7 +15,7 @@ import { dataToISOString } from '@/src/lib/HTTP'
 import { FCMTokenType } from '@/src/lib/HTTP/api/auth/api'
 import { SeatReserveType, SeatStatus } from '@/src/lib/HTTP/api/seat/api'
 import { QUERY_KEYS, useMutationStore } from '@/src/lib/HTTP/api/tanstack-query'
-import { requestPermissionAndGetToken } from '@/src/lib/service-worker/firebase'
+import { checkMessageSupport, requestPermissionAndGetToken } from '@/src/lib/service-worker/firebase'
 // import { initFirebaseApp, requestPermissionAndGetToken } from '@/src/lib/service-worker/firebase'
 import { cn } from '@/src/lib/utils/cn'
 
@@ -141,7 +140,7 @@ const ReservePage = ({}: ReservePageProps): ReactNode => {
   const handleGetToken = async () => {
     try {
       // initFirebaseApp()
-      const messaging = getMessaging()
+      const messaging = checkMessageSupport()
       const token = await requestPermissionAndGetToken(messaging)
       if (token && studentId) {
         // TODO: 백엔드로 토큰 보내기

@@ -16,16 +16,19 @@ export const initFirebaseApp = async () => {
 
   if (!apps.length) {
     const app = initializeApp(firebaseConfig)
-    const supported = await isSupported()
-    if (!supported) {
-      console.warn('Firebase Messaging is not supported in this browser.')
-      return null
-    }
 
-    const messaging = getMessaging(app)
+    const messaging = checkMessageSupport(app)
   }
 }
+export async function checkMessageSupport(app) {
+  const supported = await isSupported()
+  if (!supported) {
+    console.warn('Firebase Messaging is not supported in this browser.')
+    return null
+  }
 
+  return getMessaging(app)
+}
 export async function requestPermissionAndGetToken(messaging) {
   try {
     // 브라우저 지원 여부 확인
