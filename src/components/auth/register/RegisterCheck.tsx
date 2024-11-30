@@ -3,9 +3,10 @@ import { ReactNode, useEffect, useState } from 'react'
 
 import { ClientModalData } from '@/src/lib/constants/modal_data'
 import { ROUTES } from '@/src/lib/constants/route'
+import useAuthStore from '@/src/lib/context/authContext'
 import useModal from '@/src/lib/hooks/useModal'
 import { toast } from '@/src/lib/hooks/useToast'
-import { RegisterType } from '@/src/lib/HTTP/api/auth/api'
+import { RegisterType, VerifyPDFType } from '@/src/lib/HTTP/api/auth/api'
 import { useMutationStore } from '@/src/lib/HTTP/api/tanstack-query'
 import { NullableObject } from '@/src/lib/utils/typeUtils'
 
@@ -16,8 +17,10 @@ import { Label } from '../../ui/label'
 interface RegisterCheckProps {}
 const RegisterCheck = ({}: RegisterCheckProps): ReactNode => {
   const router = useRouter()
+  const { studentId, name } = useAuthStore()
   const { isOpen, modalData, Modal, openModal } = useModal()
 
+  const [pdfFile, setPdfFile] = useState<File>()
   // Constants
   const INIT_INFO: NullableObject<RegisterType> = { student_name: null, student_id: null, password: null, email: null }
 
@@ -33,6 +36,14 @@ const RegisterCheck = ({}: RegisterCheckProps): ReactNode => {
     }))
   }
 
+  const handleFileChange = (e: any) => {
+    setPdfFile(e.target.files[0])
+  }
+
+  useEffect(() => {
+    console.log(pdfFile)
+  }, [pdfFile])
+
   useEffect(() => {
     if (!Object.values(userInfo).includes(null)) {
       setIsDone(true)
@@ -42,6 +53,8 @@ const RegisterCheck = ({}: RegisterCheckProps): ReactNode => {
   }, [userInfo])
 
   // Mutations
+  const { mutate: VerifyPDFMutate, isPending: isVerifying } = useMutationStore<VerifyPDFType>(['verify_pdf'])
+
   const { mutate: RegisterMutate, isPending: isRegistering } = useMutationStore<RegisterType>(['register'])
 
   const registerHandler = () => {
@@ -91,6 +104,22 @@ const RegisterCheck = ({}: RegisterCheckProps): ReactNode => {
         router.push(ROUTES.AUTH.LOGIN.url)
       },
     })
+  }
+  const testVerifyHandle = () => {
+    if (pdfFile) {
+      VerifyPDFMutate(
+        {
+          student_id: '2019311945',
+          name: '김지호',
+          pdf: pdfFile,
+        },
+        {
+          onSuccess(data, variables, context) {
+            console.log(data)
+          },
+        },
+      )
+    }
   }
 
   return (
@@ -152,6 +181,19 @@ const RegisterCheck = ({}: RegisterCheckProps): ReactNode => {
         />
       </div>
 
+      <div className='flex w-full items-center justify-start gap-2'>
+        <Label htmlFor='file' className='w-20 font-bold text-swBlack'>
+          재학증명서
+        </Label>
+        <Input
+          type='file'
+          id='file'
+          placeholder='재학증명서 파일을 첨부해주세요'
+          onChange={handleFileChange}
+          className='flex h-12 items-center justify-start'
+        />
+      </div>
+      <button onClick={testVerifyHandle}>테스트</button>
       <Button onClick={registerHandler} variant={isDone ? 'swBlack' : 'swBlackDisabled'} disabled={!isDone} className='w-full'>
         가입하기
       </Button>

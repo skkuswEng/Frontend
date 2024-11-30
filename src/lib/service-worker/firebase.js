@@ -11,11 +11,17 @@ const firebaseConfig = {
   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
 }
 
-export const initFirebaseApp = () => {
+export const initFirebaseApp = async () => {
   const apps = getApps()
 
   if (!apps.length) {
     const app = initializeApp(firebaseConfig)
+    const supported = await isSupported()
+    if (!supported) {
+      console.warn('Firebase Messaging is not supported in this browser.')
+      return null
+    }
+
     const messaging = getMessaging(app)
   }
 }

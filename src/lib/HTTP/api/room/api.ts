@@ -78,6 +78,7 @@ export const RoomUserReservation = async ({ signal, studentId }: RoomUserReserva
   }
 
   const data: SuccessResponse = await res.json()
+  console.log(data)
 
   return data
 }
@@ -178,20 +179,35 @@ export interface RoomUnreserveType {
 }
 
 export const RoomUnreserve = async ({ student_id, room_number, startDate, endDate }: RoomUnreserveType) => {
-  const ROUTE = API_ROUTES.SEAT.STATUS
+  const BASE_ROUTE = API_ROUTES.SEAT.UNRESERVE
 
-  const body = {
-    student_id: student_id,
-    room_number: room_number,
-    startDate: ISOFormatWithoutBack(startDate),
-    endDate: ISOFormatWithoutBack(endDate),
-  }
-  const res = await Fetch(ROUTE.url, {
-    method: ROUTE.method,
+  const queries: Queries = [
+    {
+      key: 'student_id',
+      value: student_id,
+    },
+    {
+      key: 'room_number',
+      value: room_number,
+    },
+    {
+      key: 'startDate',
+      value: ISOFormatWithoutBack(startDate),
+    },
+    {
+      key: 'endDate',
+      value: ISOFormatWithoutBack(endDate),
+    },
+  ]
+  console.log(queries)
+
+  const ROUTE = attachQuery(BASE_ROUTE.url, queries)
+
+  const res = await Fetch(ROUTE, {
+    method: BASE_ROUTE.method,
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify(body),
   })
 
   if (!res.ok) {

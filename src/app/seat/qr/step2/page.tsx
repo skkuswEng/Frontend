@@ -24,7 +24,6 @@ const QRReservePage = ({}: QRReservePageProps): ReactNode => {
 
   // QR 스캔 결과 처리 함수
   const handleScanResult = (result: { data: string; cornerPoints: any[] }) => {
-    console.log('QR 코드 결과:', result)
     setScanResult(result.data) // 필요한 데이터만 상태에 저장
 
     // 스캔 결과가 유효하면 라우팅

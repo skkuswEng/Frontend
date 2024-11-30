@@ -3,7 +3,7 @@ import { useMutation } from '@tanstack/react-query'
 import { queryClient } from '@/src/components/provider/QueryClientProvider'
 
 import { ExtractValueByKey } from '../../utils/typeUtils'
-import { FCMToken, Login, Register, SuccessResponse, Unregister } from './auth/api'
+import { FCMToken, Login, Register, SuccessResponse, Unregister, VerifyPDF } from './auth/api'
 import { RoomReserve, RoomUnreserve, RoomUpdate } from './room/api'
 import { SeatReserve, SeatUnreserve } from './seat/api'
 
@@ -41,6 +41,10 @@ export const MUTATION_KEYS = {
     FCM_TOKEN: {
       key: ['fcm_token'],
       function: FCMToken,
+    },
+    VERIFY_PDF: {
+      key: ['verify_pdf'],
+      function: VerifyPDF,
     },
   },
   SEAT: {
@@ -102,6 +106,12 @@ queryClient.setMutationDefaults(MUTATION_KEYS.AUTH.FCM_TOKEN.key, {
     // queryClient.invalidateQueries({ queryKey: QUERY_KEYS.USER.PLANS.INDEX })
   },
 })
+queryClient.setMutationDefaults(MUTATION_KEYS.AUTH.VERIFY_PDF.key, {
+  mutationFn: MUTATION_KEYS.AUTH.VERIFY_PDF.function,
+  onSuccess(data, variables, context) {
+    // queryClient.invalidateQueries({ queryKey: QUERY_KEYS.USER.PLANS.INDEX })
+  },
+})
 
 // #2. Seat
 queryClient.setMutationDefaults(MUTATION_KEYS.SEAT.RESERVE.key, {
@@ -121,7 +131,7 @@ queryClient.setMutationDefaults(MUTATION_KEYS.SEAT.UNRESERVE.key, {
 queryClient.setMutationDefaults(MUTATION_KEYS.ROOM.RESERVE.key, {
   mutationFn: MUTATION_KEYS.ROOM.RESERVE.function,
   onSuccess(data, variables, context) {
-    // queryClient.invalidateQueries({ queryKey: QUERY_KEYS.SEAT.STATUS })
+    queryClient.invalidateQueries({ queryKey: QUERY_KEYS.ROOM.STATUS })
   },
 })
 queryClient.setMutationDefaults(MUTATION_KEYS.ROOM.UPDATE.key, {
@@ -133,7 +143,7 @@ queryClient.setMutationDefaults(MUTATION_KEYS.ROOM.UPDATE.key, {
 queryClient.setMutationDefaults(MUTATION_KEYS.ROOM.UNRESERVE.key, {
   mutationFn: MUTATION_KEYS.ROOM.UNRESERVE.function,
   onSuccess(data, variables, context) {
-    // queryClient.invalidateQueries({ queryKey: QUERY_KEYS.SEAT.STATUS })
+    queryClient.invalidateQueries({ queryKey: QUERY_KEYS.ROOM.STATUS })
   },
 })
 

@@ -91,7 +91,7 @@ const DesktopHeader = ({ dropdownData, authData, className }: HeaderProps) => {
       <HeaderToggleMenu
         authData={authData}
         dropdownData={dropdownData}
-        className='absolute right-0 top-0 mr-3 mt-20 flex h-fit w-1/2 max-w-56 flex-col items-center justify-start self-end rounded-xl bg-swWhite'
+        className='absolute right-0 top-0 mr-3 mt-20 flex h-fit w-1/2 max-w-56 flex-col items-center justify-start self-end rounded-xl border border-solid border-swGrayLight bg-swWhite'
       />
     </div>
   )
@@ -133,7 +133,7 @@ const MobileHeader = ({ dropdownData, authData, className }: HeaderProps) => {
       <HeaderToggleMenu
         authData={authData}
         dropdownData={dropdownData}
-        className='absolute right-0 top-0 z-50 mr-3 mt-28 flex h-fit w-1/2 max-w-56 flex-col items-center justify-start self-end rounded-lg bg-swWhite'
+        className='absolute right-0 top-0 z-50 mr-3 mt-28 flex h-fit w-1/2 max-w-56 flex-col items-center justify-start self-end rounded-lg border border-solid border-swGrayLight bg-swWhite'
       />
     </div>
   )

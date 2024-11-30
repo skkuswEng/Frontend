@@ -11,7 +11,7 @@ interface LocationCheckPageProps {}
 
 // 성균관대학교 SW 라운지 좌표와 반경 정의
 const SW_LOUNGE_COORDS = { lat: 37.29595244638191, lng: 126.97582572698593 } // 예시 좌표
-const RADIUS_KM = 0.3 // 반경 300m
+const RADIUS_KM = 200000 // 반경 300m
 
 // 원형 반경 계산 함수 (하버사인 공식)
 const isWithinLocation = (lat: number, lng: number, center: { lat: number; lng: number }, radius: number): boolean => {

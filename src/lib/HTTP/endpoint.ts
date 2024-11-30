@@ -18,6 +18,10 @@ export const API_ROUTES = {
       method: HttpMethod.POST,
       url: '/auth/message-token',
     },
+    VERIFY_PDF: {
+      method: HttpMethod.POST,
+      url: '/auth/verify',
+    },
   },
   SEAT: {
     STATUS: {

@@ -1,6 +1,8 @@
 import { useRouter } from 'next/navigation'
 import { ReactNode, useEffect, useState } from 'react'
 
+import { ROUTES } from '@/src/lib/constants/route'
+
 import LucideIcon from '../../provider/LucideIcon'
 import { Button } from '../../ui/button'
 import { Checkbox } from '../../ui/checkbox'
@@ -16,17 +18,17 @@ const ServicePolicyCheck = ({ stepHandler }: ServicePolicyCheckProps): ReactNode
     {
       pid: '1',
       name: '(필수) 이용약관 동의',
-      href: '미정',
+      href: ROUTES.ETC.PERSONAL_INFO_RULES,
     },
     {
       pid: '2',
       name: '(필수) 개인정보 수집 및 이용 동의',
-      href: '미정',
+      href: ROUTES.ETC.PERSONAL_INFO_RULES,
     },
     {
       pid: '3',
       name: '(필수) 위치정보 수집 및 이용 동의',
-      href: '미정',
+      href: ROUTES.ETC.PERSONAL_INFO_RULES,
     },
   ]
 

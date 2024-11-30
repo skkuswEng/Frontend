@@ -45,9 +45,9 @@ const RoomHistory = ({}: RoomHistoryProps): ReactNode => {
 
   let room_data: RoomDataType[] = []
   if (data && data.content) {
-    console.log(data)
-
-    room_data = data.content.reserve.map((item: any) => ({
+    // console.log(data)
+    const datas: any = data.content.reserve
+    room_data = [...datas].reverse().map((item: any) => ({
       room_number: item.room_number,
       startDate: new Date(item.startDate),
       endDate: new Date(item.endDate),
@@ -60,7 +60,6 @@ const RoomHistory = ({}: RoomHistoryProps): ReactNode => {
         name: comp.name,
       })),
     }))
-    console.log(room_data)
   }
 
   return (
@@ -130,7 +129,7 @@ const HistoryCard = ({ data, prev, userStudentId, className }: HistoryCardProps)
             {
               onSuccess(data, variables, context) {
                 toast({ title: '스터디룸 예약을 취소하였습니다', variant: 'success' })
-                window.open(ROUTES.ROOM.HISTORY.url)
+                router.push(ROUTES.ROOM.HISTORY.url) // 내경로로
               },
             },
           )

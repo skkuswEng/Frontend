@@ -143,3 +143,39 @@ export const FCMToken = async ({ student_id, token }: FCMTokenType) => {
 
   return data
 }
+
+export interface VerifyPDFType {
+  student_id: string
+  name: string
+  pdf: File
+}
+
+export const VerifyPDF = async ({ student_id, name, pdf }: VerifyPDFType) => {
+  console.log('테스트 실행됨')
+
+  const ROUTE = API_ROUTES.AUTH.FCM_TOKEN
+
+  const formData = new FormData()
+  formData.append('student_number', student_id)
+  formData.append('student_name', name)
+  formData.append('pdf_file', pdf)
+
+  const res = await fetch(`http://localhost:5000${ROUTE.url}`, {
+    method: ROUTE.method,
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+    body: formData,
+  })
+
+  if (!res.ok) {
+    const error = new Error()
+    const data = await res.json()
+    error.message = data.message
+    throw error
+  }
+
+  const data = await res.json()
+
+  return data
+}
