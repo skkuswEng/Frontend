@@ -17,14 +17,6 @@
 |    Deployment    |                                                   ![Vercel](https://img.shields.io/badge/vercel-%23000000.svg?style=for-the-badge&logo=vercel&logoColor=white)                                                    |
 |  Collaboration   |     ![Notion](https://img.shields.io/badge/Notion-000000?style=for-the-badge&logo=Notion&logoColor=white) ![Figma](https://img.shields.io/badge/Figma-F24E1E?style=for-the-badge&logo=Figma&logoColor=white)      |
 
-## 📚 주요 라이브러리
-
-Updated Later...
-
-## 📂 폴더 구조
-
-Updated Later...
-
 ## ✍️ 컨벤션
 
 ### ✨ Git 컨벤션
